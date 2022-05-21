@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import "./bootstrap";
 import AppTemplate from "./layouts/AppTemplate.vue";
 import router from './router';
+import { createPinia } from 'pinia'
 
 // Global Components
 import Alert from "./components/Alert.vue";
@@ -18,6 +19,7 @@ app.component("Alert", Alert)
 
 // Registering Router
 app.use(router);
+app.use(createPinia());
 
 // Mounting app
 app.mount('#app');

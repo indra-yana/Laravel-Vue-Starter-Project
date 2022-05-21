@@ -57,6 +57,9 @@
 </template>
 
 <script>
+    import { mapState } from 'pinia'
+    import { authDataStore } from '../.././store/authDataStore.js';
+
     export default {
         data() {
             return {
@@ -77,6 +80,9 @@
         created() {
             
         },
+        computed: { 
+            ...mapState(authDataStore, ['setLoggedIn', 'setUser'])
+        },
         methods: {
             doLogin() {
                 // Dummy actions 
@@ -86,14 +92,24 @@
 
                     this.alert = {
                         show: true,
-                        type: "error",
-                        message: "Validation failed!",
+                        type: "success",
+                        message: "Loggin successfully!",
                     };
 
+                    /*
                     this.validation = {
                         email: ["The email is required.", "The email must be valid email address."],
                         password: ["The password doesn't match."],
                     };
+                    */
+
+                   this.setLoggedIn(true);
+                   this.setUser({
+                       name: 'John Doe',
+                       username: 'doe',
+                       email: 'doe@laravel.com',
+                   });
+
                 }, 3 * 1000);
             },
             resetForm() {

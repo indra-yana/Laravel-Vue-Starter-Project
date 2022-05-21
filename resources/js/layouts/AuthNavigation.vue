@@ -33,8 +33,8 @@
                 <ul class="navbar-nav ms-auto" v-else>
                     <!-- Authentication Links -->
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            John Doe
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            {{ auth.user.name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -51,20 +51,26 @@
 </template>
 
 <script>
+    import { mapState } from 'pinia'
+    import { authDataStore } from '.././store/authDataStore.js';
+    
     export default {
-      data() {
-          return {
-              currentRoute: this.$route.name,
-              isLoggedIn: false,
-          };
-      },
-      created() {
-        //   console.log(this.currentRoute);
-      },
-      methods: {
-          logout() {
-              alert("You just logged out!");
-          }
-      }
+        data() {
+            return {
+                currentRoute: this.$route.name,
+            };
+        },
+        created() {
+
+        },
+        computed: { 
+            ...mapState(authDataStore, ['isLoggedIn', 'setLoggedIn', 'auth'])
+        },
+        methods: {
+            logout() {
+                this.setLoggedIn(false);
+                alert("You just logged out!");
+            }
+        }
     };
 </script>
