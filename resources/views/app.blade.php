@@ -26,8 +26,32 @@
         </style>
     </head>
 
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <div id="app"></div>
+        
+        <footer class="footer mt-auto py-1 bg-primary-soft bg-dark">
+            <div class="container">
+                <div class="d-flex bd-highlight">
+                    <div class="flex-grow-1 bd-highlight text-white">
+                    <figure class="mt-2">
+                        <blockquote class="blockquote text-white">
+                            <p>Get in touch.</p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer mb-0 text-white">
+                            &copy; <cite title="Source Title">indra.ndra26@gmail.com</cite>
+                        </figcaption>
+                    </figure>
+                </div>
+                    <div class="bd-highlight text-white">
+                        <figure class="mt-2">
+                            <blockquote class="blockquote text-white">
+                                <p>Laravue SPA.</p>
+                            </blockquote>
+                        </figure>
+                    </div>
+                  </div>
+            </div>
+        </footer>
     </body>
     
     <script src="{{ asset('js/app.js') }}"></script>
