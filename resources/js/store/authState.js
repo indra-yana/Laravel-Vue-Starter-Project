@@ -4,7 +4,7 @@ const authState = defineStore('authState', {
     state: () => ({
         authData: {
             loggedIn: false,
-            user: {},
+            user: null,
         }
     }),
     getters: {
@@ -22,7 +22,7 @@ const authState = defineStore('authState', {
         },
         logout() {
             this.authData.loggedIn = false;
-            this.authData.user = {};
+            this.authData.user = null;
         },
     }
 });

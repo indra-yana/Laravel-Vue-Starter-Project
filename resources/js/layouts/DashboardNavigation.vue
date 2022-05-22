@@ -9,12 +9,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav me-auto" v-if="!isLoggedIn">
+                <ul class="navbar-nav me-auto" v-if="isLoggedIn">
+                    <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="#">User</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,20 +28,24 @@
                 </ul>
 
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ms-auto" v-if="!isLoggedIn">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </ul>
-                <ul class="navbar-nav ms-auto" v-else>
+                <ul class="navbar-nav ms-auto" v-if="isLoggedIn">
+                    <li class="nav-item me-3">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </li>
                     <!-- Authentication Links -->
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            John Doe
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle p-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle border border-1 border-secondary">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="nav-link dropdown-item" style="cursor: pointer;" @click="logout">Logout</a>
+                            <li><a class="dropdown-item" href="#">{{ auth.user.name }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ auth.user.email }}</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" style="cursor: pointer;" @click="doLogout">Logout</a></li>
                         </div>
                     </li>
                 </ul>
@@ -54,16 +56,23 @@
 </template>
 
 <script>
+    import { mapState } from 'pinia'
+    import { authState } from '.././store/authState.js';
+
     export default {
-      data() {
-          return {
-              isLoggedIn: false,
-          };
-      },
-      methods: {
-          logout() {
-              alert("You just logged out!");
-          }
-      }
+        data() {
+            return {
+                
+            };
+        },
+        computed: { 
+            ...mapState(authState, ['isLoggedIn', 'logout', 'auth'])
+        },
+        methods: {
+            async doLogout() {
+                await this.logout();
+                await this.$router.push({name: 'login'});
+            }
+        }
     };
 </script>

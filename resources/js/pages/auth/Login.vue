@@ -109,6 +109,8 @@
                         email: this.form.email,
                     });
 
+                    this.$router.push({name: 'dashboard'})
+
                 }, 3 * 1000);
             },
             resetForm() {

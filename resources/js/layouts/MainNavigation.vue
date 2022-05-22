@@ -32,14 +32,16 @@
                 </ul>
                 <ul class="navbar-nav ms-auto" v-else>
                     <!-- Authentication Links -->
+                    <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            {{ auth.user.email }}
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle p-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle border border-1 border-secondary">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">{{ auth.user.name }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ auth.user.email }}</a></li>
                             <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" style="cursor: pointer;" @click="doLogout">Logout</a></li>
                         </div>
                     </li>
@@ -67,8 +69,9 @@
             ...mapState(authState, ['isLoggedIn', 'logout', 'auth'])
         },
         methods: {
-            doLogout() {
-                this.logout();
+            async doLogout() {
+                await this.logout();
+                await this.$router.push({name: 'login'});
             }
         }
     };

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <AuthNavigation />
+      <MainNavigation />
 
       <div class="container mt-5">
         <router-view/>
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-  import AuthNavigation from './AuthNavigation.vue'
+  import MainNavigation from './MainNavigation.vue'
   
   export default {
     components: {
-      AuthNavigation
+      MainNavigation
     }  
   };
 </script>
