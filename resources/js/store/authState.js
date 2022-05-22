@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const authDataStore = defineStore('authDataStore', {
+const authState = defineStore('authState', {
     state: () => ({
         authData: {
             loggedIn: false,
@@ -16,15 +16,15 @@ export const authDataStore = defineStore('authDataStore', {
         },
     },
     actions:{
-        setLoggedIn(loggedIn) {
-            this.authData.loggedIn = loggedIn;
-        },
-        setUser(user) {
+        loggedIn(user) {
+            this.authData.loggedIn = true;
             this.authData.user = user;
-
-            // this.user.name = user.name;
-            // this.user.username = user.username;
-            // this.user.email = user.email;
+        },
+        logout() {
+            this.authData.loggedIn = false;
+            this.authData.user = {};
         },
     }
 });
+
+export { authState };

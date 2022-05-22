@@ -58,7 +58,7 @@
 
 <script>
     import { mapState } from 'pinia'
-    import { authDataStore } from '../.././store/authDataStore.js';
+    import { authState } from '../.././store/authState.js';
 
     export default {
         data() {
@@ -81,7 +81,7 @@
             
         },
         computed: { 
-            ...mapState(authDataStore, ['setLoggedIn', 'setUser'])
+            ...mapState(authState, ['loggedIn'])
         },
         methods: {
             doLogin() {
@@ -103,12 +103,11 @@
                     };
                     */
 
-                   this.setLoggedIn(true);
-                   this.setUser({
-                       name: 'John Doe',
-                       username: 'doe',
-                       email: 'doe@laravel.com',
-                   });
+                    this.loggedIn({
+                        name: 'John Doe',
+                        username: 'doe',
+                        email: this.form.email,
+                    });
 
                 }, 3 * 1000);
             },

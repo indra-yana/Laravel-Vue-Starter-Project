@@ -34,13 +34,13 @@
                     <!-- Authentication Links -->
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            {{ auth.user.name }}
+                            {{ auth.user.email }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" style="cursor: pointer;" @click="logout">Logout</a></li>
+                            <li><a class="dropdown-item" style="cursor: pointer;" @click="doLogout">Logout</a></li>
                         </div>
                     </li>
                 </ul>
@@ -52,7 +52,7 @@
 
 <script>
     import { mapState } from 'pinia'
-    import { authDataStore } from '.././store/authDataStore.js';
+    import { authState } from '.././store/authState.js';
     
     export default {
         data() {
@@ -64,12 +64,11 @@
 
         },
         computed: { 
-            ...mapState(authDataStore, ['isLoggedIn', 'setLoggedIn', 'auth'])
+            ...mapState(authState, ['isLoggedIn', 'logout', 'auth'])
         },
         methods: {
-            logout() {
-                this.setLoggedIn(false);
-                alert("You just logged out!");
+            doLogout() {
+                this.logout();
             }
         }
     };
