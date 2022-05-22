@@ -132,15 +132,15 @@ router.beforeEach((to, from, next) => {
     
     // Route that required authenticated
     if (to.meta.requiresAuth && !store.isLoggedIn) {
-        next({name: "login"});
+        return next({name: "login"});
     }
 
     // Route do not visit after login
     if (store.isLoggedIn && ['login', 'register'].includes(to.name)) {
-        next({name: "dashboard"});
+        return next({name: "dashboard"});
     }
     
-    next();
+    return next();
   });
 
 export default router;
