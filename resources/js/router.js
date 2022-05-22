@@ -1,5 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router";
 
+// Data Store
+import { authState } from './store/authState.js';
+
 // Auth
 import Login from "./pages/auth/Login.vue";
 import Register from "./pages/auth/Register.vue";
@@ -63,7 +66,7 @@ const routes = [
                 path: 'confirm',
                 component: Confirm,
                 meta:{
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: `Confirm Password`
                 }
             }, {
@@ -71,7 +74,7 @@ const routes = [
                 path: 'verify',
                 component: Verify,
                 meta:{
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: `Reset Password`
                 }
             },
@@ -109,7 +112,7 @@ const routes = [
                 path: '',
                 component: Dashboard,
                 meta:{
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: `Dashboard`
                 }
             }, 
@@ -124,18 +127,19 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // if (to.matched.some((record) => record.meta.requiresAuth)) {
-    //   if (Store.getters["auth/getAuthenticated"]) {
-    //     next();
-    //     return;
-    //   }
-    //   next("/");
-    // } else {
-    //   next();
-    // }
-    // console.log("Hello World", this.$router.currentRoute.meta.title);
-    
     document.title = `${to.meta.title}`;
+    const store = authState();
+    
+    // Route that required authenticated
+    if (to.meta.requiresAuth && !store.isLoggedIn) {
+        next({name: "login"});
+    }
+
+    // Route do not visit after login
+    if (store.isLoggedIn && ['login', 'register'].includes(to.name)) {
+        next({name: "dashboard"});
+    }
+    
     next();
   });
 
