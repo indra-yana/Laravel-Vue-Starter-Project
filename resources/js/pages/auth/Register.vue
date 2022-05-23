@@ -74,6 +74,9 @@
 </template>
 
 <script>
+    import { mapState } from 'pinia'
+    import { registerState } from '../.././store/registerState.js';
+
     export default {
         data() {
             return {
@@ -94,7 +97,12 @@
             };
         },
         created() {
-            
+            if (this.getFormData != null) {
+                this.form = this.getFormData;
+            }
+        },
+        computed: { 
+            ...mapState(registerState, ['setFormData', 'getFormData', 'resetFormData'])
         },
         methods: {
             register() {
@@ -105,15 +113,19 @@
 
                     this.alert = {
                         show: true,
-                        type: "error",
-                        message: "Validation failed!",
+                        type: "success",
+                        message: "Register successfully!",
                     };
 
+                    /*
                     this.validation = {
                         username: ["The username has already been taken."],
                         email: ["The email has already been taken.", "The email must be valid email address."],
                         password: ["The password must be match with password confirmation."],
                     };
+                    */
+
+                    this.setFormData(this.form);
                 }, 3 * 1000);
             },
             resetForm() {
@@ -127,6 +139,8 @@
                     password: "",
                     password_confirmation: "",
                 }
+
+                this.resetFormData();
             },
             resetAlert() {
                 this.alert = {};

@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
+import SecureLS from "secure-ls";
 
+const ls = new SecureLS({ isCompression: false });
 const authState = defineStore('authState', {
     state: () => ({
         authData: {
@@ -21,11 +23,18 @@ const authState = defineStore('authState', {
             this.authData.user = user;
         },
         logout() {
-            // this.authData.loggedIn = false;
-            // this.authData.user = null;
             this.$reset();
         },
-    }
+    },
+    persist: {
+        key: 'auth-state',
+        paths: ['authData'],
+        storage: {
+            getItem: (key) => ls.get(key),
+            setItem: (key, value) => ls.set(key, value),
+            removeItem: (key) => ls.remove(key)
+        },
+    },
 });
 
 export { authState };
