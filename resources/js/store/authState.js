@@ -21,8 +21,9 @@ const authState = defineStore('authState', {
             this.authData.user = user;
         },
         logout() {
-            this.authData.loggedIn = false;
-            this.authData.user = null;
+            // this.authData.loggedIn = false;
+            // this.authData.user = null;
+            this.$reset();
         },
     }
 });
