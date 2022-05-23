@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\JsonResponse;
 
 class LoginController extends Controller
 {
@@ -77,6 +78,33 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             "identity" => [trans('auth.failed')],
         ]);
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return $request->wantsJson()
+                    ? new JsonResponse(["message" => __("Login successfully."), "user" => $user], 200)
+                    : redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        return $request->wantsJson()
+                    ? new JsonResponse(["message" => __("You just logged out."), "data" => []], 200)
+                    : redirect()->intended($this->redirectPath());
     }
 
 }

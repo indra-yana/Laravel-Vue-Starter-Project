@@ -70,8 +70,15 @@
         },
         methods: {
             async doLogout() {
-                await this.logout();
-                await this.$router.push({name: 'login'});
+                await axios.post('/logout', { })
+                    .then(({ data }) => {
+                        this.logout();
+                        this.$router.push({name: 'login'});
+                    }).catch(({ response: { data } }) => {
+                        console.log(data);
+                    }).finally(() => {
+                        
+                    });
             }
         }
     };

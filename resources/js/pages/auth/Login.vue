@@ -91,6 +91,21 @@
                 await axios.post('/login', this.form)
                     .then(({ data }) => {
                         // Authenticated
+                        this.alert = {
+                            show: true,
+                            type: "success",
+                            message: data.message,
+                        };
+
+                        this.loggedIn(data.user);
+                        setTimeout(() => {
+                            this.alert.message = "Redirecting...";
+                            setTimeout(() => {
+                                this.$router.push({name: 'dashboard'})
+                            }, 1 * 1000);
+                        }, 2 * 1000);
+
+                        /*
                         axios.get("/api/user")
                             .then(({ data }) => {
                                 this.alert = {
@@ -107,6 +122,7 @@
                             .catch(({ response: { data } }) => {
                                 return data;
                             });
+                        */
                     }).catch(({ response: { data } }) => {
                         const { message, errors } = data;
 
