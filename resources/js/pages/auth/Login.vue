@@ -10,12 +10,12 @@
                     <div class="card-body bg-primary-soft">
                         <form @submit.prevent="doLogin()">
                             <div class="form-group row mb-3">
-                                <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address <span class="text-danger">*</span></label>
+                                <label for="identity" class="col-sm-4 col-form-label text-md-right">E-Mail Address / Username<span class="text-danger">*</span></label>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" id="email" class="form-control" :class="{'is-invalid': validation.email}" v-model="form.email" @input="handleInput('email')" placeholder="Input Email" required autofocus autocomplete="off" >
-                                    <div v-if="validation.email" class="invalid-feedback mt-1" >
+                                    <input type="text" name="identity" id="identity" class="form-control" :class="{'is-invalid': validation.identity}" v-model="form.identity" @input="handleInput('identity')" placeholder="Input Email / Username" required autofocus autocomplete="off" >
+                                    <div v-if="validation.identity" class="invalid-feedback mt-1" >
                                         <ul class="mb-0 ps-3">
-                                            <li v-for="(error, index) in validation.email">{{ error }}</li>
+                                            <li v-for="(error, index) in validation.identity">{{ error }}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                     message: "",
                 },
                 form: {
-                    email: "",
+                    identity: "",
                     password: "",
                     remember: false,
                 }
@@ -84,41 +84,49 @@
             ...mapState(authState, ['loggedIn'])
         },
         methods: {
-            doLogin() {
-                // Dummy actions 
+            async doLogin() {
                 this.isProcessing = true,
-                setTimeout(() => {
-                    this.isProcessing = false;
 
-                    this.alert = {
-                        show: true,
-                        type: "success",
-                        message: "Loggin successfully!",
-                    };
+                await axios.get('/sanctum/csrf-cookie');
+                await axios.post('/login', this.form)
+                    .then(({ data }) => {
+                        // Authenticated
+                        axios.get("/api/user")
+                            .then(({ data }) => {
+                                this.alert = {
+                                    show: true,
+                                    type: "success",
+                                    message: "Loggin successfully!",
+                                };
 
-                    /*
-                    this.validation = {
-                        email: ["The email is required.", "The email must be valid email address."],
-                        password: ["The password doesn't match."],
-                    };
-                    */
+                                this.loggedIn(data);
+                                this.$router.push({name: 'dashboard'})
 
-                    this.loggedIn({
-                        name: 'John Doe',
-                        username: 'doe',
-                        email: this.form.email,
+                                return data;
+                            })
+                            .catch(({ response: { data } }) => {
+                                return data;
+                            });
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors } = data;
+
+                        this.alert = {
+                            show: true,
+                            type: "error",
+                            message: message,
+                        };
+
+                        this.validation = errors;
+                    }).finally(() => {
+                        this.isProcessing = false;
                     });
-
-                    this.$router.push({name: 'dashboard'})
-
-                }, 3 * 1000);
             },
             resetForm() {
                 this.isProcessing = false;
                 this.validation = {};
                 this.alert = {};
                 this.form = {
-                    email: "",
+                    identity: "",
                     password: "",
                     remember: false,
                 }
@@ -128,8 +136,8 @@
             },
             handleInput(inputName) {
                 switch (inputName) {
-                    case 'email':
-                        this.validation.email = null;
+                    case 'identity':
+                        this.validation.identity = null;
                         break;
                     case 'password':
                         this.validation.password = null;
