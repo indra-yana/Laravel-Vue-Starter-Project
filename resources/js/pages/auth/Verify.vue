@@ -70,16 +70,14 @@
             };
         },
         created() {
-            // console.log(this.$route.name, this.$route.params, this.$route.query);
             this.checkIfHasVerified();
-        },
-        mounted() {
         },
         computed: { 
             ...mapState(authState, ['hasVerifiedEmail']),
         },
         methods: {
             async sendVerificationLink() {
+                this.resetForm();
                 this.isProcessing = true;
 
                 await this.$axios.post('/email/resend', this.form)
@@ -117,6 +115,7 @@
                     });
             },
             async verify() {
+                this.resetForm();
                 this.isProcessing = true;
                 const { id, hash, expires, signature } = this.verifyData;
                 console.log(this.verifyData);
@@ -156,6 +155,7 @@
                     });
             },
             async checkIfHasVerified() {
+                this.resetForm();
                 this.isProcessing = true;
 
                 await this.$axios.get('/checkIfHasVerified')

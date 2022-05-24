@@ -25,6 +25,7 @@ app.component("Alert", Alert)
 
 // Registering App Plugin
 app.config.globalProperties.$axios = axios;
+app.provide('axios', app.config.globalProperties.axios);
 app.use(router);
 app.use(pinia);
 
