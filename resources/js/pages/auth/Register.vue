@@ -76,6 +76,7 @@
 <script>
     import { mapState } from 'pinia'
     import { registerState } from '../.././store/registerState.js';
+    import { authState } from '../.././store/authState.js';
 
     export default {
         data() {
@@ -102,31 +103,64 @@
             }
         },
         computed: { 
-            ...mapState(registerState, ['setFormData', 'getFormData', 'resetFormData'])
+            ...mapState(registerState, ['setFormData', 'getFormData', 'resetFormData']),
+            ...mapState(authState, ['loggedIn']),
         },
         methods: {
-            register() {
-                // Dummy actions 
+            async register() {
                 this.isProcessing = true,
-                setTimeout(() => {
-                    this.isProcessing = false;
 
-                    this.alert = {
-                        show: true,
-                        type: "success",
-                        message: "Register successfully!",
-                    };
+                // await axios.get('/sanctum/csrf-cookie');
+                await axios.post('/register', this.form)
+                    .then(({ data }) => {
+                        this.alert = {
+                            show: true,
+                            type: "success",
+                            message: data.message,
+                        };
 
-                    /*
-                    this.validation = {
-                        username: ["The username has already been taken."],
-                        email: ["The email has already been taken.", "The email must be valid email address."],
-                        password: ["The password must be match with password confirmation."],
-                    };
-                    */
+                        this.resetFormData();
+                        this.loggedIn(data.user);
+                        setTimeout(() => {
+                            this.alert.message = "Redirecting...";
+                            setTimeout(() => {
+                                this.$router.push({name: 'dashboard'})
+                            }, 1 * 1000);
+                        }, 2 * 1000);
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors } = data;
 
-                    this.setFormData(this.form);
-                }, 3 * 1000);
+                        this.alert = {
+                            show: true,
+                            type: "error",
+                            message: message,
+                        };
+
+                        this.validation = errors;
+                    }).finally(() => {
+                        this.setFormData(this.form);
+                        this.isProcessing = false;
+                    });
+
+                // setTimeout(() => {
+                //     this.isProcessing = false;
+
+                //     this.alert = {
+                //         show: true,
+                //         type: "success",
+                //         message: "Register successfully!",
+                //     };
+
+                //     /*
+                //     this.validation = {
+                //         username: ["The username has already been taken."],
+                //         email: ["The email has already been taken.", "The email must be valid email address."],
+                //         password: ["The password must be match with password confirmation."],
+                //     };
+                //     */
+
+                //     this.setFormData(this.form);
+                // }, 3 * 1000);
             },
             resetForm() {
                 this.isProcessing = false;

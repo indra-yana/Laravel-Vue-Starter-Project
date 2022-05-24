@@ -140,6 +140,10 @@ router.beforeEach((to, from, next) => {
         return next({name: "dashboard"});
     }
     
+    if (to.name != 'verify' && store.isLoggedIn && store.auth.user.email_verified_at == null) {
+        return next({name: "verify"});
+    }
+
     return next();
   });
 
