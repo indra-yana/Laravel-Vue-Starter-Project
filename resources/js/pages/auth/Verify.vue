@@ -30,11 +30,11 @@
                                 </div>
                                 <div class="form-group row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <SubmitButton :class="['me-2']" :text="`${'Resend verification link'}`" :processing="isProcessing"/>
-                                        <router-link :to="{ name: 'login'}" class="btn btn-link text-lg-right">Back to login</router-link>
-                                        <!-- <button class="btn btn-link text-lg-right" :disabled="processing" @click="verify()">
-                                            {{ processing ? "Processing..." : "Check if has verified" }}
-                                        </button> -->
+                                        <SubmitButton :class="['me-2']" :text="`${'Resend verification link'}`" :processing="isProcessing" />
+                                        <!-- <router-link :to="{ name: 'login'}" class="btn btn-link text-lg-right">Back to login</router-link> -->
+                                        <button type="button" class="btn btn-link text-lg-right" :disabled="isProcessing" @click="checkIfHasVerified()">
+                                           Check if has verified
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -71,6 +71,9 @@
         },
         created() {
             // console.log(this.$route.name, this.$route.params, this.$route.query);
+            this.checkIfHasVerified();
+        },
+        mounted() {
         },
         computed: { 
             ...mapState(authState, ['hasVerifiedEmail']),
@@ -79,7 +82,7 @@
             async sendVerificationLink() {
                 this.isProcessing = true;
 
-                await axios.post('/email/resend', this.form)
+                await this.$axios.post('/email/resend', this.form)
                     .then(({ data }) => {
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;
@@ -118,7 +121,44 @@
                 const { id, hash, expires, signature } = this.verifyData;
                 console.log(this.verifyData);
 
-                await axios.get(`/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`)
+                await this.$axios.get(`/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`)
+                    .then(({ data }) => {
+                        const { message } = data;
+                        const { hasVerifiedEmail, email_verified_at = null } = data.data;
+
+                        this.alert = {
+                            show: true,
+                            type: "success",
+                            message: message,
+                        };
+
+                        if (hasVerifiedEmail) {
+                            this.hasVerifiedEmail(email_verified_at);
+                            setTimeout(() => {
+                                this.alert.message = "Redirecting...";
+                                setTimeout(() => {
+                                    this.$router.push({name: 'dashboard'})
+                                }, 1 * 1000);
+                            }, 2 * 1000);
+                        }
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors } = data;
+
+                        this.alert = {
+                            show: true,
+                            type: "error",
+                            message: message,
+                        };
+
+                        this.validation = errors;
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
+            },
+            async checkIfHasVerified() {
+                this.isProcessing = true;
+
+                await this.$axios.get('/checkIfHasVerified')
                     .then(({ data }) => {
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;

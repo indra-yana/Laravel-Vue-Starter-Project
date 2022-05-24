@@ -70,7 +70,7 @@
         },
         methods: {
             async doLogout() {
-                await axios.post('/logout', { })
+                await this.$axios.post('/logout', { })
                     .then(({ data }) => {
                         this.logout();
                         this.$router.push({name: 'login'});

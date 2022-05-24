@@ -87,8 +87,8 @@
             async doLogin() {
                 this.isProcessing = true;
 
-                await axios.get('/sanctum/csrf-cookie');
-                await axios.post('/login', this.form)
+                await this.$axios.get('/sanctum/csrf-cookie');
+                await this.$axios.post('/login', this.form)
                     .then(({ data }) => {
                         const { message } = data;
                         const { user } = data.data;

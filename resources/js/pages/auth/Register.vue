@@ -110,7 +110,7 @@
             async register() {
                 this.isProcessing = true;
 
-                await axios.post('/register', this.form)
+                await this.$axios.post('/register', this.form)
                     .then(({ data }) => {
                         const { message } = data;
                         const { user } = data.data;

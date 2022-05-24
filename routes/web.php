@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('auth/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('custom.verification.verify');
-// Route::get('checkIfHasVerified', [VerificationController::class, 'checkIfHasVerified'])->name('verification.checkIfHasVerified');
+Route::get('checkIfHasVerified', [VerificationController::class, 'checkIfHasVerified'])->name('verification.checkIfHasVerified');
 Auth::routes(["verify" => true]);
 
 Route::get('{any}', function () {

@@ -3,9 +3,10 @@ import { createApp } from 'vue'
 import "./bootstrap";
 import AppTemplate from "./layouts/AppTemplate.vue";
 import router from './router';
-import { createPinia } from 'pinia'
-import persitedState from './plugin/persistedState'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createPinia } from 'pinia';
+import persitedState from './plugin/persistedState';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import axios from './plugin/axios';
 
 // Global Components
 import Alert from "./components/Alert.vue";
@@ -23,6 +24,7 @@ app.component("Alert", Alert)
     .component("ResetButton", ResetButton);
 
 // Registering App Plugin
+app.config.globalProperties.$axios = axios;
 app.use(router);
 app.use(pinia);
 
