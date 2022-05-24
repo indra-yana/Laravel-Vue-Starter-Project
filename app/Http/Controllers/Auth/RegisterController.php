@@ -86,7 +86,7 @@ class RegisterController extends Controller
     {
         $user->email_verified_at = $user->email_verified_at;
         return $request->wantsJson()
-                    ? new JsonResponse(["message" => __("Register successfully."), "user" => $user], 200)
+                    ? new JsonResponse(["message" => __("Register successfully."), "data" => ["user" => $user]], 200)
                     : redirect()->intended($this->redirectPath());
     }
 }

@@ -85,19 +85,21 @@
         },
         methods: {
             async doLogin() {
-                this.isProcessing = true,
+                this.isProcessing = true;
 
                 await axios.get('/sanctum/csrf-cookie');
                 await axios.post('/login', this.form)
                     .then(({ data }) => {
-                        // Authenticated
+                        const { message } = data;
+                        const { user } = data.data;
+
                         this.alert = {
                             show: true,
                             type: "success",
-                            message: data.message,
+                            message: message,
                         };
 
-                        this.loggedIn(data.user);
+                        this.loggedIn(user);
                         setTimeout(() => {
                             this.alert.message = "Redirecting...";
                             setTimeout(() => {

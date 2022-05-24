@@ -6,6 +6,7 @@ const authState = defineStore('authState', {
     state: () => ({
         authData: {
             loggedIn: false,
+            hasVerifiedEmail: false,
             user: null,
         }
     }),
@@ -20,10 +21,15 @@ const authState = defineStore('authState', {
     actions:{
         loggedIn(user) {
             this.authData.loggedIn = true;
+            this.authData.hasVerifiedEmail = user.email_verified_at != null ? true : false;
             this.authData.user = user;
         },
         logout() {
             this.$reset();
+        },
+        hasVerifiedEmail(email_verified_at) {
+            this.authData.hasVerifiedEmail = true;
+            this.authData.user.email_verified_at = email_verified_at; 
         },
     },
     persist: {

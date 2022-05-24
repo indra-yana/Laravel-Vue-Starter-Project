@@ -70,12 +70,20 @@ const routes = [
                     title: `Confirm Password`
                 }
             }, {
-                name: 'verify',
-                path: 'verify',
+                name: 'verification.notice',
+                path: 'email/verify',
                 component: Verify,
                 meta:{
                     requiresAuth: true,
-                    title: `Reset Password`
+                    title: `Email Verification`
+                }
+            }, {
+                name: 'verification.verify',
+                path: 'email/verify/:id/:hash',
+                component: Verify,
+                meta:{
+                    requiresAuth: true,
+                    title: `Email Verification`
                 }
             },
         ], 
@@ -91,6 +99,15 @@ const routes = [
             {
                 name: 'landing',
                 path: '',
+                component: Landing,
+                meta:{
+                    requiresAuth: false,
+                    title: `Landing Page`
+                }
+            }, 
+            {
+                name: 'home',
+                path: 'home',
                 component: Landing,
                 meta:{
                     requiresAuth: false,
@@ -140,8 +157,14 @@ router.beforeEach((to, from, next) => {
         return next({name: "dashboard"});
     }
     
-    if (to.name != 'verify' && store.isLoggedIn && store.auth.user.email_verified_at == null) {
-        return next({name: "verify"});
+    // Route that user need verify their account
+    if (store.isLoggedIn && !store.auth.hasVerifiedEmail && to.name == 'verification.verify') {
+        return next();
+    }
+
+    // Route if user not verified
+    if (store.isLoggedIn && !store.auth.hasVerifiedEmail && !['verification.notice'].includes(to.name)) {
+        return next({name: "verification.notice"});
     }
 
     return next();

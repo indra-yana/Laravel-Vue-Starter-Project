@@ -108,19 +108,21 @@
         },
         methods: {
             async register() {
-                this.isProcessing = true,
+                this.isProcessing = true;
 
-                // await axios.get('/sanctum/csrf-cookie');
                 await axios.post('/register', this.form)
                     .then(({ data }) => {
+                        const { message } = data;
+                        const { user } = data.data;
+
                         this.alert = {
                             show: true,
                             type: "success",
-                            message: data.message,
+                            message: message,
                         };
 
                         this.resetFormData();
-                        this.loggedIn(data.user);
+                        this.loggedIn(user);
                         setTimeout(() => {
                             this.alert.message = "Redirecting...";
                             setTimeout(() => {
@@ -141,26 +143,6 @@
                         this.setFormData(this.form);
                         this.isProcessing = false;
                     });
-
-                // setTimeout(() => {
-                //     this.isProcessing = false;
-
-                //     this.alert = {
-                //         show: true,
-                //         type: "success",
-                //         message: "Register successfully!",
-                //     };
-
-                //     /*
-                //     this.validation = {
-                //         username: ["The username has already been taken."],
-                //         email: ["The email has already been taken.", "The email must be valid email address."],
-                //         password: ["The password must be match with password confirmation."],
-                //     };
-                //     */
-
-                //     this.setFormData(this.form);
-                // }, 3 * 1000);
             },
             resetForm() {
                 this.isProcessing = false;

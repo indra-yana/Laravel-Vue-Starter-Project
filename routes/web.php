@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+// Route::get('auth/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('custom.verification.verify');
+// Route::get('checkIfHasVerified', [VerificationController::class, 'checkIfHasVerified'])->name('verification.checkIfHasVerified');
+Auth::routes(["verify" => true]);
 
 Route::get('{any}', function () {
     return view('app');
