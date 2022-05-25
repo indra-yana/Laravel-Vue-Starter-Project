@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Build and return custom verification URL
         VerifyEmail::createUrlUsing(function ($notifiable) {
-            $verifyFEUrl = url('auth/email/verify/confirm'); 
+            $verifyFEUrl = Config::get('auth.verification.frontend_url', null); 
             $verifyUrl = URL::temporarySignedRoute(
                 'verification.verify',
                 Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -42,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider
                 ]
             );
 
-            return $verifyFEUrl .'?verify_url=' .urlencode($verifyUrl);
+            return $verifyFEUrl ? $verifyFEUrl .'?verify_url=' .urlencode($verifyUrl) : $verifyUrl;
         });
     }
 }

@@ -120,7 +120,8 @@ return [
     */
 
     'verification' => [
-        'expire' => 10800 
+        'frontend_url' => url('auth/email/verify/confirm'),
+        'expire' => 10800,
     ],
 
 ];
