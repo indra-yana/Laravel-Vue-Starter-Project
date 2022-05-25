@@ -55,7 +55,7 @@ const routes = [
                 }
             }, {
                 name: 'password.reset',
-                path: 'email/:token',
+                path: 'email/reset/:token/:email',
                 component: Reset,
                 meta:{
                     requiresAuth: false,

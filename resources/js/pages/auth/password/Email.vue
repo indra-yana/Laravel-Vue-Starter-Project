@@ -54,18 +54,31 @@
             
         },
         methods: {
-            sendResetLink() {
-                // Dummy actions 
+            async sendResetLink() {
                 this.isProcessing = true,
-                setTimeout(() => {
-                    this.isProcessing = false;
+                
+                await this.$axios.post('/password/email', this.form)
+                    .then(({ data }) => {
+                        const { message } = data;
 
-                    this.alert = {
-                        show: true,
-                        type: "success",
-                        message: "Please check your email for reset password link!",
-                    };
-                }, 3 * 1000);
+                        this.alert = {
+                            show: true,
+                            type: "success",
+                            message: message,
+                        };
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors = {} } = data;
+
+                        this.alert = {
+                            show: true,
+                            type: "error",
+                            message: message,
+                        };
+
+                        this.validation = errors;
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
             },
             resetForm() {
                 this.isProcessing = false;

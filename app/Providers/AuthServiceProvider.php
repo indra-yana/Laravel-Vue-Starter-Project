@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -32,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Build and return custom verification URL
         VerifyEmail::createUrlUsing(function ($notifiable) {
-            $verifyFEUrl = Config::get('auth.verification.frontend_url', null); 
+            $verifyFEUrl = url('auth/email/verify/confirm'); 
             $verifyUrl = URL::temporarySignedRoute(
                 'verification.verify',
                 Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -43,6 +44,11 @@ class AuthServiceProvider extends ServiceProvider
             );
 
             return $verifyFEUrl ? $verifyFEUrl .'?verify_url=' .urlencode($verifyUrl) : $verifyUrl;
+        });
+
+        // Build and return custom password reset URL
+        ResetPassword::createUrlUsing(function ($notifiable, $token) {
+            return url("auth/email/reset/$token/{$notifiable->getEmailForPasswordReset()}");
         });
     }
 }
