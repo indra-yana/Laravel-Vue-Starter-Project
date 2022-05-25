@@ -23,6 +23,10 @@
             a, .btn-link {
                 text-decoration: none;
             }
+
+            body {
+                background-color: #3c4043;
+            }
         </style>
     </head>
 

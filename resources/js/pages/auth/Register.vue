@@ -59,6 +59,28 @@
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Retype Your Password" v-model="form.password_confirmation" @input="handleInput('password_confirmation')" required autocomplete="new-password">
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                <label for="avatar" class="col-form-label text-md-right">Avatar </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class=" align-items-center ">
+                                            <div class="profile-img-edit mb-3">
+                                                <img class="img-fluid rounded-circle profile-pic" id="enlarge-img" style="width: 90px; height: 90px;" :src="form.previewAvatar" src="/images/user.png" alt="Avatar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <input type="file" name="avatar" id="avatar" class="form-control" :class="{'is-invalid': validation.avatar}" @change="handleInput('avatar', $event)" ref="file" accept="image/*">
+                                        <div v-if="validation.avatar" class="invalid-feedback mt-1" >
+                                            <ul class="mb-0 ps-3">
+                                                <li v-for="(error, index) in validation.avatar">{{ error }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <SubmitButton :class="['me-2']" :text="`${'Register'}`" :processing="isProcessing"/>
@@ -94,13 +116,15 @@
                     email: "",
                     password: "",
                     password_confirmation: "",
+                    avatar: "",
+                    previewAvatar: "/images/user.png",
                 }
             };
         },
         created() {
-            if (this.getFormData != null) {
-                this.form = this.getFormData;
-            }
+            // if (this.getFormData != null) {
+            //     this.form = this.getFormData;
+            // }
         },
         computed: { 
             ...mapState(registerState, ['setFormData', 'getFormData', 'resetFormData']),
@@ -109,8 +133,14 @@
         methods: {
             async register() {
                 this.isProcessing = true;
+                const options = { headers: {'Content-Type': 'multipart/form-data' }};
+                const formData = new FormData();
 
-                await this.$axios.post('/register', this.form)
+                for (const item in this.form) {
+                    formData.append(item, this.form[item])
+                }
+
+                await this.$axios.post('/register', formData, options)
                     .then(({ data }) => {
                         const { message } = data;
                         const { user } = data.data;
@@ -121,7 +151,7 @@
                             message: message,
                         };
 
-                        this.resetFormData();
+                        // this.resetFormData();
                         this.loggedIn(user);
                         setTimeout(() => {
                             this.alert.message = "Redirecting...";
@@ -140,7 +170,7 @@
 
                         this.validation = errors;
                     }).finally(() => {
-                        this.setFormData(this.form);
+                        // this.setFormData(this.form);
                         this.isProcessing = false;
                     });
             },
@@ -154,14 +184,17 @@
                     email: "",
                     password: "",
                     password_confirmation: "",
+                    avatar: "",
+                    previewAvatar: "/images/user.png",
                 }
 
-                this.resetFormData();
+                // this.resetFormData();
+                document.getElementById("avatar").value = "";
             },
             resetAlert() {
                 this.alert = {};
             },
-            handleInput(inputName) {
+            handleInput(inputName, event = null) {
                 switch (inputName) {
                     case 'name':
                         this.validation.name = null;
@@ -177,6 +210,11 @@
                         break;
                     case 'password_confirmation':
                         this.validation.password_confirmation = null;
+                        break;
+                    case 'avatar':
+                        this.validation.avatar = null;
+                        this.form.avatar = event.target.files[0];   // or this.$refs.file.files.item(0);
+                        this.form.previewAvatar = URL.createObjectURL(this.form.avatar);
                         break;
                     default:
                         break;
