@@ -25,13 +25,13 @@
                                 <div class="row mb-3">
                                     <div class="col-sm-12 col-form-label text-md-right">
                                         <h5>Before proceeding, please check your email for a verification link.</h5>
-                                        <p>If you did not receive the email, click the action bellow.</p>
+                                        <p class="m-0">If you did not receive the email, click the action <cite>Resend verification</cite> bellow.</p>
+                                        <p>Or if you have already verify your account, please check it by click <cite>Check if has verified</cite>.</p>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <SubmitButton :class="['me-2']" :text="`${'Resend verification link'}`" :processing="isProcessing" />
-                                        <!-- <router-link :to="{ name: 'login'}" class="btn btn-link text-lg-right">Back to login</router-link> -->
                                         <button type="button" class="btn btn-link text-lg-right" :disabled="isProcessing" @click="checkIfHasVerified()">
                                            Check if has verified
                                         </button>
@@ -61,12 +61,7 @@
                     message: "",
                 },
                 routeName: this.$route.name,
-                verifyData: {
-                    id: this.$route.params.id,
-                    hash: this.$route.params.hash,
-                    expires: this.$route.query.expires,
-                    signature: this.$route.query.signature,
-                },
+                verifyUrl: this.$route.query.verify_url,
             };
         },
         created() {
@@ -117,10 +112,8 @@
             async verify() {
                 this.resetForm();
                 this.isProcessing = true;
-                const { id, hash, expires, signature } = this.verifyData;
-                console.log(this.verifyData);
 
-                await this.$axios.get(`/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`)
+                await this.$axios.get(this.verifyUrl)
                     .then(({ data }) => {
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;

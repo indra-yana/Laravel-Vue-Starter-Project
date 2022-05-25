@@ -79,7 +79,7 @@ const routes = [
                 }
             }, {
                 name: 'verification.verify',
-                path: 'email/verify/:id/:hash',
+                path: 'email/verify/confirm',
                 component: Verify,
                 meta:{
                     requiresAuth: true,

@@ -29,25 +29,20 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        
-        // VerifyEmail::toMailUsing(function ($notifiable, $url) {
-        //     $url = 'https://frontend.com';
-        //     return (new MailMessage)
-        //         ->subject('Verify Email Address')
-        //         ->line('Click the button below to verify your email address.')
-        //         ->action('Verify Email Address', $url);
-        // });
 
-        // VerifyEmail::createUrlUsing(function ($notifiable) {
-        //     // Build and return your verification URL as needed
-        //     return URL::temporarySignedRoute(
-        //         'custom.verification.verify',
-        //         Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-        //         [
-        //             'id' => $notifiable->getKey(),
-        //             'hash' => sha1($notifiable->getEmailForVerification()),
-        //         ]
-        //     );
-        // });
+        // Build and return custom verification URL
+        VerifyEmail::createUrlUsing(function ($notifiable) {
+            $verifyFEUrl = url('auth/email/verify/confirm'); 
+            $verifyUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                ]
+            );
+
+            return $verifyFEUrl .'?verify_url=' .urlencode($verifyUrl);
+        });
     }
 }
