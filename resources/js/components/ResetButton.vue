@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="btn btn-outline-warning" :disabled="processing">
+    <button type="button" class="btn btn-outline-secondary" :disabled="processing">
         {{ text }}
     </button>
 </template>
