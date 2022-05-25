@@ -38,7 +38,7 @@
                     <!-- Authentication Links -->
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle p-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle border border-1 border-secondary">
+                            <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="32" height="32" class="rounded-circle border border-1 border-secondary">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">{{ auth.user.name }}</a></li>

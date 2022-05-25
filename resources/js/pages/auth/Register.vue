@@ -65,9 +65,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <div class=" align-items-center ">
-                                            <div class="profile-img-edit mb-3">
-                                                <img class="img-fluid rounded-circle profile-pic" id="enlarge-img" style="width: 90px; height: 90px;" :src="form.previewAvatar" src="/images/user.png" alt="Avatar">
+                                        <div class="align-items-center">
+                                            <div class="mb-3">
+                                                <img class="img-fluid rounded-circle border border-1 border-secondary" id="img-preview" style="width: 90px; height: 90px;" :src="form.previewAvatar" src="/images/user.png" alt="Avatar">
                                             </div>
                                         </div>
                                     </div>

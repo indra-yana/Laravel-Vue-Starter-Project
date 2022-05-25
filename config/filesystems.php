@@ -68,6 +68,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('images/avatar') => storage_path('app/'.\App\Src\Base\Constant::AVATAR_UPLOAD_PATH),
     ],
 
 ];
