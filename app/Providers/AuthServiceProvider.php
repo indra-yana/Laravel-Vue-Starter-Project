@@ -48,7 +48,10 @@ class AuthServiceProvider extends ServiceProvider
 
         // Build and return custom password reset URL
         ResetPassword::createUrlUsing(function ($notifiable, $token) {
-            return url("auth/email/reset/$token/{$notifiable->getEmailForPasswordReset()}");
+            return url("auth/password/reset", [
+                "token" => $token,
+                "email" => $notifiable->getEmailForPasswordReset(),
+            ]);
         });
     }
 }

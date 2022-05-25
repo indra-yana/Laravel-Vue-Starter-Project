@@ -17,7 +17,6 @@ Route::get('checkIfHasVerified', [VerificationController::class, 'checkIfHasVeri
 
 Auth::routes(["verify" => true]);
 
-
 Route::get('{any}', function () {
     return view('app');
 })->where('any', '.*');

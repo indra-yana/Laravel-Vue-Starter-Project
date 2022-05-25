@@ -45,7 +45,7 @@
                                 <div class="col-md-8 offset-md-4">
                                     <SubmitButton :class="['me-2']" :text="`${'Submit'}`" :processing="isProcessing"/>
                                     <ResetButton @click="resetForm()" :processing="isProcessing"/>
-                                    <router-link :to="{ name: 'password.email' }" class="btn btn-link text-lg-right">Forgot Your Password?</router-link>
+                                    <router-link :to="{ name: 'password.request' }" class="btn btn-link text-lg-right">Forgot Your Password?</router-link>
                                 </div>
                             </div>
                         </form>

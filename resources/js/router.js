@@ -46,8 +46,8 @@ const routes = [
                     title: `Register`
                 }
             }, {
-                name: 'password.email',
-                path: 'email',
+                name: 'password.request',
+                path: 'password/request',
                 component: Email,
                 meta:{
                     requiresAuth: false,
@@ -55,7 +55,7 @@ const routes = [
                 }
             }, {
                 name: 'password.reset',
-                path: 'email/reset/:token/:email',
+                path: 'password/reset/:token/:email',
                 component: Reset,
                 meta:{
                     requiresAuth: false,
