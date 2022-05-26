@@ -10,10 +10,15 @@ axios.interceptors.response.use(undefined, function (error) {
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const store = authState();
-            store.logout();
-            
-            return router.push({name: 'login'});
+            const useAuthState = authState();
+
+            useAuthState.logout();
+            useAuthState.$patch((state) => {
+                state.session.active = false;
+                state.session.message = "Your session has expired. Please refresh this page to start new session.";
+            });
+
+            // return router.push({name: 'login'});
         }
     }
 });

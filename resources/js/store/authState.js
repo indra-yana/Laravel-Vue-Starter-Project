@@ -8,7 +8,11 @@ const authState = defineStore('authState', {
             loggedIn: false,
             hasVerifiedEmail: false,
             user: null,
-        }
+        },
+        session: {
+            active: false,
+            message: "", 
+        },
     }),
     getters: {
         isLoggedIn() {
@@ -17,12 +21,18 @@ const authState = defineStore('authState', {
         auth() {
             return this.authData;
         },
+        isSessionExpired() {
+            return !this.session.active;
+        }
     },
     actions:{
         loggedIn(user) {
             this.authData.loggedIn = true;
             this.authData.hasVerifiedEmail = user.email_verified_at != null ? true : false;
             this.authData.user = user;
+
+            this.session.active = true;
+            this.session.message = "Session is currently active";
         },
         logout() {
             this.$reset();
