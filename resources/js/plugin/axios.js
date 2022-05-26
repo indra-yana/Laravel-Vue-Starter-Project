@@ -5,7 +5,8 @@ import { authState } from '.././store/authState.js';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
-axios.interceptors.response.use(undefined, function (error) {
+axios.interceptors.response.use((response) => { return response }, (error) => {
+    // Do something with response error before they thrown to catch block.
     if (error) {
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
@@ -20,6 +21,8 @@ axios.interceptors.response.use(undefined, function (error) {
 
             // return router.push({name: 'login'});
         }
+
+        return Promise.reject(error);
     }
 });
 

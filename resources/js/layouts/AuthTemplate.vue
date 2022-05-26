@@ -43,7 +43,7 @@
 
         authState().$subscribe((mutation, state) => {
             const { active, message } = state.session;
-            if (!active) {
+            if (!active && message) {
                 this.$event.emit('session-inactive', { 'message': message });
             }
         });
