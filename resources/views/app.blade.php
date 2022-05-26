@@ -31,7 +31,7 @@
     </head>
 
     <body class="d-flex flex-column min-vh-100">
-        <div id="app"></div>
+        <div id="app" class="mb-5"></div>
         
         <footer class="footer mt-auto py-1 bg-primary-soft bg-dark">
             <div class="container">
@@ -42,7 +42,7 @@
                             <p>Get in touch.</p>
                         </blockquote>
                         <figcaption class="blockquote-footer mb-0 text-white">
-                            &copy; <cite title="Source Title">indra.ndra26@gmail.com</cite>
+                            &copy; <cite title="Source Title"><a href="mailto:indra.ndra26@gmail.com" class="text-white">indra.ndra26@gmail.com</a> </cite>
                         </figcaption>
                     </figure>
                 </div>

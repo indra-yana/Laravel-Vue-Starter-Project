@@ -12,7 +12,7 @@
                 <ul class="navbar-nav me-auto" v-if="isLoggedIn">
                     <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">User</a>
+                        <a class="nav-link" href="javascript:void(0);" @click="getUser()">User</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,6 +79,21 @@
                     }).finally(() => {
                         
                     });
+            },
+            async getUser() {
+                // Example test api
+                await this.$axios.get("/api/user")
+                        .then(response => {
+                            const { data } = response;
+                            console.log(data);
+
+                            return data;
+                        })
+                        .catch(response => {
+                            const { data } = response;
+
+                            return data;
+                        });
             }
         }
     };
