@@ -3,7 +3,11 @@
         <DashboardNavigation/>
 
         <div class="container mt-5">
-            <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
+                </div>
+            </div>
 
             <router-view/>
         </div>
