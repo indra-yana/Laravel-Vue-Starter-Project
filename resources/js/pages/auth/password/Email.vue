@@ -69,13 +69,12 @@
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
+                        this.validation = errors;
                         this.alert = {
                             show: true,
                             type: "error",
                             message: message,
                         };
-
-                        this.validation = errors;
                     }).finally(() => {
                         this.isProcessing = false;
                     });

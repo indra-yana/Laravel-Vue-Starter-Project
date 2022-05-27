@@ -160,15 +160,14 @@
                             }, 1 * 1000);
                         }, 2 * 1000);
                     }).catch(({ response: { data } }) => {
-                        const { message, errors } = data;
+                        const { message, errors = {} } = data;
 
+                        this.validation = errors;
                         this.alert = {
                             show: true,
                             type: "error",
                             message: message,
                         };
-
-                        this.validation = errors;
                     }).finally(() => {
                         // this.setFormData(this.form);
                         this.isProcessing = false;

@@ -87,7 +87,15 @@
             async doLogin() {
                 this.isProcessing = true;
 
-                await this.$axios.get('/sanctum/csrf-cookie');
+                let result = await this.$axios.get('/sanctum/csrf-cookie')
+                    .then((response) => response)
+                    .catch((response) => false);
+
+                if (!result) { 
+                    this.isProcessing = false;
+                    return;
+                }
+
                 await this.$axios.post('/login', this.form)
                     .then(({ data }) => {
                         const { message } = data;
@@ -126,15 +134,14 @@
                             });
                         */
                     }).catch(({ response: { data } }) => {
-                        const { message, errors } = data;
+                        const { message, errors = {} } = data;
 
+                        this.validation = errors;
                         this.alert = {
                             show: true,
                             type: "error",
                             message: message,
                         };
-
-                        this.validation = errors;
                     }).finally(() => {
                         this.isProcessing = false;
                     });
