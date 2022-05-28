@@ -2,9 +2,6 @@
     <div class="">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
-                <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
-                
                 <div class="card card-default">
                     <div class="card-header bg-secondary bg-gradient border"><h4 class="text-white">Login</h4></div>
                     <div class="card-body bg-primary-soft">
@@ -65,11 +62,6 @@
             return {
                 isProcessing: false,
                 validation: {},
-                alert: {
-                    show: false,
-                    type: "",
-                    message: "",
-                },
                 form: {
                     identity: "",
                     password: "",
@@ -101,47 +93,19 @@
                         const { message } = data;
                         const { user } = data.data;
 
-                        this.alert = {
-                            show: true,
-                            type: "success",
-                            message: message,
-                        };
-
+                        this.$event.emit('flash-message', { message, type: "success" });
                         this.loggedIn(user);
                         setTimeout(() => {
-                            this.alert.message = "Redirecting...";
+                            this.$event.emit('flash-message', { message: "Redirecting...", type: "info" });
                             setTimeout(() => {
                                 this.$router.push({name: 'dashboard'})
                             }, 1 * 1000);
                         }, 2 * 1000);
-
-                        /*
-                        axios.get("/api/user")
-                            .then(({ data }) => {
-                                this.alert = {
-                                    show: true,
-                                    type: "success",
-                                    message: "Loggin successfully!",
-                                };
-
-                                this.loggedIn(data);
-                                this.$router.push({name: 'dashboard'})
-
-                                return data;
-                            })
-                            .catch(({ response: { data } }) => {
-                                return data;
-                            });
-                        */
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.alert = {
-                            show: true,
-                            type: "error",
-                            message: message,
-                        };
+                        this.$event.emit('flash-message', { message, type: "error" });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -149,15 +113,11 @@
             resetForm() {
                 this.isProcessing = false;
                 this.validation = {};
-                this.alert = {};
                 this.form = {
                     identity: "",
                     password: "",
                     remember: false,
                 }
-            },
-            resetAlert() {
-                this.alert = {};
             },
             handleInput(inputName) {
                 switch (inputName) {

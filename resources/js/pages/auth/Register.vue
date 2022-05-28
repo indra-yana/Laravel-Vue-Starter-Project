@@ -2,9 +2,6 @@
     <div class="">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
-                <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
-
                 <div class="card card-default">
                     <div class="card-header bg-secondary bg-gradient border"><h4 class="text-white">Register</h4></div>
                     <div class="card-body bg-primary-soft">
@@ -105,11 +102,6 @@
             return {
                 isProcessing: false,
                 validation: {},
-                alert: {
-                    show: false,
-                    type: "",
-                    message: "",
-                },
                 form: {
                     name: "",
                     username: "",
@@ -145,16 +137,11 @@
                         const { message } = data;
                         const { user } = data.data;
 
-                        this.alert = {
-                            show: true,
-                            type: "success",
-                            message: message,
-                        };
-
+                        this.$event.emit('flash-message', { message, type: "success" });
                         // this.resetFormData();
                         this.loggedIn(user);
                         setTimeout(() => {
-                            this.alert.message = "Redirecting...";
+                            this.$event.emit('flash-message', { message: "Redirecting...", type: "info" });
                             setTimeout(() => {
                                 this.$router.push({name: 'dashboard'})
                             }, 1 * 1000);
@@ -163,11 +150,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.alert = {
-                            show: true,
-                            type: "error",
-                            message: message,
-                        };
+                        this.$event.emit('flash-message', { message, type: "error" });
                     }).finally(() => {
                         // this.setFormData(this.form);
                         this.isProcessing = false;
@@ -176,7 +159,6 @@
             resetForm() {
                 this.isProcessing = false;
                 this.validation = {};
-                this.alert = {};
                 this.form = {
                     name: "",
                     username: "",
@@ -189,9 +171,6 @@
 
                 // this.resetFormData();
                 document.getElementById("avatar").value = "";
-            },
-            resetAlert() {
-                this.alert = {};
             },
             handleInput(inputName, event = null) {
                 switch (inputName) {

@@ -14,6 +14,30 @@
 
 <script>
     export default {
+        data() {
+            return {
+                
+            }
+        },
+        created() {
+            this.getUser();
+        },
+        methods: {
+            async getUser() {
+                // Testing API call
+                await this.$axios.get("/api/user")
+                    .then(({ data }) => {
+                        this.$event.emit('flash-message', { message: `Welcome back! ${data.name}`, type: "info" });
+                        console.log(data);
 
+                        return data;
+                    })
+                    .catch(({ response: { data } }) => {
+                        console.log(data);
+
+                        return false;
+                    });
+            }
+        },
     }
 </script>

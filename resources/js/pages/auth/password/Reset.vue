@@ -2,9 +2,6 @@
     <div class="">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
-                <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
-
                 <div class="card card-default">
                     <div class="card-header bg-secondary bg-gradient border"><h4 class="text-white">Reset Password</h4></div>
                     <div class="card-body bg-primary-soft">
@@ -59,11 +56,6 @@
             return {
                 isProcessing: false,
                 validation: {},
-                alert: {
-                    show: false,
-                    type: "",
-                    message: "",
-                },
                 form: {
                     token: this.$route.params.token,
                     email: this.$route.params.email,
@@ -83,20 +75,12 @@
                     .then(({ data }) => {
                         const { message } = data;
 
-                        this.alert = {
-                            show: true,
-                            type: "success",
-                            message: message,
-                        };
+                        this.$event.emit('flash-message', { message, type: "success" });
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.alert = {
-                            show: true,
-                            type: "error",
-                            message: message,
-                        };
+                        this.$event.emit('flash-message', { message, type: "error" });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -104,12 +88,8 @@
             resetForm() {
                 this.isProcessing = false;
                 this.validation = {};
-                this.alert = {};
                 this.form.password = "";
                 this.form.password_confirmation = "";
-            },
-            resetAlert() {
-                this.alert = {};
             },
             handleInput(inputName) {
                 switch (inputName) {

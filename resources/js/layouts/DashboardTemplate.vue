@@ -2,8 +2,8 @@
     <div>
         <DashboardNavigation/>
 
-        <div class="container mt-5">
-            <div class="row justify-content-center">
+        <div class="container mt-5 mb-5">
+            <div class="row justify-content-center mb-3">
                 <div class="col-md-9">
                     <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
                 </div>
@@ -38,6 +38,15 @@
                     show: true,
                     type: "error",
                     message: message,
+                };
+            });
+
+            this.$event.on('flash-message', (e) => {
+                let { type = "alert-info", message } = e;
+                this.alert = {
+                    show: true,
+                    type,
+                    message,
                 };
             });
 
