@@ -23,7 +23,7 @@
             this.getBlog();
             this.$event.emit('breadcrumbs', { 
                 title: this.$route.meta.title, 
-                content: {
+                breadcrumbs: {
                     '#': 'My Blog',
                 } 
             });

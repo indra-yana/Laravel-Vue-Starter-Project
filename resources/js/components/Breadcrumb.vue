@@ -13,17 +13,22 @@
 
 <script>
     export default {
-        props: {
-            title: {
-                default: "Page Title"
-            },
-            breadcrumbs: {
-                default: {
+        data() {
+            return {
+                title: "Page Title",
+                breadcrumbs: {
                     'menu1': 'Menu 1',
                     'menu2': 'Menu 2',
                     'menu3': 'Last Menu',
-                }
-            },
+                },
+            };
+        },
+        created() {
+            // Generate dynamic breadcrumb from partial layout 
+            this.$event.on('breadcrumbs', (e) => {
+                this.title = e.title;
+                this.breadcrumbs = e.breadcrumbs;
+            });
         },
         methods: {
             loopLast(index) {

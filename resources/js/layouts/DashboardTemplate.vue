@@ -13,7 +13,7 @@
                                 <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                             </ol>
                         </nav> -->
-                        <Breadcrumb :title="breadcrumbs.title" :breadcrumbs="breadcrumbs.content"></Breadcrumb>
+                        <Breadcrumb></Breadcrumb>
                     </div>
                 </div>
             </header>
@@ -48,10 +48,6 @@
                     type: "",
                     message: "",
                 },
-                breadcrumbs: {
-                    title: "",
-                    content: {},
-                },
             };
         },
         created() {
@@ -73,11 +69,6 @@
                     type,
                     message,
                 };
-            });
-            
-            // Generate dynamic breadcrumb from layout partial 
-            this.$event.on('breadcrumbs', (e) => {
-                this.breadcrumbs = e;
             });
 
             // Watch the inactive session from authState data store

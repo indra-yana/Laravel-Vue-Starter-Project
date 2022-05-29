@@ -37,7 +37,7 @@
             this.getUser();
             this.$event.emit('breadcrumbs', { 
                 title: this.$route.meta.title, 
-                content: {
+                breadcrumbs: {
                     '#': 'Dashboard',
                 } 
             });
