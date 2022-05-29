@@ -11,9 +11,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto" v-if="isLoggedIn">
                     <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);">My Blog</a>
-                    </li>
+                    <router-link :to="{ name: 'myblog'}" class="nav-item nav-link" active-class="active" exact>My Blog</router-link>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Manage

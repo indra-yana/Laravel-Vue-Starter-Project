@@ -4,8 +4,8 @@
         <ol class="breadcrumb bg-light p-3 rounded">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item" v-for="(breadcrumb, key, index) in breadcrumbs">
-                <a :href="key" v-if="index != Object.keys(breadcrumbs).length - 1">{{ breadcrumb }}</a>
-                <span class="breadcrumb-item active" aria-current="page" v-else> {{ breadcrumb }}</span>
+                <span class="breadcrumb-item active" aria-current="page" v-if="loopLast(index)"> {{ breadcrumb }}</span>
+                <a :href="key" v-else>{{ breadcrumb }}</a>
             </li>
         </ol>
     </nav>
@@ -26,7 +26,9 @@
             },
         },
         methods: {
-
+            loopLast(index) {
+                return index == Object.keys(this.breadcrumbs).length - 1;
+            }
         },
     }
 </script>

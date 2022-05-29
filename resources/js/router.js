@@ -17,6 +17,7 @@ import DashboardTemplate from "./layouts/DashboardTemplate.vue";
 
 // Inner Page
 import Dashboard from "./pages/Dashboard.vue";
+import MyBlog from "./pages/MyBlog.vue";
 
 // Outter Page
 import Landing from "./pages/Landing.vue";
@@ -126,11 +127,20 @@ const routes = [
         children: [
             {
                 name: 'dashboard',
-                path: '',
+                path: 'main',
                 component: Dashboard,
                 meta:{
                     requiresAuth: true,
                     title: `Dashboard`
+                }
+            }, 
+            {
+                name: 'myblog',
+                path: 'myblog',
+                component: MyBlog,
+                meta:{
+                    requiresAuth: true,
+                    title: `My Blog`
                 }
             }, 
         ],
