@@ -12,15 +12,15 @@
                 <ul class="navbar-nav me-auto" v-if="isLoggedIn">
                     <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" @click="getUser()">User</a>
+                        <a class="nav-link" href="javascript:void(0);">My Blog</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            Manage
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action 1</a></li>
-                            <li><a class="dropdown-item" href="#">Action 2</a></li>
+                            <li><a class="dropdown-item" href="#">Blog</a></li>
+                            <li><a class="dropdown-item" href="#">Account</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>

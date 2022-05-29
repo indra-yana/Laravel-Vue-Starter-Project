@@ -1,11 +1,25 @@
 <template>
     <div class="">
-        <div class="row justify-content-center">
-            <div class="col-md-9">
-                <div class="p-5 mb-4 bg-primary-soft rounded-3 border">
-                    <h1 class="display-5 fw-bold">Overview</h1>
-                    <p class=" fs-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <button class="btn btn-primary btn-lg" type="button">Get Started</button>
+        <div class="row align-items-md-stretch">
+            <div class="col-md-6 mb-4">
+                <div class="h-100 p-5 text-white bg-dark rounded-3">
+                    <h2>Overview</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <button class="btn btn-outline-light" type="button">Get Started</button>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="h-100 p-5 bg-light border rounded-3">
+                    <h2>Visitors Summary</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <button class="btn btn-outline-secondary" type="button">See Details</button>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="h-100 p-5 bg-primary-soft border rounded-3">
+                    <h2>Active Users</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <button class="btn btn-outline-secondary" type="button">See Details</button>
                 </div>
             </div>
         </div>

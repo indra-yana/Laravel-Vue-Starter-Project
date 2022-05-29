@@ -3,13 +3,29 @@
         <DashboardNavigation/>
 
         <div class="container mt-5 mb-5">
-            <div class="row justify-content-center mb-3">
-                <div class="col-md-9">
+            <header class="mb-5 border-bottom">
+                <div class="row justify-content-center ">
+                    <div class="col-md-12">
+                        <h3 class="text-white">Dashboard</h3>
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb bg-light p-3 rounded">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="row justify-content-center mb-3">
+                <div class="col-md-12 mb-3">
                     <Alert :show="alert.show" :type="alert.type" :message="alert.message" @alertClosed="resetAlert()" />
                 </div>
-            </div>
+                <div class="col-md-12 mb-3">
+                    <router-view/>
+                </div>
+            </main>
 
-            <router-view/>
         </div>
   </div>
 </template>
