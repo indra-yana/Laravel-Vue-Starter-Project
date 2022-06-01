@@ -14,30 +14,41 @@
             <div class="col-md-6">
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-primary-soft">
                     <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">World</strong>
-                    <h3 class="mb-0">Featured post</h3>
-                    <div class="mb-1 text-muted">Nov 12</div>
-                    <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="stretched-link">Continue reading</a>
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">Featured post</h3>
+                        <div class="mb-1 text-muted">Nov 12</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.
+                            <a href="#" class="">Continue reading</a>
+                        </p>
+
+                        <div>
+                            <a href="#" class="">Edit</a> &bullet; 
+                            <a href="#" class="">Delete</a>
+                        </div>
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
+                        <img class="" src="/images/sample-img2.jpg" width="200" height="250" alt="post-thumbnail">
+                        <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-primary-soft">
                     <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-success">Design</strong>
-                    <h3 class="mb-0">Post title</h3>
-                    <div class="mb-1 text-muted">Nov 11</div>
-                    <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="stretched-link">Continue reading</a>
+                        <strong class="d-inline-block mb-2 text-success">Design</strong>
+                        <h3 class="mb-0">Post title</h3>
+                        <div class="mb-1 text-muted">Nov 11</div>
+                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.
+                            <a href="#" class="">Continue reading</a>
+                        </p>
+                        <div>
+                            <a href="#" class="">Edit</a> &bullet; 
+                            <a href="#" class="">Delete</a>
+                        </div>
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
+                        <img class="" src="/images/sample-img2.jpg" width="200" height="250" alt="post-thumbnail">
+                        <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
                     </div>
                 </div>
             </div>
@@ -91,18 +102,19 @@
                         <h4 class="fst-italic">Categories</h4>
                         <ol class="list-unstyled mb-0">
                             <li><a href="#">Laravel</a></li>
-                            <li><a href="#">Code Igniter</a></li>
+                            <li><a href="#">Codeigniter</a></li>
                             <li><a href="#">Vue JS</a></li>
                             <li><a href="#">React JS</a></li>
                             <li><a href="#">Angular JS</a></li>
                             <li><a href="#">Database</a></li>
                             <li><a href="#">Rest API</a></li>
+                            <li><a href="#">Deployment</a></li>
                             <li><a href="#">Others</a></li>
                         </ol>
                     </div>
 
                     <div class="p-4 mb-3 bg-primary-soft rounded">
-                        <h4 class="fst-italic">Elsewhere</h4>
+                        <h4 class="fst-italic">Find Me</h4>
                         <ol class="list-unstyled">
                             <li><a href="#">GitHub</a></li>
                             <li><a href="#">Twitter</a></li>
