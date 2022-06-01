@@ -10,14 +10,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto" v-if="isLoggedIn">
-                    <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
-                    <router-link :to="{ name: 'myblog'}" class="nav-item nav-link" active-class="active" exact>My Blog</router-link>
+                    <router-link :to="{ name: 'dashboard' }" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
+                    <router-link :to="{ name: 'mypost' }" class="nav-item nav-link" active-class="active" exact>My Post</router-link>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Manage
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Blog</a></li>
+                            <li><a class="dropdown-item" href="#">Post</a></li>
                             <li><a class="dropdown-item" href="#">Account</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>

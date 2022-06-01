@@ -16,11 +16,11 @@ import AuthTemplate from "./layouts/AuthTemplate.vue";
 import DashboardTemplate from "./layouts/DashboardTemplate.vue";
 
 // Inner Page
-import Dashboard from "./pages/Dashboard.vue";
-import MyBlog from "./pages/MyBlog.vue";
+import Dashboard from "./pages/dashboard/Dashboard.vue";
+import MyPost from "./pages/post/MyPost.vue";
 
 // Outter Page
-import Landing from "./pages/Landing.vue";
+import Landing from "./pages/landing/Landing.vue";
 
 const routes = [
     /*
@@ -29,6 +29,7 @@ const routes = [
     {
         path: "/auth",
         component: AuthTemplate,
+        redirect: { name: 'login' },
         children: [
             {
                 name: 'login',
@@ -100,47 +101,52 @@ const routes = [
             {
                 name: 'landing',
                 path: '',
+                alias: ['/home', '/landing'],
                 component: Landing,
                 meta:{
                     requiresAuth: false,
                     title: `Landing Page`
                 }
-            }, 
-            {
-                name: 'home',
-                path: 'home',
-                component: Landing,
-                meta:{
-                    requiresAuth: false,
-                    title: `Landing Page`
-                }
-            }, 
+            },
         ],
     }, 
     
     /*
-    * Inner Page Routes
+    * Dashboard Routes
     */
     {
         path: "/dashboard",
+        redirect: { name: 'dashboard' },
         component: DashboardTemplate,
         children: [
             {
                 name: 'dashboard',
-                path: 'main',
+                path: 'index',
                 component: Dashboard,
                 meta:{
                     requiresAuth: true,
                     title: `Dashboard`
                 }
             }, 
+        ],
+       
+    },
+
+    /*
+    * Post Routes
+    */
+    {
+        path: "/mypost",
+        component: DashboardTemplate,
+        redirect: { name: 'mypost' },
+        children: [
             {
-                name: 'myblog',
-                path: 'myblog',
-                component: MyBlog,
+                name: 'mypost',
+                path: 'index',
+                component: MyPost,
                 meta:{
                     requiresAuth: true,
-                    title: `My Blog`
+                    title: `My Post`
                 }
             }, 
         ],
