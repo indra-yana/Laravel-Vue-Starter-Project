@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Post\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+/*
+* Post routes
+* Api version 1
+*/
+Route::group(['prefix' => 'v1/post', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('/', [PostController::class, 'getUserPost']);
 });

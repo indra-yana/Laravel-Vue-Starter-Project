@@ -17,4 +17,14 @@ class Post extends Model
         'updated_at'
     ];
 
+    public function getThumbnailAttribute($value)
+    {
+        return $value ? asset("images/post/$value") : null;
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

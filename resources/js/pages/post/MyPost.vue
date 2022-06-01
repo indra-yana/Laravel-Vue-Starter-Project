@@ -131,7 +131,7 @@
     export default {
         data() {
             return {
-                
+                posts: {},
             }
         },
         created() {
@@ -145,7 +145,18 @@
         },
         methods: {
             async getBlog() {
-                // TODO
+                // Testing API call
+                await this.$axios.get("/api/v1/post")
+                    .then(({ data }) => {
+                        console.log(data);
+
+                        return data;
+                    })
+                    .catch(({ response: { data } }) => {
+                        console.log(data);
+
+                        return false;
+                    });
             }
         },
     }
