@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->text('body')->nullable();
             $table->string('thumbnail', 191)->nullable();
             $table->tinyInteger('status')->default(0);          // 0 = draft
-            $table->tinyInteger('is_featured')->default(0);     // 0 = false
+            $table->tinyInteger('is_pinned')->default(0);       // 0 = false
             $table->string('user_id')->nullable();
             $table->timestamps();
 

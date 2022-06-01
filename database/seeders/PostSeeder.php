@@ -26,14 +26,19 @@ class PostSeeder extends Seeder
 
             // Truncate the table first to seed fresh data
             Post::truncateModel();
-            for ($i=0; $i < Constant::SEEDER_LIMIT; $i++) {
-                Post::create([
-                    'title' => $faker->sentence(5, true),
-                    'body' => $faker->sentence(50, true),
-                    'thumbnail' => 'sample-img-1.jpg',
-                    'user_id' => $user[$i],
-                ]);
+            for ($i=0; $i < count($user); $i++) { 
+                for ($j=0; $j < Constant::SEEDER_LIMIT; $j++) {
+                    Post::create([
+                        'title' => $faker->sentence(5, true),
+                        'body' => $faker->sentence(50, true),
+                        'thumbnail' => 'sample-img-1.jpg',
+                        'status' => $faker->numberBetween(0, 1),
+                        'is_pinned' => $faker->numberBetween(0, 1),
+                        'user_id' => $user[$i],
+                    ]);
+                }
             }
+
 
             DB::commit();
         } catch (\Throwable $th) {
