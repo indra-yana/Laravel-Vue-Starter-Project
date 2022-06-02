@@ -150,7 +150,7 @@ class UserService implements IBaseService {
     }
 
     /**
-     * Update existing data.
+     * Update an existing data.
      *
      * @param array $data
      * 
@@ -188,7 +188,7 @@ class UserService implements IBaseService {
     }
 
     /**
-     * Delete a model.
+     * Delete an existing data.
      *
      * @param string $id
      * 
@@ -198,8 +198,8 @@ class UserService implements IBaseService {
     {
         $model = $this->show($id);
 
-        // Delete old post thumbnail
-        $oldFile = UploadPath::avatar("{$model->id}/{$model->thumbnail}");
+        // Delete old user avatar
+        $oldFile = UploadPath::avatar("{$model->id}/{$model->avatar}");
         UploadService::getInstance()->delete($oldFile);
 
         return $model->delete();

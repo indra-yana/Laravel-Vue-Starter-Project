@@ -131,7 +131,7 @@ class PostService implements IBaseService {
     }
 
     /**
-     * Update existing data.
+     * Update an existing data.
      *
      * @param array $data
      * 
@@ -169,7 +169,7 @@ class PostService implements IBaseService {
     }
 
     /**
-     * Delete a model.
+     * Delete an existing data.
      *
      * @param string $id
      * 
