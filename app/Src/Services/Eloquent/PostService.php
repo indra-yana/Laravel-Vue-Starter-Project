@@ -16,12 +16,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostService implements IBaseService {
 
-    protected $post;
+    protected $model;
     protected $validator;
 
-    public function __construct(Post $post, PostValidator $validator) 
+    public function __construct(Post $model, PostValidator $validator) 
     {
-        $this->post = $post;
+        $this->model = $model;
         $this->validator = $validator;
     }
 
@@ -49,9 +49,10 @@ class PostService implements IBaseService {
      * Get the user post list with pagination
      *
      * @param string $user_id
+     * 
      * @return array
      */
-    public function getUserPost(string $user_id)
+    public function userPost(string $user_id)
     {        
         $user = User::find($user_id);
         if (!$user) {
@@ -67,16 +68,47 @@ class PostService implements IBaseService {
     }
 
     /**
+     * Retrieve a model.
+     *
+     * @param string $id
+     * 
+     * @return object
+     */
+    public function show(string $id)
+    {
+        $this->validator->validateID($id);
+
+        return $this->model->find($id);
+    }
+
+    /**
+     * Retrieve detail of the model.
+     *
+     * @param string $id
+     * 
+     * @return object
+     */
+    public function detail(string $id)
+    {
+        $this->validator->validateID($id);
+
+        $model = $this->model->with('user')->find($id);
+
+        return $model;
+    }
+
+    /**
      * Create a new data.
      *
      * @param array $data
+     * 
      * @return array
      */
     public function create(array $data)
     {
         $this->validator->validateCreate($data);
 
-        $model = $this->post->create([
+        $model = $this->model->create([
             'title' => ucwords($data['title']),
             'body' => $data['body'],
             'status' => $data['status'],
@@ -88,7 +120,7 @@ class PostService implements IBaseService {
             $config = [
                 "prefix" => "post",
                 "path" => UploadPath::post($model->id),
-                "file" => @$data["thumbnail"],
+                "file" => $data["thumbnail"],
             ];
     
             $model->thumbnail = UploadService::getInstance()->upload($config);
@@ -96,6 +128,62 @@ class PostService implements IBaseService {
         }
 
         return $this->formatResult($model);
+    }
+
+    /**
+     * Update existing data.
+     *
+     * @param array $data
+     * 
+     * @return array
+     */
+    public function update(array $data)
+    {
+        $this->validator->validateUpdate($data);
+
+        $model = $this->model->where(['id' => $data['id'], 'user_id' => $data['user_id']])
+                            ->update([
+                                'title' => ucwords($data['title']),
+                                'body' => $data['body'],
+                                'status' => $data['status'],
+                                'is_pinned' => $data['is_pinned'],
+                            ]);
+
+        if (@$data['thumbnail']) {
+            // $model = $this->show($data['id']);   // Uncomment this if needed
+            $config = [
+                "prefix" => "post",
+                "path" => UploadPath::post($model->id),
+                "file" => $data["thumbnail"],
+            ];
+
+            if ($model->thumbnail) {
+                $config["old_file"] = UploadPath::post("{$model->id}/{$model->thumbnail}");
+            }
+    
+            $model->thumbnail = UploadService::getInstance()->upload($config);
+            $model->save();
+        }
+
+        return $this->formatResult($model);
+    }
+
+    /**
+     * Delete a model.
+     *
+     * @param string $id
+     * 
+     * @return bool
+     */
+    public function delete(string $id)
+    {
+        $model = $this->show($id);
+
+        // Delete old post thumbnail
+        $oldFile = UploadPath::post("{$model->id}/{$model->thumbnail}");
+        UploadService::getInstance()->delete($oldFile);
+
+        return $model->delete();
     }
     
 }

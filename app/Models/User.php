@@ -46,11 +46,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The accessors to get avatar with full path.
+     *
+     * @param string $value
+     * 
+     * @return string
+     */
     public function getAvatarAttribute($value)
     {
         return $value ? asset("images/avatar/{$this->id}/{$value}") : null;
     }
 
+    /**
+     * The model relation hasMany to Post.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function post()
     {
         return $this->hasMany(Post::class);

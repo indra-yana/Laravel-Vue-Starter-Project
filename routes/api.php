@@ -19,10 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/*
-* Post routes
-* Api version 1
-*/
+/**
+ * The post api routes 
+ * API Version: v1
+ */
 Route::group(['prefix' => 'v1/post', 'middleware' => ['auth:sanctum']], function () {
-    Route::get('/', [PostController::class, 'getUserPost']);
+    Route::get('/', [PostController::class, 'userPost']);
 });

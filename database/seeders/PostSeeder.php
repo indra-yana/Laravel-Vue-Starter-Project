@@ -31,7 +31,7 @@ class PostSeeder extends Seeder
                     Post::create([
                         'title' => $faker->sentence(5, true),
                         'body' => $faker->sentence(50, true),
-                        'thumbnail' => 'sample-img-1.jpg',
+                        // 'thumbnail' => 'sample-img-1.jpg',
                         'status' => $faker->numberBetween(0, 1),
                         'is_pinned' => $faker->numberBetween(0, 1),
                         'user_id' => $user[$i],

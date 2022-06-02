@@ -22,10 +22,10 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \App\Src\Helpers\SendResponse
      */
-    public function getUserPost(Request $request)
+    public function userPost(Request $request)
     {
         try {
-            $result = $this->postService->getUserPost($request->user()->id);
+            $result = $this->postService->userPost($request->user()->id);
 
             return SendResponse::success($result, __('Data retrieved successfully'));
         } catch (\Throwable $th) {
