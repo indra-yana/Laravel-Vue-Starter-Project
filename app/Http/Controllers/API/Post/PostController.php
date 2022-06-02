@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    protected $postService;
+    protected $service;
     
-    public function __construct(PostService $postService) 
+    public function __construct(PostService $service) 
     {
-        $this->postService = $postService;
+        $this->service = $service;
     }
 
     /**
@@ -25,7 +25,7 @@ class PostController extends Controller
     public function userPost(Request $request)
     {
         try {
-            $result = $this->postService->userPost($request->user()->id);
+            $result = $this->service->userPost($request->user()->id);
 
             return SendResponse::success($result, __('Data retrieved successfully'));
         } catch (\Throwable $th) {
@@ -42,7 +42,7 @@ class PostController extends Controller
     public function show(Request $request)
     {
         try {
-            $result = $this->postService->show($request->id);
+            $result = $this->service->show($request->id);
 
             return SendResponse::success($result, __('Data retrieved successfully'));
         } catch (\Throwable $th) {
@@ -59,7 +59,7 @@ class PostController extends Controller
     public function detail(Request $request)
     {
         try {
-            $result = $this->postService->detail($request->id);
+            $result = $this->service->detail($request->id);
 
             return SendResponse::success($result, __('Data retrieved successfully'));
         } catch (\Throwable $th) {
@@ -77,9 +77,9 @@ class PostController extends Controller
     {
         try {
             $data = array_merge(['user_id' => $request->user()->id], $request->all());
-            $result = $this->postService->create($data);
+            $result = $this->service->create($data);
 
-            return SendResponse::success($result, __('Data retrieved successfully'));
+            return SendResponse::success($result, __('Data created successfully'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
         }
@@ -95,9 +95,9 @@ class PostController extends Controller
     {
         try {
             $data = array_merge(['user_id' => $request->user()->id], $request->all());
-            $result = $this->postService->update($data);
+            $result = $this->service->update($data);
 
-            return SendResponse::success($result, __('Data retrieved successfully'));
+            return SendResponse::success($result, __('Data updated successfully'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
         }
@@ -112,9 +112,9 @@ class PostController extends Controller
     public function delete(Request $request)
     {
         try {
-            $result = $this->postService->delete($request->id);
+            $result = $this->service->delete($request->id);
 
-            return SendResponse::success($result, __('Data retrieved successfully'));
+            return SendResponse::success($result, __('Data deleted successfully'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
         }
