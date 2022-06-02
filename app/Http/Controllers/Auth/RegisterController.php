@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Src\Base\Constant;
 use App\Src\Helpers\UploadPath;
+use App\Src\Services\Eloquent\UserService;
 use App\Src\Services\Upload\UploadService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -64,13 +65,9 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:10', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'avatar' => @$data["avatar"] ? ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:1000'] : '',
-        ]);
+        return UserService::getInstance()
+                    ->getValidator()
+                    ->validateRegister($data); 
     }
 
     /**
@@ -81,25 +78,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        if (@$data["avatar"]) {
-            $config = [
-                "prefix" => "avatar",
-                "path" => UploadPath::avatar($user->id),
-                "file" => $data["avatar"],
-            ];
-
-            $user->avatar = UploadService::getInstance()->upload($config);
-            $user->save();
-        }
-
-        return $user;
+        return UserService::getInstance()->createForRegister($data);
     }
 
     /**
