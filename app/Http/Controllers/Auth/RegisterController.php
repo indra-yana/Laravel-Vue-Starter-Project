@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Src\Base\Constant;
+use App\Src\Helpers\UploadPath;
 use App\Src\Services\Upload\UploadService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -80,21 +81,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if (@$data["avatar"]) {
-            $data["avatar"] = UploadService::getInstance()->upload([
-                "prefix" => "avatar",
-                "path" => Constant::AVATAR_UPLOAD_PATH,
-                "file" => $data["avatar"],
-            ]);
-        }
-
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'avatar' => @$data["avatar"],
         ]);
+
+        if (@$data["avatar"]) {
+            $config = [
+                "prefix" => "avatar",
+                "path" => UploadPath::avatar($user->id),
+                "file" => $data["avatar"],
+            ];
+
+            $user->avatar = UploadService::getInstance()->upload($config);
+            $user->save();
+        }
+
+        return $user;
     }
 
     /**

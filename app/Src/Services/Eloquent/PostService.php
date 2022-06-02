@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Src\Base\Constant;
 use App\Src\Base\IBaseService;
+use App\Src\Helpers\UploadPath;
 use App\Src\Services\Upload\UploadService;
 use App\Src\Validators\PostValidator;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -75,21 +76,24 @@ class PostService implements IBaseService {
     {
         $this->validator->validateCreate($data);
 
-        $upload = [
-            "prefix" => "post",
-            "path" => Constant::POST_UPLOAD_PATH,
-            "file" => @$data["thumbnail"],
-        ];
-
-        $data["thumbnail"] = UploadService::getInstance()->upload($upload);
         $model = $this->post->create([
             'title' => ucwords($data['title']),
             'body' => $data['body'],
-            'thumbnail' => $data['thumbnail'],
             'status' => $data['status'],
             'is_pinned' => $data['is_pinned'],
             'user_id' => $data['user_id'],
         ]);
+
+        if (@$data['thumbnail']) {
+            $config = [
+                "prefix" => "post",
+                "path" => UploadPath::post($model->id),
+                "file" => @$data["thumbnail"],
+            ];
+    
+            $model->thumbnail = UploadService::getInstance()->upload($config);
+            $model->save();
+        }
 
         return $this->formatResult($model);
     }

@@ -19,7 +19,7 @@ class Post extends Model
 
     public function getThumbnailAttribute($value)
     {
-        return $value ? asset("images/post/$value") : null;
+        return $value ? asset("images/post/{$this->id}/{$value}") : null;
     }
     
     public function user()

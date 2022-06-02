@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        return $value ? asset("images/avatar/$value") : null;
+        return $value ? asset("images/avatar/{$this->id}/{$value}") : null;
     }
 
     public function post()

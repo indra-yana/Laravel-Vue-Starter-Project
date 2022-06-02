@@ -68,8 +68,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('images/avatar') => storage_path('app/'.\App\Src\Base\Constant::AVATAR_UPLOAD_PATH),
-        public_path('images/post') => storage_path('app/'.\App\Src\Base\Constant::POST_UPLOAD_PATH),
+        public_path('images/avatar') => storage_path('app/uploads/avatar'),
+        public_path('images/post') => storage_path('app/uploads/post'),
     ],
 
 ];
