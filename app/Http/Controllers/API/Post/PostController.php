@@ -76,6 +76,7 @@ class PostController extends Controller
     public function create(Request $request)
     {
         try {
+            // $request->merge(['user_id' => $request->user()->id]);    // Uncomment this
             $data = array_merge(['user_id' => $request->user()->id], $request->all());
             $result = $this->service->create($data);
 
