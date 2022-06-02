@@ -48,6 +48,7 @@
         methods: {
             async sendResetLink() {
                 this.isProcessing = true,
+                this.validation = {};
                 
                 await this.$axios.post('/password/email', this.form)
                     .then(({ data }) => {

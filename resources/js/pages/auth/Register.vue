@@ -125,6 +125,8 @@
         methods: {
             async register() {
                 this.isProcessing = true;
+                this.validation = {};
+
                 const options = { headers: {'Content-Type': 'multipart/form-data' }};
                 const formData = new FormData();
 

@@ -70,6 +70,7 @@
         methods: {
             async resetPassword() {
                 this.isProcessing = true;
+                this.validation = {};
 
                 await this.$axios.post('/password/reset', this.form)
                     .then(({ data }) => {

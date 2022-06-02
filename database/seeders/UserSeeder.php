@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 User::create([
                     'name' => $name = $faker->name,
                     'username' => "usertest$i",
-                    'email' => explode(" ", $name)[0] ."$i@$faker->freeEmailDomain",
+                    'email' => strtolower(explode(" ", $name)[0]) ."$i@$faker->freeEmailDomain",
                     'email_verified_at' => now(),
                     'password' => bcrypt('secret'),
                 ]);

@@ -78,6 +78,7 @@
         methods: {
             async doLogin() {
                 this.isProcessing = true;
+                this.validation = {};
 
                 let result = await this.$axios.get('/sanctum/csrf-cookie')
                     .then((response) => response)
