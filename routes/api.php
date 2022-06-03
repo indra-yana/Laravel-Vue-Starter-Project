@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Post\PostController;
+use App\Http\Controllers\API\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+/**
+ * The user api routes 
+ * API Version: v1
+ */
+Route::group(['prefix' => 'v1/user', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('{id}/show', [UserController::class, 'show']);
+    Route::get('{id}/detail', [UserController::class, 'detail']);
+    Route::post('create', [UserController::class, 'create']);
+    Route::put('update', [UserController::class, 'update']);
+    Route::delete('delete', [UserController::class, 'delete']);
 });
 
 /**

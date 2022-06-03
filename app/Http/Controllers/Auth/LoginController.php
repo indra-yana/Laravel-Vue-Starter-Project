@@ -100,7 +100,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         return $request->wantsJson()
-                    ? new JsonResponse(["message" => __("Login successfully."), "data" => ["user" => $user]], 200)
+                    ? new JsonResponse(["message" => __("message.login_success"), "data" => ["user" => $user]], 200)
                     : redirect()->intended($this->redirectPath());
     }
 
@@ -113,7 +113,7 @@ class LoginController extends Controller
     protected function loggedOut(Request $request)
     {
         return $request->wantsJson()
-                    ? new JsonResponse(["message" => __("You just logged out."), "data" => []], 200)
+                    ? new JsonResponse(["message" => __("message.logout_success"), "data" => []], 200)
                     : redirect()->intended($this->redirectPath());
     }
 

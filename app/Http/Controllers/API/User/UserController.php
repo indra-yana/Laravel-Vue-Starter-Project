@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\API\Post;
+namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Src\Helpers\SendResponse;
-use App\Src\Services\Eloquent\PostService;
+use App\Src\Services\Eloquent\UserService;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class UserController extends Controller
 {
     protected $service;
     
-    public function __construct(PostService $service) 
+    public function __construct(UserService $service) 
     {
         $this->service = $service;
     }
 
     /**
-     * Get the user post list.
+     * Get the single model data.
      *
      * @param \Illuminate\Http\Request $request
      * @return \App\Src\Helpers\SendResponse
      */
-    public function userPost(Request $request)
+    public function index(Request $request)
     {
         try {
-            $result = $this->service->userPost($request->user()->id);
+            $result = $request->user();
 
             return SendResponse::success($result, __('message.retrieve_success'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
         }
     }
-
+    
     /**
      * Get the single model data.
      *

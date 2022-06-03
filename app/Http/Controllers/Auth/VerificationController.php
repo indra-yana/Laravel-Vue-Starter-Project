@@ -89,7 +89,7 @@ class VerificationController extends Controller
         }
 
         return $request->wantsJson()
-                        ? new JsonResponse(["message" => __("Your account not verified"), "data" => ["hasVerifiedEmail" => false]], 200)
+                        ? new JsonResponse(["message" => __("message.email_unverified"), "data" => ["hasVerifiedEmail" => false]], 200)
                         : redirect($this->redirectPath())->with('verified', true);
     }
 
@@ -102,7 +102,7 @@ class VerificationController extends Controller
     protected function verified(Request $request)
     {
         return $request->wantsJson()
-                        ? new JsonResponse(["message" => __("Already verified"), "data" => ["hasVerifiedEmail" => true, "email_verified_at" => $request->user()->email_verified_at]], 200)
+                        ? new JsonResponse(["message" => __("message.email_verified"), "data" => ["hasVerifiedEmail" => true, "email_verified_at" => $request->user()->email_verified_at]], 200)
                         : redirect($this->redirectPath())->with('verified', true);
     }
 

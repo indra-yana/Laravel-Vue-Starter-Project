@@ -4,7 +4,6 @@ namespace App\Src\Services\Eloquent;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Src\Base\Constant;
 use App\Src\Base\IBaseService;
 use App\Src\Helpers\UploadPath;
 use App\Src\Services\Upload\UploadService;
@@ -56,7 +55,7 @@ class PostService implements IBaseService {
     {        
         $user = User::find($user_id);
         if (!$user) {
-            throw new NotFoundHttpException(__('Data or resource can\'t be found'), null, 404);
+            throw new NotFoundHttpException(__('message.data_notfound'), null, 404);
         }
         
         $post = $user->post()->paginate(10);
