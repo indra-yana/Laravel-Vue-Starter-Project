@@ -5,8 +5,9 @@ namespace App\Src\Base;
 interface IBaseService
 {
     /**
-     * Get the model or data result as defined.
+     * Get the result data of model.
      *
+     * @param object $model
      * @return array
      */
     public function formatResult($model);

@@ -18,7 +18,6 @@ class SendResponse
      * @param string $message
      * @param string $redirectPath
      * @param integer $code
-     * 
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
 	public static function success($result = [], $message = 'Well done!', $redirectPath = '', $code = 200)
@@ -43,7 +42,6 @@ class SendResponse
      * @param string $redirectPath
      * @param integer $code
      * @param Throwable $th
-     * 
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
 	public static function error($result = [], $message = 'Something went wrong!', $redirectPath = '', $code = 500, Throwable $th = null)

@@ -9,7 +9,6 @@ class UploadPath
      * Get the avatar upload path.
      * 
      * @param string $key
-     * 
      * @return string
      */
 	public static function avatar(string $key)
@@ -21,7 +20,6 @@ class UploadPath
      * Get the post upload path.
      * 
      * @param string $key
-     * 
      * @return string
      */
 	public static function post(string $key)

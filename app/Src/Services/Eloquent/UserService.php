@@ -33,8 +33,9 @@ class UserService implements IBaseService {
     }
 
     /**
-     * Get the model or data result as defined.
+     * Get the result data of model.
      *
+     * @param object $model
      * @return array
      */
     public function formatResult($model)
@@ -56,7 +57,6 @@ class UserService implements IBaseService {
      * Retrieve a model.
      *
      * @param string $id
-     * 
      * @return object
      */
     public function show(string $id)
@@ -70,7 +70,6 @@ class UserService implements IBaseService {
      * Retrieve detail of the model.
      *
      * @param string $id
-     * 
      * @return object
      */
     public function detail(string $id)
@@ -93,7 +92,6 @@ class UserService implements IBaseService {
      * Create a new data for regsiter only.
      *
      * @param array $data
-     * 
      * @return array
      */
     public function createForRegister(array $data)
@@ -123,7 +121,6 @@ class UserService implements IBaseService {
      * Create a new data.
      *
      * @param array $data
-     * 
      * @return array
      */
     public function create(array $data)
@@ -153,7 +150,6 @@ class UserService implements IBaseService {
      * Update an existing data.
      *
      * @param array $data
-     * 
      * @return array
      */
     public function update(array $data)
@@ -191,7 +187,6 @@ class UserService implements IBaseService {
      * Delete an existing data.
      *
      * @param string $id
-     * 
      * @return bool
      */
     public function delete(string $id)

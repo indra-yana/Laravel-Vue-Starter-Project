@@ -28,6 +28,7 @@ class PostService implements IBaseService {
     /**
      * Get the instance of class.
      *
+     * @param object $model
      * @return object
      */
     public static function getInstance()
@@ -36,7 +37,7 @@ class PostService implements IBaseService {
     }
 
     /**
-     * Get the model or data result as defined.
+     * Get the result data of model.
      *
      * @return array
      */
@@ -49,7 +50,6 @@ class PostService implements IBaseService {
      * Get the user post list with pagination
      *
      * @param string $user_id
-     * 
      * @return array
      */
     public function userPost(string $user_id)
@@ -71,7 +71,6 @@ class PostService implements IBaseService {
      * Retrieve a model.
      *
      * @param string $id
-     * 
      * @return object
      */
     public function show(string $id)
@@ -85,7 +84,6 @@ class PostService implements IBaseService {
      * Retrieve detail of the model.
      *
      * @param string $id
-     * 
      * @return object
      */
     public function detail(string $id)
@@ -101,7 +99,6 @@ class PostService implements IBaseService {
      * Create a new data.
      *
      * @param array $data
-     * 
      * @return array
      */
     public function create(array $data)
@@ -134,7 +131,6 @@ class PostService implements IBaseService {
      * Update an existing data.
      *
      * @param array $data
-     * 
      * @return array
      */
     public function update(array $data)
@@ -172,7 +168,6 @@ class PostService implements IBaseService {
      * Delete an existing data.
      *
      * @param string $id
-     * 
      * @return bool
      */
     public function delete(string $id)
