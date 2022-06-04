@@ -1,26 +1,56 @@
 <template>
-    <div v-if="show" class="alert mb-3 alert-dismissible fade show" :class="{'alert-success': type == 'success', 'alert-danger': type == 'error', 'alert-warning': type == 'warning', 'alert-info': type == 'info'}" role="alert">
+    <div v-if="alert.show" class="alert mb-3 alert-dismissible fade show" :class="{'alert-success': alert.type == 'success', 'alert-danger': alert.type == 'error', 'alert-warning': alert.type == 'warning', 'alert-info': alert.type == 'info'}" role="alert">
         <h4 v-if="title" class="alert-heading m-0 mb-1" v-html="title"></h4>
-        <p class="m-0" v-html="message"></p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="onAlertClosed()"></button>
+        <p class="m-0" v-html="alert.message"></p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="resetAlert()"></button>
     </div>
 </template>
 
 <script>
     export default {
-        props: [
-            'show',
-            'type',
-            'message',
-        ],
         data() {
             return {
                 title: '',
+                alert: {
+                    show: false,
+                    type: 'info',
+                    message: '',
+                },
+                closeTimeout: null,
+            }
+        },
+        created() {
+            // Notify to user if session has expired, triggered by 401 unauthorize request 
+            this.$event.on('session-inactive', (e) => {
+                let message = e.message;
+                this.alert = {
+                    show: true,
+                    type: "error",
+                    message: message,
+                };
+            });
+
+            // // Display flash message from any page
+            this.$event.on('flash-message', (e) => {
+                let { type = "alert-info", message } = e;
+                this.alert = {
+                    show: true,
+                    type,
+                    message,
+                };
+            });
+        },
+        methods: {
+            onAlertClosed() {
+                // this.$emit('alertClosed');
+            },
+            resetAlert() {
+                this.alert = {};
             }
         },
         watch: {
-            type: function(val, oldVal) {
-                switch (this.type) {
+            alert: function(val, oldVal) {
+                switch (val.type) {
                     case 'success':
                         this.title = 'Well done!';
                         break;
@@ -37,11 +67,18 @@
                         this.title = '';
                         break;
                 }
-            }
-        },
-        methods: {
-            onAlertClosed() {
-                this.$emit('alertClosed');
+
+                if (val.show) {
+                    if (this.closeTimeout !== null) {
+                        clearTimeout(this.closeTimeout);
+                        this.closeTimeout = null;
+                    }
+                    
+                    this.closeTimeout = setTimeout(() => {
+                        this.resetAlert();
+                        // this.closeTimeout = null;
+                    }, 10 * 1000);
+                } 
             }
         },
     }

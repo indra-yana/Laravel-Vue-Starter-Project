@@ -10,7 +10,6 @@ import axios from './plugin/axios';
 import mitt from 'mitt';
 
 // Global Components
-import Alert from "./components/Alert.vue";
 import SubmitButton from "./components/SubmitButton.vue";
 import ResetButton from "./components/ResetButton.vue";
 
@@ -21,8 +20,7 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 // Registering Global Component
-app.component("Alert", Alert)
-    .component("SubmitButton", SubmitButton)
+app.component("SubmitButton", SubmitButton)
     .component("ResetButton", ResetButton);
 
 // Registering App Plugin
