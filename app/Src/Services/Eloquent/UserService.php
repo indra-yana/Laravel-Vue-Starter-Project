@@ -200,4 +200,19 @@ class UserService implements IBaseService {
         return $model->delete();
     }
     
+    /**
+     * Change the user password.
+     *
+     * @param array $data
+     * @return void
+     */
+    public function changePassword(array $data)
+    {
+        $this->validator->validateChangePassword($data);
+
+        $model = $this->show($data["user_id"]);
+        $model->password = bcrypt($data["password"]);
+        $model->save();
+    }
+    
 }

@@ -121,4 +121,23 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Change the user password.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Src\Helpers\SendResponse
+     */
+    public function changePassword(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $request->merge(["user_id" => $user->id, "user_password" => $user->password]);
+            $result = $this->service->changePassword($request->all());
+
+            return SendResponse::success($result, __('message.change_password_success'));
+        } catch (\Throwable $th) {
+            return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
+        }
+    }
+
 }

@@ -31,6 +31,7 @@ Route::group(['prefix' => 'v1/user', 'middleware' => ['auth:sanctum']], function
     Route::post('create', [UserController::class, 'create']);
     Route::put('update', [UserController::class, 'update']);
     Route::delete('delete', [UserController::class, 'delete']);
+    Route::put('password/change', [UserController::class, 'changePassword']);
 });
 
 /**

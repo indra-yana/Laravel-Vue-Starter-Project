@@ -76,4 +76,18 @@ class UserValidator {
         ])->validate();
     }
 
+    /**
+     * Validate for change password.
+     *
+     * @param string $id
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function validateChangePassword(array $data)
+    {
+        return Validator::make($data, [
+            'current_password' => 'required|equal_current_password',
+            'password' => 'required|min:6|different:current_password|confirmed',
+        ])->validate();
+    }
+
 }
