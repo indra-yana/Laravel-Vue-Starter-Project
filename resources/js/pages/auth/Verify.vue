@@ -1,42 +1,40 @@
 <template>
-    <div class="">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header bg-secondary bg-gradient border"><h4 class="text-white">Verify</h4></div>
-                    <div class="card-body bg-primary-soft">
-                        <form @submit.prevent="routeName === 'verification.verify' ? verify() : sendVerificationLink()">
-                            <div v-if="routeName === 'verification.verify'">
-                                <div class="row mb-3">
-                                    <div class="col-sm-12 col-form-label text-md-right">
-                                        <h5>Please Click the button bellow to verify your account.</h5>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-12 text-center">
-                                        <SubmitButton :text="`${'Verify'}`" :processing="isProcessing"/>
-                                    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card card-default">
+                <div class="card-header bg-secondary bg-gradient border"><h4 class="text-white">Verify</h4></div>
+                <div class="card-body bg-primary-soft">
+                    <form @submit.prevent="routeName === 'verification.verify' ? verify() : sendVerificationLink()">
+                        <div v-if="routeName === 'verification.verify'">
+                            <div class="row mb-3">
+                                <div class="col-sm-12 col-form-label text-md-right">
+                                    <h5>Please Click the button bellow to verify your account.</h5>
                                 </div>
                             </div>
-                            <div v-else>
-                                <div class="row mb-3">
-                                    <div class="col-sm-12 col-form-label text-md-right">
-                                        <h5>Before proceeding, please check your email for a verification link.</h5>
-                                        <p class="m-0">If you did not receive the email, click the action <cite>Resend verification</cite> bellow.</p>
-                                        <p>Or if you have already verify your account, please check it by click <cite>Check if has verified</cite>.</p>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-8 offset-md-4">
-                                        <SubmitButton :class="['me-2']" :text="`${'Resend verification link'}`" :processing="isProcessing" />
-                                        <button type="button" class="btn btn-link text-lg-right" :disabled="isProcessing" @click="checkIfHasVerified()">
-                                           Check if has verified
-                                        </button>
-                                    </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-12 text-center">
+                                    <SubmitButton :text="`${'Verify'}`" :processing="isProcessing"/>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div v-else>
+                            <div class="row mb-3">
+                                <div class="col-sm-12 col-form-label text-md-right">
+                                    <h5>Before proceeding, please check your email for a verification link.</h5>
+                                    <p class="m-0">If you did not receive the email, click the action <cite>Resend verification</cite> bellow.</p>
+                                    <p>Or if you have already verify your account, please check it by click <cite>Check if has verified</cite>.</p>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <SubmitButton :class="['me-2']" :text="`${'Resend verification link'}`" :processing="isProcessing" />
+                                    <button type="button" class="btn btn-link text-lg-right" :disabled="isProcessing" @click="checkIfHasVerified()">
+                                        Check if has verified
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

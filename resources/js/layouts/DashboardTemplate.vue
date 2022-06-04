@@ -1,9 +1,10 @@
 <template>
-    <div>
+    <div class="d-flex flex-column min-vh-100">
+        
         <DashboardNavigation/>
 
-        <div class="container mt-5 mb-5">
-            <header class="mb-5 border-bottom">
+        <div class="container mt-5 mb-5 pt-5">
+            <header class="mb-4 border-bottom">
                 <div class="row justify-content-center ">
                     <div class="col-md-12">
                         <!-- <h3 class="text-white">Dashboard</h3>
@@ -26,9 +27,32 @@
                     <router-view/>
                 </div>
             </main>
-
         </div>
-  </div>
+
+        <footer class="footer mt-auto py-1 bg-primary-soft bg-dark">
+            <div class="container">
+                <div class="d-flex bd-highlight">
+                    <div class="flex-grow-1 bd-highlight text-white">
+                    <figure class="mt-2">
+                        <blockquote class="blockquote text-white">
+                            <p>Get in touch.</p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer mb-0 text-white">
+                            &copy; <cite title="Source Title"><a href="mailto:indra.ndra26@gmail.com" class="text-white">indra.ndra26@gmail.com</a> </cite>
+                        </figcaption>
+                    </figure>
+                </div>
+                    <div class="bd-highlight text-white">
+                        <figure class="mt-2">
+                            <blockquote class="blockquote text-white">
+                                <p>Laravue SPA.</p>
+                            </blockquote>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 </template>
 
 <script>

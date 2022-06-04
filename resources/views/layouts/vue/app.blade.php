@@ -10,6 +10,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
 
         <style>
             .router-link-active {
@@ -30,32 +31,8 @@
         </style>
     </head>
 
-    <body class="d-flex flex-column min-vh-100">
-        <div id="app" class="mb-5"></div>
-        
-        <footer class="footer mt-auto py-1 bg-primary-soft bg-dark">
-            <div class="container">
-                <div class="d-flex bd-highlight">
-                    <div class="flex-grow-1 bd-highlight text-white">
-                    <figure class="mt-2">
-                        <blockquote class="blockquote text-white">
-                            <p>Get in touch.</p>
-                        </blockquote>
-                        <figcaption class="blockquote-footer mb-0 text-white">
-                            &copy; <cite title="Source Title"><a href="mailto:indra.ndra26@gmail.com" class="text-white">indra.ndra26@gmail.com</a> </cite>
-                        </figcaption>
-                    </figure>
-                </div>
-                    <div class="bd-highlight text-white">
-                        <figure class="mt-2">
-                            <blockquote class="blockquote text-white">
-                                <p>Laravue SPA.</p>
-                            </blockquote>
-                        </figure>
-                    </div>
-                  </div>
-            </div>
-        </footer>
+    <body>
+        <div id="app"></div>
     </body>
     
     <script src="{{ asset('js/app.js') }}"></script>
