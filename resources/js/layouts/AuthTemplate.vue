@@ -14,39 +14,20 @@
             </main>
         </div>
 
-        <footer class="footer mt-auto py-1 bg-primary-soft bg-dark">
-            <div class="container">
-                <div class="d-flex bd-highlight">
-                    <div class="flex-grow-1 bd-highlight text-white">
-                    <figure class="mt-2">
-                        <blockquote class="blockquote text-white">
-                            <p>Get in touch.</p>
-                        </blockquote>
-                        <figcaption class="blockquote-footer mb-0 text-white">
-                            &copy; <cite title="Source Title"><a href="mailto:indra.ndra26@gmail.com" class="text-white">indra.ndra26@gmail.com</a> </cite>
-                        </figcaption>
-                    </figure>
-                </div>
-                    <div class="bd-highlight text-white">
-                        <figure class="mt-2">
-                            <blockquote class="blockquote text-white">
-                                <p>Laravue SPA.</p>
-                            </blockquote>
-                        </figure>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <Footer />
+
     </div>
 </template>
 
 <script>
     import MainNavigation from './MainNavigation.vue'
+    import Footer from './Footer.vue';
     import { authState } from '.././store/authState.js';
   
     export default {
         components: {
-            MainNavigation
+            MainNavigation,
+            Footer
         },
         data() {
             return {
