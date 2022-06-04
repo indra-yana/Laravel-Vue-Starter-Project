@@ -149,14 +149,12 @@
                         this.loggedIn(user);
 
                         this.$event.emit('flash-message', { message, type: "success" });
-                        // this.resetFormData();
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
                         this.$event.emit('flash-message', { message, type: "error" });
                     }).finally(() => {
-                        // this.setFormData(this.form);
                         this.isProcessing = false;
                     });
             },
