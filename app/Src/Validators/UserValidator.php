@@ -53,11 +53,11 @@ class UserValidator {
     public function validateUpdate(array $data)
     {
         return Validator::make($data, [
-            'id' => ['required', 'string', 'exists:users,id'],
+            'user_id' => ['required', 'string', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:15', 'unique:users,username,'.$data["id"]],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$data["id"]],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:15', 'unique:users,username,'.$data["user_id"]],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$data["id"]],
+            // 'password' => ['required', 'string', 'min:6', 'confirmed'],
             'avatar' => @$data["avatar"] ? ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:1000'] : '',
         ])->validate();
         

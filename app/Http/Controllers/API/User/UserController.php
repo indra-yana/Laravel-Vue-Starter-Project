@@ -95,8 +95,8 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try {
-            $data = array_merge(['user_id' => $request->user()->id], $request->all());
-            $result = $this->service->update($data);
+            $request->merge(['user_id' => $request->user()->id]);
+            $result = $this->service->update($request->all());
 
             return SendResponse::success($result, __('message.update_success'));
         } catch (\Throwable $th) {
@@ -131,7 +131,7 @@ class UserController extends Controller
     {
         try {
             $user = $request->user();
-            $request->merge(["user_id" => $user->id, "user_password" => $user->password]);
+            $request->merge(['user_id' => $user->id, "user_password" => $user->password]);
             $result = $this->service->changePassword($request->all());
 
             return SendResponse::success($result, __('message.change_password_success'));

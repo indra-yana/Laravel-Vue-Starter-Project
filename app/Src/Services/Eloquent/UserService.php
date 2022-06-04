@@ -156,16 +156,11 @@ class UserService implements IBaseService {
     {
         $this->validator->validateUpdate($data);
 
-        $model = $this->model->where(['id' => $data['id']])
-                            ->update([
-                                'name' => ucwords($data['name']),
-                                'username' => $data['username'],
-                                'email' => $data['email'],
-                                'password' => Hash::make($data['password']),
-                            ]);
+        $model = $this->show($data['user_id']);
+        $model->name = ucwords($data['name']);
+        $model->username = $data['username'];
 
         if (@$data['avatar']) {
-            // $model = $this->show($data['id']);   // Uncomment this if needed
             $config = [
                 "prefix" => "avatar",
                 "path" => UploadPath::avatar($model->id),
@@ -177,8 +172,9 @@ class UserService implements IBaseService {
             }
     
             $model->avatar = UploadService::getInstance()->upload($config);
-            $model->save();
         }
+    
+        $model->save();
 
         return $this->formatResult($model);
     }
