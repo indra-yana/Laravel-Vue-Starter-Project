@@ -15,7 +15,7 @@
                 <div class="bd-highlight text-white">
                     <figure class="mt-2">
                         <blockquote class="blockquote text-white">
-                            <p>Laravue SPA. V1.0-Beta</p>
+                            <p>v1.0-Beta</p>
                         </blockquote>
                     </figure>
                 </div>

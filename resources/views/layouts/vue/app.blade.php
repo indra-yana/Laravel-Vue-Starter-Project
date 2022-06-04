@@ -13,9 +13,9 @@
         <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
 
         <style>
-            .router-link-active {
+            /* .router-link-active {
                 color: orange;
-            }
+            } */
 
             .bg-primary-soft {
                 background-color: #e3f2fd;
@@ -26,7 +26,7 @@
             }
 
             body {
-                background-color: #3c4043;
+                background-color: var(--bs-gray-800);
             }
         </style>
     </head>

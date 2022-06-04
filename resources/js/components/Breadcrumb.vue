@@ -5,7 +5,8 @@
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item" v-for="(breadcrumb, key, index) in breadcrumbs">
                 <span class="breadcrumb-item active" aria-current="page" v-if="loopLast(index)"> {{ breadcrumb }}</span>
-                <a :href="key" v-else>{{ breadcrumb }}</a>
+                <router-link :to="{ name: key }" v-else>{{ breadcrumb }}</router-link>
+                <!-- <a :href="key" v-else>{{ breadcrumb }}</a> -->
             </li>
         </ol>
     </nav>
@@ -17,8 +18,8 @@
             return {
                 title: "Page Title",
                 breadcrumbs: {
-                    'menu1': 'Menu 1',
-                    'menu2': 'Menu 2',
+                    'home': 'Menu 1',
+                    'landing': 'Menu 2',
                     'menu3': 'Last Menu',
                 },
             };

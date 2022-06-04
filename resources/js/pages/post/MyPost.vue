@@ -132,14 +132,15 @@
         data() {
             return {
                 posts: {},
+                routeName: this.$route.meta.title,
             }
         },
         created() {
             this.getBlog();
             this.$event.emit('breadcrumbs', { 
-                title: this.$route.meta.title, 
+                title: this.routeName, 
                 breadcrumbs: {
-                    '#': 'My Posts',
+                    '#': this.routeName,
                 } 
             });
         },

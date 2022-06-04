@@ -13,14 +13,14 @@
                     <router-link :to="{ name: 'dashboard' }" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <router-link :to="{ name: 'mypost' }" class="nav-item nav-link" active-class="active" exact>My Post</router-link>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" :class="{ 'active': isActive, 'show': isActive }" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" :aria-expanded="isActive">
                             Manage
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu" :class="{ 'show': isActive }" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Post</a></li>
-                            <li><a class="dropdown-item" href="#">Account</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><router-link :to="{ name: 'account' }" class="dropdown-item" active-class="active" exact>Account</router-link></li>
+                            <!-- <li><hr class="dropdown-divider"></li> -->
+                            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                         </ul>
                     </li>
                 </ul>
@@ -64,7 +64,14 @@
             };
         },
         computed: { 
-            ...mapState(authState, ['isLoggedIn', 'logout', 'auth'])
+            ...mapState(authState, ['isLoggedIn', 'logout', 'auth']),
+            isActive() {
+                return [
+                    'account.password',
+                    'account.profile',
+                    'account.social',
+                ].includes(this.$route.name);
+            },
         },
         methods: {
             async doLogout() {

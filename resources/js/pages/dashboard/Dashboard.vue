@@ -28,15 +28,15 @@
     export default {
         data() {
             return {
-                
+               routeName: this.$route.meta.title, 
             }
         },
         created() {
             this.getUser();
             this.$event.emit('breadcrumbs', { 
-                title: this.$route.meta.title, 
+                title: this.routeName, 
                 breadcrumbs: {
-                    '#': 'Dashboard',
+                    '#': this.routeName,
                 } 
             });
         },
