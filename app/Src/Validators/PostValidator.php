@@ -18,7 +18,7 @@ class PostValidator {
     public function validateCreate(array $data)
     {
         return Validator::make($data, [
-            'user_id' => 'string|required|exists:users,id',
+            'user_id' => 'string|required|uuid|exists:users,id',
             'title' => 'string|required|max:255',
             'body' => 'string|nullable',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2000',
@@ -36,7 +36,7 @@ class PostValidator {
     public function validateUpdate(array $data)
     {
         return Validator::make($data, [
-            'id' => 'required|string|exists:posts,id',
+            'id' => 'required|string|uuid|exists:posts,id',
             'title' => 'string|required|max:255',
             'body' => 'string|nullable',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2000',
@@ -55,7 +55,7 @@ class PostValidator {
     public function validateID(string $id)
     {
         return Validator::make(["id" => $id], [
-            'id' => 'string|required|exists:posts,id',
+            'id' => 'string|required|uuid|exists:posts,id',
         ])->validate();
     }
 

@@ -53,7 +53,7 @@ class UserValidator {
     public function validateUpdate(array $data)
     {
         return Validator::make($data, [
-            'user_id' => ['required', 'string', 'exists:users,id'],
+            'user_id' => ['required', 'string', 'uuid', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:15', 'unique:users,username,'.$data["user_id"]],
             // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$data["id"]],
@@ -72,7 +72,7 @@ class UserValidator {
     public function validateID(string $id)
     {
         return Validator::make(["id" => $id], [
-            'id' => 'string|required|exists:users,id',
+            'id' => 'string|required|uuid|exists:users,id',
         ])->validate();
     }
 
