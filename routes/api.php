@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Post\PostController;
+use App\Http\Controllers\API\SocialLink\SocialLinkController;
 use App\Http\Controllers\API\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,4 +46,13 @@ Route::group(['prefix' => 'v1/post', 'middleware' => ['auth:sanctum']], function
     Route::post('create', [PostController::class, 'create']);
     Route::put('update', [PostController::class, 'update']);
     Route::delete('delete', [PostController::class, 'delete']);
+});
+
+/**
+ * The social link api routes 
+ * API Version: v1
+ */
+Route::group(['prefix' => 'v1/social-link', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('{user_id}', [SocialLinkController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
+    Route::post('create', [SocialLinkController::class, "create"]);
 });

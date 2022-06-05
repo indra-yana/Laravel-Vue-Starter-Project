@@ -6,9 +6,25 @@
                     <NavAccount/>
                 </div>
                 <div class="card-body bg-primary-soft">
-                    <h5 class="card-title">Social Link</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <form @submit.prevent="updateSocialLink()" autocomplete="off">
+                        <div class="form-group row mb-3" v-for="(socials, key, index) in form.social_links">
+                            <label :for="key" class="col-sm-4 col-form-label text-md-right">{{ key }} <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" :name="key" :id="key" class="form-control" :class="{'is-invalid': validation[key]}" v-model="form.social_links[key]['link']" @input="handleInput(key)" :placeholder="`Add your ${key} link`">
+                                <div v-if="validation[key]" class="invalid-feedback mt-1" >
+                                    <ul class="mb-0 ps-3">
+                                        <li v-for="(error, index) in validation[key]">{{ error }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <SubmitButton :class="['me-2']" :text="`${'Submit'}`" :processing="isProcessing"/>
+                                <ResetButton @click="resetForm()" :processing="isProcessing"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -17,11 +33,20 @@
 
 <script>
     import NavAccount from '../../components/NavAccount.vue';
+    import { mapState } from 'pinia';
+    import { authState } from '../.././store/authState.js';
+
     export default {
         components: { NavAccount },
         data() {
             return {
                 routeName: this.$route.meta.title,
+                isProcessing: false,
+                validation: {},
+                originalValue: {},
+                form: {
+                    social_links: {},
+                },
             };
         },
         created() {
@@ -32,7 +57,67 @@
                     "#": this.routeName,
                 }
             });
+
+            this.getSocialink();
         },
-        methods: {},
+        computed: {
+            ...mapState(authState, ['auth']),
+            getValidation() {
+                return this.validation;
+            }
+        },
+        methods: {
+            async getSocialink() {
+                await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
+                    .then(({ data }) => {
+                        const { social_links: socialLink } = data.data;
+
+                        this.updateFormValue(socialLink);
+
+                        return data;
+                    })
+                    .catch(({ response: { data } }) => {
+                        console.log(data);
+
+                        return false;
+                    });
+            },
+            async updateSocialLink() {
+                this.isProcessing = true;
+                this.validation = {};
+
+                await this.$axios.post('/api/v1/social-link/create', this.form)
+                    .then(({ data }) => {
+                        const { message } = data;
+                        const { social_links: socialLink } = data.data;
+
+                        this.updateFormValue(socialLink);
+
+                        this.$event.emit('flash-message', { message, type: "success" });
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors = {} } = data;
+
+                        this.validation = errors;
+                        this.$event.emit('flash-message', { message, type: "error" });
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
+            },  
+            resetForm() {
+                this.isProcessing = false;
+                this.validation = {};
+                this.updateFormValue(this.originalValue.social_links);
+            },
+            updateFormValue(data) {
+                data = JSON.parse(JSON.stringify(data));  // Convert proxy data to an object
+                this.form.social_links = data;
+
+                // Set original value
+                this.originalValue.social_links = data;
+            },
+            handleInput(inputName, event = null) {
+                this.validation[inputName] = null;
+            },
+        },
     }
 </script>

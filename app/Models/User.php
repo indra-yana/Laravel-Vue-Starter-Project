@@ -67,4 +67,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Post::class);
     }
+    
+    /**
+     * The model relation hasMany to SocialLink.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function socialLink()
+    {
+        return $this->hasMany(SocialLink::class);
+    }
+
 }

@@ -51,8 +51,12 @@ class SendResponse
             $code = $th->status;
         }
 
+        if ($code > 505) {
+            $code = 500;
+        }
+
 		$response = [
-            'code' => $code = $code ? $code : 500,
+            'code' => $code = $code ?: 500,
             'status' => 'error',
             'message' => $message,
             'errors' => $result,
