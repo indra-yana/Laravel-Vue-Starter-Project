@@ -109,11 +109,10 @@
                 this.updateFormValue(this.originalValue.social_links);
             },
             updateFormValue(data) {
-                data = JSON.parse(JSON.stringify(data));  // Convert proxy data to an object
-                this.form.social_links = data;
+                this.form.social_links = JSON.parse(JSON.stringify(data));  // Convert proxy data to an object
 
                 // Set original value
-                this.originalValue.social_links = data;
+                this.originalValue.social_links = JSON.parse(JSON.stringify(data));
             },
             handleInput(inputName, event = null) {
                 this.validation[inputName] = null;
