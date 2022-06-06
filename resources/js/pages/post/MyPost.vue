@@ -57,33 +57,38 @@
             Recent Post
         </h2>
         <div class="col-md-8 p-4 mb-3 bg-light rounded">
-            <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
-                <h2 class="blog-post-title">{{ post.title }}</h2>
-                <p class="blog-post-meta">{{ post.formated_created_at }} by <a href="#">{{ post.user.name }}</a></p>
-                <p>
-                    {{ splitLongText(post.body, 191) }}
-                    <a href="#" class="">Continue reading</a>
-                </p>
-                <hr>
-            </article>
-            <nav aria-label="Page navigation example ">
-                <!-- <ul class="pagination justify-content-lg-end justify-content-center">
-                    <template v-for="(link, index) in meta.links">
-                        <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
-                            <span class="page-link" v-html="link.label" v-if="link.active"></span>
-                            <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
-                        </li>
-                    </template>
-                </ul> -->
-                <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
-                    <template #prev-nav>
-                        <span>Prev</span>
-                    </template>
-                    <template #next-nav>
-                        <span>Next</span>
-                    </template>
-                </Pagination>
-            </nav>
+            
+            <Spinner :processing='isProcessing'/>
+
+            <div v-if="!isProcessing">
+                <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
+                    <h2 class="blog-post-title">{{ post.title }}</h2>
+                    <p class="blog-post-meta">{{ post.formated_created_at }} by <a href="#">{{ post.user.name }}</a></p>
+                    <p>
+                        {{ splitLongText(post.body, 191) }}
+                        <a href="#" class="">Continue reading</a>
+                    </p>
+                    <hr>
+                </article>
+                <nav aria-label="Page navigation example ">
+                    <!-- <ul class="pagination justify-content-lg-end justify-content-center">
+                        <template v-for="(link, index) in meta.links">
+                            <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
+                                <span class="page-link" v-html="link.label" v-if="link.active"></span>
+                                <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
+                            </li>
+                        </template>
+                    </ul> -->
+                    <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
+                        <template #prev-nav>
+                            <span>Prev</span>
+                        </template>
+                        <template #next-nav>
+                            <span>Next</span>
+                        </template>
+                    </Pagination>
+                </nav>
+            </div>
         </div>
 
         <div class="col-md-4">
@@ -126,13 +131,16 @@
 <script>
     import { splitLongText } from '../../plugin/helper.js';
     import Pagination from 'laravel-vue-pagination';
+    import Spinner from '../../components/Spinner.vue';
 
     export default {
         components: {
             Pagination,
+            Spinner
         },
         data() {
             return {
+                isProcessing: false,
                 posts: {},
                 meta: {},
                 routeName: this.$route.meta.title,
@@ -157,10 +165,10 @@
                 return qParams.get('page');
             },
             async getPosts(page = 1) {
+                this.isProcessing = true;
+
                 await this.$axios.get(`/api/v1/post?page=${page}`)
                     .then(({ data }) => {
-                        console.log(data);
-
                         const { posts, meta } = data.data
                         this.posts = posts;
                         this.meta = meta;
@@ -168,9 +176,13 @@
                         return data;
                     })
                     .catch(({ response: { data } }) => {
-                        console.log(data);
+                        const { message, errors = {} } = data;
+
+                        this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
+                    }).finally(() => {
+                        this.isProcessing = false;
                     });
             }
         },
