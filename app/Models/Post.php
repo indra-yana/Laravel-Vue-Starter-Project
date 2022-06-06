@@ -35,7 +35,8 @@ class Post extends Model
      * @var array
      */
     protected $appends = [
-        'formated_status'
+        'formated_status',
+        'formated_created_at',
     ];
 
     /**
@@ -67,6 +68,18 @@ class Post extends Model
             default:
                 return __('Undefined');
         }
+    }
+    
+    /**
+     * The accessors to get formated created_at.
+     *
+     * @param int $value
+     * 
+     * @return string
+     */
+    public function getFormatedCreatedAtAttribute($value)
+    {
+        return $this->created_at->translatedFormat('l, d-m-Y');
     }
     
     /**

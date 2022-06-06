@@ -58,11 +58,11 @@ class PostService implements IBaseService {
             throw new NotFoundHttpException(__('message.data_notfound'), null, 404);
         }
         
-        $post = $user->post()->paginate(10);
+        $post = $user->post()->with('user')->latest()->paginate(10);
 
         return [
             'meta' => $resource = new JsonResource($post),
-            'post' => $resource->collection($post),
+            'posts' => $resource->collection($post),
         ];
     }
 

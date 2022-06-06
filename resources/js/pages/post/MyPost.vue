@@ -57,41 +57,37 @@
             Recent Post
         </h2>
         <div class="col-md-8 p-4 mb-3 bg-light rounded">
-            <article class="blog-post">
-                <h2 class="blog-post-title">Sample blog post</h2>
-                <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>
-
+            <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
+                <h2 class="blog-post-title">{{ post.title }}</h2>
+                <p class="blog-post-meta">{{ post.formated_created_at }} by <a href="#">{{ post.user.name }}</a></p>
                 <p>
-                    This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, lists, tables, images, code, and more are all supported as expected.
-                    <a href="#" class="">Continue reading...</a>
+                    {{ splitLongText(post.body, 191) }}
+                    <a href="#" class="">Continue reading</a>
                 </p>
                 <hr>
             </article>
-            
-            <article class="blog-post">
-                <h2 class="blog-post-title">Other blog post</h2>
-                <p class="blog-post-meta">December 23, 2020 by <a href="#">Mark</a></p>
-
-                <p>
-                    This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, lists, tables, images, code, and more are all supported as expected.
-                    <a href="#" class="">Continue reading...</a>
-                </p>
-                <hr>
-            </article>
-
             <nav aria-label="Page navigation example ">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
-                    <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
+                <!-- <ul class="pagination justify-content-lg-end justify-content-center">
+                    <template v-for="(link, index) in meta.links">
+                        <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
+                            <span class="page-link" v-html="link.label" v-if="link.active"></span>
+                            <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
+                        </li>
+                    </template>
+                </ul> -->
+                <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
+                    <template #prev-nav>
+                        <span>Prev</span>
+                    </template>
+                    <template #next-nav>
+                        <span>Next</span>
+                    </template>
+                </Pagination>
             </nav>
         </div>
 
         <div class="col-md-4">
-            <div class="position-sticky" style="top: 2rem;">
+            <div class="position-sticky" style="top: 4rem;">
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic">About</h4>
                     <p class="mb-4">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
@@ -128,28 +124,46 @@
 </template>
 
 <script>
+    import { splitLongText } from '../../plugin/helper.js';
+    import Pagination from 'laravel-vue-pagination';
+
     export default {
+        components: {
+            Pagination,
+        },
         data() {
             return {
                 posts: {},
+                meta: {},
                 routeName: this.$route.meta.title,
             }
         },
         created() {
-            this.getBlog();
             this.$event.emit('breadcrumbs', { 
                 title: this.routeName, 
                 breadcrumbs: {
                     '#': this.routeName,
                 } 
             });
+
+            this.getPosts();
         },
         methods: {
-            async getBlog() {
-                // Testing API call
-                await this.$axios.get("/api/v1/post")
+            splitLongText,
+            changePage(link) { 
+                const url = new URL(link);
+                const qParams = new URLSearchParams(url.search);
+
+                return qParams.get('page');
+            },
+            async getPosts(page = 1) {
+                await this.$axios.get(`/api/v1/post?page=${page}`)
                     .then(({ data }) => {
                         console.log(data);
+
+                        const { posts, meta } = data.data
+                        this.posts = posts;
+                        this.meta = meta;
 
                         return data;
                     })
