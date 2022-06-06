@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center" v-if="processing">
+    <div class="d-flex justify-content-center mb-4 mt-2" v-if="processing">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>

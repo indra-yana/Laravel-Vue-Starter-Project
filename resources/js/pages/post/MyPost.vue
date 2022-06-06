@@ -181,7 +181,8 @@
                         this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
-                    }).finally(() => {
+                    })
+                    .finally(() => {
                         this.isProcessing = false;
                     });
             }

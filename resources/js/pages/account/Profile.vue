@@ -6,6 +6,9 @@
                     <NavAccount/>
                 </div>
                 <div class="card-body bg-primary-soft">
+
+                    <Spinner :processing='isProcessing'/>
+
                     <form @submit.prevent="update()" autocomplete="off">
                         <div class="form-group row mb-3">
                             <label for="name" class="col-sm-4 col-form-label text-md-right">Name <span class="text-danger">*</span></label>
@@ -79,11 +82,13 @@
     import NavAccount from '../../components/NavAccount.vue';
     import { mapState } from 'pinia'
     import { authState } from '../.././store/authState.js';
+    import Spinner from '../../components/Spinner.vue';
 
     export default {
-        components: { NavAccount },
+        components: { NavAccount, Spinner },
         data() {
             return {
+                isProcessing: false,
                 routeName: this.$route.meta.title,
                 isProcessing: false,
                 validation: {},
@@ -114,6 +119,8 @@
         },
         methods: {
             async getUser() {
+                this.isProcessing = true;
+
                 await this.$axios.get("/api/v1/user")
                     .then(({ data }) => {
                         const user = data.data;
@@ -122,9 +129,14 @@
                         return data;
                     })
                     .catch(({ response: { data } }) => {
-                        console.log(data);
+                        const { message, errors = {} } = data;
+
+                        this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
+                    })
+                    .finally(() => {
+                        this.isProcessing = false;
                     });
             },
             async update() {

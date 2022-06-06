@@ -6,6 +6,9 @@
                     <NavAccount/>
                 </div>
                 <div class="card-body bg-primary-soft">
+                    
+                    <Spinner :processing='isProcessing'/>
+
                     <form @submit.prevent="updateSocialLink()" autocomplete="off">
                         <div class="form-group row mb-3" v-for="(socials, key, index) in form.social_links">
                             <label :for="key" class="col-sm-4 col-form-label text-md-right">{{ key }} <span class="text-danger">*</span></label>
@@ -35,11 +38,13 @@
     import NavAccount from '../../components/NavAccount.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././store/authState.js';
+    import Spinner from '../../components/Spinner.vue';
 
     export default {
-        components: { NavAccount },
+        components: { NavAccount, Spinner },
         data() {
             return {
+                isProcessing: false,
                 routeName: this.$route.meta.title,
                 isProcessing: false,
                 validation: {},
@@ -68,6 +73,8 @@
         },
         methods: {
             async getSocialink() {
+                this.isProcessing = true;
+
                 await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
                     .then(({ data }) => {
                         const { social_links: socialLink } = data.data;
@@ -77,9 +84,14 @@
                         return data;
                     })
                     .catch(({ response: { data } }) => {
-                        console.log(data);
+                        const { message, errors = {} } = data;
+
+                        this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
+                    })
+                    .finally(() => {
+                        this.isProcessing = false;
                     });
             },
             async updateSocialLink() {
