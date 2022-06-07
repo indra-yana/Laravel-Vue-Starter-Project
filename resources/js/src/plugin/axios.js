@@ -18,7 +18,7 @@ axios.interceptors.response.use((response) => { return response }, (error) => {
                 useAuthState.logout();
                 useAuthState.$patch((state) => {
                     state.session.active = false;
-                    state.session.message = "Your session has expired. Please refresh this page to start new session";
+                    state.session.message = 'Your session has expired. Please refresh this page to start new session. <a href="javascript:window.location.reload(true)">Refresh!</a>';
                 });
     
                 // return router.push({name: 'login'});
