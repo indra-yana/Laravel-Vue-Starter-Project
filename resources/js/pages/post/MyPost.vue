@@ -129,11 +129,11 @@
 </template>
 
 <script>
-    import { splitLongText } from '../../plugin/helper.js';
+    import { splitLongText } from '../../src/plugin/helper.js';
     import Pagination from 'laravel-vue-pagination';
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia'
-    import { myPostState } from '../.././store/myPostState.js';
+    import { myPostState } from '../.././src/store/myPostState.js';
 
     export default {
         components: {

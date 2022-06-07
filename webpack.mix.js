@@ -13,6 +13,6 @@ require("dotenv").config();
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/plugin/axios.js', 'public/js/plugin')
+    .js('resources/js/src/plugin/axios.js', 'public/js/src/plugin')
     .vue()
     .sass('resources/sass/app.scss', 'public/css');

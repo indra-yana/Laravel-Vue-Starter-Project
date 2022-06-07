@@ -5,6 +5,7 @@
 /public/js/app.*
 /public/js/echo.js
 /public/js/plugin/*
+/public/js/src/plugin/*
 /storage/*.key
 /vendor
 .env

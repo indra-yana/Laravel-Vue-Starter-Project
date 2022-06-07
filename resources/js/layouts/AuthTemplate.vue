@@ -23,7 +23,7 @@
     import MainNavigation from './MainNavigation.vue'
     import Footer from './Footer.vue';
     import Alert from '../components/Alert.vue';
-    import { authState } from '.././store/authState.js';
+    import { authState } from '.././src/store/authState.js';
   
     export default {
         components: {

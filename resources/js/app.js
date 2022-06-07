@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
 
-import "./bootstrap";
+import "./src/plugin/bootstrap";
 import AppTemplate from "./layouts/AppTemplate.vue";
 import router from './router';
 import { createPinia } from 'pinia';
-import persitedState from './plugin/persistedState';
+import persitedState from './src/plugin/persistedState';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import axios from './plugin/axios';
+import axios from './src/plugin/axios.js';
 import mitt from 'mitt';
 
 // Global Components

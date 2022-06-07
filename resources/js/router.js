@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 // Data Store
-import { authState } from './store/authState.js';
+import { authState } from './src/store/authState.js';
 
 // Auth
 import Login from "./pages/auth/Login.vue";

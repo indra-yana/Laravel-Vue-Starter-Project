@@ -81,7 +81,7 @@
 <script>
     import NavAccount from '../../components/NavAccount.vue';
     import { mapState } from 'pinia'
-    import { authState } from '../.././store/authState.js';
+    import { authState } from '../.././src/store/authState.js';
     import Spinner from '../../components/Spinner.vue';
 
     export default {

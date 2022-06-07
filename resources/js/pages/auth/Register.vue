@@ -92,8 +92,8 @@
 
 <script>
     import { mapState } from 'pinia'
-    import { registerState } from '../.././store/registerState.js';
-    import { authState } from '../.././store/authState.js';
+    import { registerState } from '../.././src/store/registerState.js';
+    import { authState } from '../.././src/store/authState.js';
 
     export default {
         data() {
