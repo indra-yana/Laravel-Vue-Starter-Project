@@ -132,6 +132,8 @@
     import { splitLongText } from '../../plugin/helper.js';
     import Pagination from 'laravel-vue-pagination';
     import Spinner from '../../components/Spinner.vue';
+    import { mapState } from 'pinia'
+    import { myPostState } from '../.././store/myPostState.js';
 
     export default {
         components: {
@@ -141,8 +143,6 @@
         data() {
             return {
                 isProcessing: false,
-                posts: {},
-                meta: {},
                 routeName: this.$route.meta.title,
             }
         },
@@ -154,7 +154,12 @@
                 } 
             });
 
-            this.getPosts();
+            if (!this.posts) {
+                this.getPosts();
+            }
+        },
+        computed: {
+            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
         },
         methods: {
             splitLongText,
@@ -170,8 +175,9 @@
                 await this.$axios.get(`/api/v1/post?page=${page}`)
                     .then(({ data }) => {
                         const { posts, meta } = data.data
-                        this.posts = posts;
-                        this.meta = meta;
+
+                        this.setPosts(posts);
+                        this.setMeta(meta);
 
                         return data;
                     })
