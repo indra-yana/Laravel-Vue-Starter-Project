@@ -29,7 +29,7 @@ class SocialLinkController extends Controller
 
             return SendResponse::success($result, __('message.retrieve_success'));
         } catch (\Throwable $th) {
-            return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
+            return SendResponse::error([], $th->getMessage(), '', $th);
         }
     }
 
@@ -47,7 +47,7 @@ class SocialLinkController extends Controller
 
             return SendResponse::success($result, __('message.create_success'));
         } catch (\Throwable $th) {
-            return SendResponse::error([], $th->getMessage(), '', $th->getCode(), $th);
+            return SendResponse::error([], $th->getMessage(), '', $th);
         }
     }
 

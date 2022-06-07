@@ -40,23 +40,20 @@ class SendResponse
      * @param array $result
      * @param string $message
      * @param string $redirectPath
-     * @param integer $code
      * @param Throwable $th
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-	public static function error($result = [], $message = 'Something went wrong!', $redirectPath = '', $code = 500, Throwable $th = null)
+	public static function error($result = [], $message = 'Something went wrong!', $redirectPath = '', Throwable $th = null)
 	{
+        $code = $th ? ($th->getCode() > 505 || $th->getCode() == 0 ? 500 : $th->getCode()) : 500;
+
         if ($th instanceof ValidationException) {
             $result = $th->errors();
             $code = $th->status;
         }
 
-        if ($code > 505) {
-            $code = 500;
-        }
-
 		$response = [
-            'code' => $code = $code ?: 500,
+            'code' => $code,
             'status' => 'error',
             'message' => $message,
             'errors' => $result,
