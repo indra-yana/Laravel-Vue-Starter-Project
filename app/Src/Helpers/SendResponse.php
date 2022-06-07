@@ -62,6 +62,10 @@ class SendResponse
             'errors' => $result,
         ];
 
+        if (!$redirectPath && !request()->wantsJson()) {
+            return abort($code, $message);
+        }
+
 		return request()->wantsJson()
                     ? new JsonResponse($response, $code)
                     : redirect()->intended($redirectPath)->withInput()->withErrors($response);

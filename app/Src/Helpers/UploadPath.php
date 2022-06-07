@@ -24,7 +24,7 @@ class UploadPath
      */
 	public static function post(string $key)
 	{
-		return "uploads/avatar/$key";
+		return "uploads/post/$key";
 	}
 
 }
