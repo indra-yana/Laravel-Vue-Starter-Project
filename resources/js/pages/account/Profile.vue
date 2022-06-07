@@ -80,9 +80,9 @@
 
 <script>
     import NavAccount from '../../components/NavAccount.vue';
+    import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia'
     import { authState } from '../.././src/store/authState.js';
-    import Spinner from '../../components/Spinner.vue';
 
     export default {
         components: { NavAccount, Spinner },
@@ -112,10 +112,14 @@
                 } 
             });
 
-            this.getUser();
+            if (!this.auth.user) {
+                this.getUser();
+            } else {
+                this.updateFormValue(this.auth.user);
+            }
         },
         computed: { 
-            ...mapState(authState, ['loggedIn']),
+            ...mapState(authState, ['loggedIn', 'auth']),
         },
         methods: {
             async getUser() {
