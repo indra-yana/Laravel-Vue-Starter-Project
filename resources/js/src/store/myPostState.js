@@ -6,7 +6,7 @@ const myPostState = defineStore('myPostState', {
         meta: null,
     }),
     getters: {
-        getposts() {
+        getPosts() {
             return this.posts;
         },
     },

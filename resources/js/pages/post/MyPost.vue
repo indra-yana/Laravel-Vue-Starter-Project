@@ -117,10 +117,14 @@
                 <div class="p-4 mb-3 bg-light rounded">
                     <h4 class="fst-italic">Find Me</h4>
                     <div class="d-flex justify-content-start">
-                        <a href="#" class="btn btn-outline-danger m-2" title="Google"><i class="fab fa-google"> </i></a>
-                        <a href="#" class="btn btn-outline-primary m-2" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-info m-2" title="Twitter"><i class="fab fa-twitter"> </i></a>
-                        <a href="#" class="btn btn-outline-secondary m-2" title="Github"><i class="fab fa-github"> </i></a>
+                        <div v-if="hasSocialLink">
+                            <template v-for="(social, key, index) in socialLinks">
+                                <a :href="social.base_url +social.link" class="btn m-2" :class="social.button" :title="key" v-if="social.link" target="_blank"><i :class="social.icon"> </i></a>                                
+                            </template>
+                        </div>
+                        <div v-else>
+                            <span><router-link :to="{ name: 'account.social' }">Add social link</router-link></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,8 +136,10 @@
     import { splitLongText } from '../../src/plugin/helper.js';
     import Pagination from 'laravel-vue-pagination';
     import Spinner from '../../components/Spinner.vue';
-    import { mapState } from 'pinia'
+    import { mapState } from 'pinia';
+    import { authState } from '../.././src/store/authState.js';
     import { myPostState } from '../.././src/store/myPostState.js';
+    import { socialLinkState } from '../.././src/store/socialLinkState.js';
 
     export default {
         components: {
@@ -146,7 +152,7 @@
                 routeName: this.$route.meta.title,
             }
         },
-        created() {
+        async created() {
             this.$event.emit('breadcrumbs', { 
                 title: this.routeName, 
                 breadcrumbs: {
@@ -155,11 +161,28 @@
             });
 
             if (!this.posts) {
-                this.getPosts();
+                await this.getPosts();
+            }
+
+            if (!this.socialLinks) {
+                await this.getSocialink();
             }
         },
         computed: {
+            ...mapState(authState, ['auth']),
             ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
+            ...mapState(socialLinkState, ['socialLinks', 'setSocialLinks']),
+            hasSocialLink() {
+                if (this.socialLinks) {
+                    let filtered = Object.entries(this.socialLinks).filter(([key, value]) => {
+                        return value.link != null;
+                    });
+
+                    return filtered.length > 0;
+                }
+
+                return false;
+            },
         },
         methods: {
             splitLongText,
@@ -191,7 +214,29 @@
                     .finally(() => {
                         this.isProcessing = false;
                     });
-            }
+            },
+            async getSocialink() {
+                this.isProcessing = true;
+
+                await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
+                    .then(({ data }) => {
+                        const { social_links: socialLinks } = data.data;
+
+                        this.setSocialLinks(socialLinks);
+
+                        return data;
+                    })
+                    .catch(({ response: { data } }) => {
+                        const { message, errors = {} } = data;
+
+                        this.$event.emit('flash-message', { message, type: "error" });
+
+                        return false;
+                    })
+                    .finally(() => {
+                        this.isProcessing = false;
+                    });
+            },
         },
     }
 </script>

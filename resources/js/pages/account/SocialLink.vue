@@ -36,9 +36,10 @@
 
 <script>
     import NavAccount from '../../components/NavAccount.vue';
+    import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
-    import Spinner from '../../components/Spinner.vue';
+    import { socialLinkState } from '../.././src/store/socialLinkState.js';
 
     export default {
         components: { NavAccount, Spinner },
@@ -63,10 +64,15 @@
                 }
             });
 
-            this.getSocialink();
+            if (!this.socialLinks) {
+                this.getSocialink();
+            } else {
+                this.updateFormValue(this.socialLinks);
+            }
         },
         computed: {
             ...mapState(authState, ['auth']),
+            ...mapState(socialLinkState, ['socialLinks', 'setSocialLinks']),
             getValidation() {
                 return this.validation;
             }
@@ -77,9 +83,10 @@
 
                 await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
                     .then(({ data }) => {
-                        const { social_links: socialLink } = data.data;
+                        const { social_links: socialLinks } = data.data;
 
-                        this.updateFormValue(socialLink);
+                        this.updateFormValue(socialLinks);
+                        this.setSocialLinks(socialLinks);
 
                         return data;
                     })
@@ -101,9 +108,10 @@
                 await this.$axios.post('/api/v1/social-link/create', this.form)
                     .then(({ data }) => {
                         const { message } = data;
-                        const { social_links: socialLink } = data.data;
+                        const { social_links: socialLinks } = data.data;
 
-                        this.updateFormValue(socialLink);
+                        this.updateFormValue(socialLinks);
+                        this.setSocialLinks(socialLinks);
 
                         this.$event.emit('flash-message', { message, type: "success" });
                     }).catch(({ response: { data } }) => {
