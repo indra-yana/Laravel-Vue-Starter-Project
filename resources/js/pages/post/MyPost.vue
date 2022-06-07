@@ -63,7 +63,7 @@
             <div v-if="!isProcessing">
                 <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
                     <h2 class="blog-post-title">{{ post.title }}</h2>
-                    <p class="blog-post-meta">{{ post.formated_created_at }} by <a href="#">{{ post.user.name }}</a></p>
+                    <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
                     <p>
                         {{ splitLongText(post.body, 191) }}
                         <a href="#" class="">Continue reading</a>
