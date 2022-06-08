@@ -95,7 +95,14 @@
             <div class="position-sticky" style="top: 4rem;">
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic">About</h4>
-                    <p class="mb-4">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
+                    <div class="d-flex mb-4">
+                        <div class="flex-shrink-0">
+                            <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="62" height="62" class="rounded-circle border border-1 border-secondary shadow-sm">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-md btn-outline-primary w-100">SUPPORT ME</button>
                 </div>
 
