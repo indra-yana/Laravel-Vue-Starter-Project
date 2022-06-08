@@ -103,7 +103,7 @@
                             <p class="">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-md btn-outline-primary w-100">SUPPORT ME</button>
+                    <button type="button" class="btn btn-md btn-outline-primary w-100" id="btn-support">SUPPORT ME</button>
                 </div>
 
                 <div class="p-4 mb-3 bg-light rounded">
@@ -147,6 +147,7 @@
     import { authState } from '../.././src/store/authState.js';
     import { myPostState } from '../.././src/store/myPostState.js';
     import { socialLinkState } from '../.././src/store/socialLinkState.js';
+    import $ from 'jquery';
 
     export default {
         components: {
