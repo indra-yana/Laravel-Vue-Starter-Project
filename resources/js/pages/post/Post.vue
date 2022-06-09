@@ -7,25 +7,18 @@
             
             <Spinner :processing='isProcessing'/>
 
-            <div class="table-responsive p-2">
+            <div class="table-responsive p-2" v-once>
                 <table class="table table-striped pb-3 pt-3" id="dtPost">
                     <thead class="">
                         <tr>
-                            <th scope="col" class="text-left">Title</th>
-                            <th scope="col" class="text-left">Body</th>
+                            <th scope="col" class="text-center">Title</th>
+                            <th scope="col" class="text-center">Body</th>
                             <th scope="col" class="text-center">Created At</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <template v-for="(post, index) in posts" :key="post.id">
-                            <tr >
-                                <td scope="col" class="text-left">{{ post.title }}</td>
-                                <td scope="col" class="text-left">{{ post.body }}</td>
-                                <td scope="col" class="text-center">{{ post.formated_created_at }}</td>
-                                <td scope="col" class="text-center">Edit | Delete</td>
-                            </tr>
-                        </template> -->
+                        
                     </tbody>
                 </table>
             </div>
@@ -76,19 +69,23 @@
                     '#': this.routeName,
                 } 
             });
-
-            if (!this.posts) {
-                await this.getPosts();
-            }
         },
         mounted() {
-            if (this.dataTable == null) {
+            this.buildDataTable();
+        },
+        computed: {
+            ...mapState(authState, ['auth']),
+            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
+        },
+        methods: {
+            splitLongText,
+            buildDataTable() {
                 this.dataTable = $('#dtPost').DataTable({
                     stateSave: true,
                     processing: true,
                     responsive: true,
                     serverSide: true,
-                    destroy: false,
+                    destroy: true,
                     ajax: {
                         url: '/api/v1/post/dt-table.json',
                         type: 'GET',
@@ -103,12 +100,14 @@
                             data: 'title',
                             name: 'title',
                             width: '15%',
-                            defaultContent: 'N/A'
+                            className: 'text-left',
+                            defaultContent: 'N/A',
                         },
                         {
                             data: 'body',
                             name: 'body',
                             width: '20%',
+                            className: 'text-left',
                             defaultContent: 'N/A'
                         },
                         {
@@ -116,6 +115,7 @@
                             name: 'formated_created_at',
                             searchable: false,
                             width: '15%',
+                            className: 'text-center',
                             defaultContent: 'N/A'
                         },
                         {
@@ -123,41 +123,12 @@
                             name: 'formated_created_atactions',
                             width: '10%',
                             searchable: false,
+                            className: 'text-center',
                             defaultContent: 'N/A'
                         },
                     ]
                 });
             }
-        },
-        computed: {
-            ...mapState(authState, ['auth']),
-            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
-        },
-        methods: {
-            splitLongText,
-            async getPosts(page = 1) {
-                this.isProcessing = true;
-
-                await this.$axios.get(`/api/v1/post?page=${page}`)
-                    .then(({ data }) => {
-                        const { posts, meta } = data.data
-
-                        this.setPosts(posts);
-                        this.setMeta(meta);
-
-                        return data;
-                    })
-                    .catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
-
-                        this.$event.emit('flash-message', { message, type: "error" });
-
-                        return false;
-                    })
-                    .finally(() => {
-                        this.isProcessing = false;
-                    });
-            },
         },
     }
 </script>
