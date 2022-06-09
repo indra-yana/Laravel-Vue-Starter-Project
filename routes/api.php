@@ -43,6 +43,7 @@ Route::group(['prefix' => 'v1/post', 'middleware' => ['auth:sanctum']], function
     Route::get('/', [PostController::class, 'userPost']);
     Route::get('{id}/show', [PostController::class, 'show']);
     Route::get('{id}/detail', [PostController::class, 'detail']);
+    Route::get('dt-table.json', [PostController::class, 'dtTableJson']);
     Route::post('create', [PostController::class, 'create']);
     Route::put('update', [PostController::class, 'update']);
     Route::delete('delete', [PostController::class, 'delete']);

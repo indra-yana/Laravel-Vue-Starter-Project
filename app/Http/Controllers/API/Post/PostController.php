@@ -121,4 +121,22 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * Get data for datatable json.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Src\Helpers\SendResponse
+     */
+    public function dtTableJson(Request $request)
+    {
+        try {
+            $request->merge(['user_id' => $request->user()->id]);
+            $result = $this->service->dtTableJson($request->all());
+
+            return $result;
+        } catch (\Throwable $th) {
+            return SendResponse::error([], $th->getMessage(), '', $th);
+        }
+    }
+
 }

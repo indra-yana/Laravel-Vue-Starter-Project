@@ -95,6 +95,19 @@ class PostService implements IBaseService {
     }
 
     /**
+     * Get data for datatable format.
+     *
+     * @param array $data
+     * @return \Yajra\DataTables\Facades\DataTables
+     */
+    public function dtTableJson(array $data)
+    {
+        $model = $this->model->query()->where('user_id', $data['user_id']);
+
+        return datatables()->of($model)->toJson();
+    }
+
+    /**
      * Create a new data.
      *
      * @param array $data

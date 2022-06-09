@@ -18,14 +18,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template v-for="(post, index) in posts" :key="post.id">
+                        <!-- <template v-for="(post, index) in posts" :key="post.id">
                             <tr >
                                 <td scope="col" class="text-left">{{ post.title }}</td>
                                 <td scope="col" class="text-left">{{ post.body }}</td>
                                 <td scope="col" class="text-center">{{ post.formated_created_at }}</td>
                                 <td scope="col" class="text-center">Edit | Delete</td>
                             </tr>
-                        </template>
+                        </template> -->
                     </tbody>
                 </table>
             </div>
@@ -66,6 +66,7 @@
             return {
                 isProcessing: false,
                 routeName: this.$route.meta.title,
+                dataTable: null,
             }
         },
         async created() {
@@ -81,9 +82,52 @@
             }
         },
         mounted() {
-            $('#dtPost').DataTable({
-                responsive: true,
-            });
+            if (this.dataTable == null) {
+                this.dataTable = $('#dtPost').DataTable({
+                    stateSave: true,
+                    processing: true,
+                    responsive: true,
+                    serverSide: true,
+                    destroy: false,
+                    ajax: {
+                        url: '/api/v1/post/dt-table.json',
+                        type: 'GET',
+                        // For custom filtered
+                        // data: (data) => {
+                        //     data.dataFiltered = $('#form-filters').serializeJSON();
+                        // }
+                    },
+                    columns: [
+                        // { data: 'DT_Number', name: 'DT_Number', width: '5%', orderable: false, searchable: false },
+                        {
+                            data: 'title',
+                            name: 'title',
+                            width: '15%',
+                            defaultContent: 'N/A'
+                        },
+                        {
+                            data: 'body',
+                            name: 'body',
+                            width: '20%',
+                            defaultContent: 'N/A'
+                        },
+                        {
+                            data: 'formated_created_at',
+                            name: 'formated_created_at',
+                            searchable: false,
+                            width: '15%',
+                            defaultContent: 'N/A'
+                        },
+                        {
+                            // data: 'formated_created_at',
+                            name: 'formated_created_atactions',
+                            width: '10%',
+                            searchable: false,
+                            defaultContent: 'N/A'
+                        },
+                    ]
+                });
+            }
         },
         computed: {
             ...mapState(authState, ['auth']),
