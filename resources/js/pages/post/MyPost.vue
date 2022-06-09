@@ -56,7 +56,7 @@
         <h2 class="mb-4 fst-italic text-white">
             Recent Post
         </h2>
-        <div class="col-md-8 p-4 mb-3 bg-light rounded">
+        <div class="col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
             <Spinner :processing='isProcessing'/>
 
@@ -91,10 +91,10 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="position-sticky" style="top: 4rem;">
-                <div class="p-4 mb-3 bg-primary-soft rounded">
-                    <h4 class="fst-italic">About</h4>
+        <div class="col-lg-4 order-lg-2 order-1 p-0 ps-lg-3 mb-3">
+            <div class="position-sticky d-grid gap-3" style="top: 4rem;">
+                <div class="p-4 bg-primary-soft rounded">
+                    <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">About</h4>
                     <div class="d-flex mb-4">
                         <div class="flex-shrink-0">
                             <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="62" height="62" class="rounded-circle border border-1 border-secondary shadow-sm">
@@ -106,7 +106,7 @@
                     <button type="button" class="btn btn-md btn-outline-primary w-100" id="btn-support">SUPPORT ME</button>
                 </div>
 
-                <div class="p-4 mb-3 bg-light rounded">
+                <div class="p-4 bg-light rounded">
                     <h4 class="fst-italic">Categories</h4>
                     <ol class="list-unstyled mb-0">
                         <li><a href="#">Laravel</a></li>
@@ -121,7 +121,7 @@
                     </ol>
                 </div>
 
-                <div class="p-4 mb-3 bg-light rounded">
+                <div class="p-4 bg-light rounded">
                     <h4 class="fst-italic">Find Me</h4>
                     <div class="d-flex justify-content-start">
                         <div v-if="hasSocialLink">
