@@ -18,6 +18,7 @@ import DashboardTemplate from "./layouts/DashboardTemplate.vue";
 // Inner Page
 import Dashboard from "./pages/dashboard/Dashboard.vue";
 import MyPost from "./pages/post/MyPost.vue";
+import Post from "./pages/post/Post.vue";
 import Profile from "./pages/account/Profile.vue";
 import ChangePassword from "./pages/account/ChangePassword.vue";
 import SocialLink from "./pages/account/SocialLink.vue";
@@ -158,10 +159,10 @@ const routes = [
     },
 
     /*
-    * Account Routes
+    * Manage Account Routes
     */
     {
-        path: "/account",
+        path: "/manage/account",
         name: 'account',
         component: DashboardTemplate,
         redirect: { name: 'account.profile' },
@@ -191,6 +192,45 @@ const routes = [
                 meta:{
                     requiresAuth: true,
                     title: `Social Link`
+                }
+            }, 
+        ],
+    },
+
+    /*
+    * Manage Post Routes
+    */
+    {
+        path: "/manage/post",
+        name: 'post',
+        component: DashboardTemplate,
+        redirect: { name: 'post.index' },
+        children: [
+            {
+                name: 'post.index',
+                path: 'index',
+                component: Post,
+                meta:{
+                    requiresAuth: true,
+                    title: `Manage Post`
+                }
+            }, 
+            {
+                name: 'post.create',
+                path: 'create',
+                component: Post,
+                meta:{
+                    requiresAuth: true,
+                    title: `Create Post`
+                }
+            }, 
+            {
+                name: 'post.update',
+                path: 'update/:id',
+                component: Post,
+                meta:{
+                    requiresAuth: true,
+                    title: `Update Post`
                 }
             }, 
         ],

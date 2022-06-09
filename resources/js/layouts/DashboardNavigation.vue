@@ -17,7 +17,7 @@
                             Manage
                         </a>
                         <ul class="dropdown-menu" :class="{ 'show': isActive }" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Post</a></li>
+                            <li><router-link :to="{ name: 'post' }" class="dropdown-item" active-class="active" exact>Post</router-link></li>
                             <li><router-link :to="{ name: 'account' }" class="dropdown-item" active-class="active" exact>Account</router-link></li>
                             <!-- <li><hr class="dropdown-divider"></li> -->
                             <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
@@ -70,6 +70,9 @@
                     'account.password',
                     'account.profile',
                     'account.social',
+                    'post.index',
+                    'post.create',
+                    'post.update',
                 ].includes(this.$route.name);
             },
         },
