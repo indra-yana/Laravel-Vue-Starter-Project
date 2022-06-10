@@ -15,13 +15,18 @@ import Confirm from "./pages/auth/password/Confirm.vue";
 import AuthTemplate from "./layouts/AuthTemplate.vue";
 import DashboardTemplate from "./layouts/DashboardTemplate.vue";
 
-// Inner Page
+// Dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
-import MyPost from "./pages/post/MyPost.vue";
-import Post from "./pages/post/Post.vue";
+
+// Manage Account
 import Profile from "./pages/account/Profile.vue";
 import ChangePassword from "./pages/account/ChangePassword.vue";
 import SocialLink from "./pages/account/SocialLink.vue";
+
+// Manage Post
+import MyPost from "./pages/post/MyPost.vue";
+import Post from "./pages/post/Post.vue";
+import PostCreate from "./pages/post/Create.vue";
 
 // Outter Page
 import Landing from "./pages/landing/Landing.vue";
@@ -218,7 +223,7 @@ const routes = [
             {
                 name: 'post.create',
                 path: 'create',
-                component: Post,
+                component: PostCreate,
                 meta:{
                     requiresAuth: true,
                     title: `Create Post`
