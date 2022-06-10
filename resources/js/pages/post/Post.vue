@@ -1,8 +1,5 @@
 <template>
     <div class="row mx-auto">
-        <h2 class="mb-4 fst-italic text-white">
-            Post Lists
-        </h2>
         <div class="col-lg-9 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
             <Spinner :processing='isProcessing'/>
@@ -28,8 +25,8 @@
             <div class="position-sticky" style="top: 4rem;">
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
-                    <button type="button" class="btn btn-md btn-primary w-100 w-50-md mb-3 shadow" id="btn-support">CREATE</button>
-                    <button type="button" class="btn btn-md btn-danger w-100 shadow" id="btn-support">DELETE SELECTED</button>
+                    <router-link :to="{ name: 'post.create' }" class="btn btn-md btn-primary w-100 w-50-md mb-3 shadow-sm">Create</router-link>
+                    <!-- <button type="button" class="btn btn-md btn-danger w-100 shadow" id="btn-support">DELETE SELECTED</button> -->
                 </div>
             </div>
         </div>

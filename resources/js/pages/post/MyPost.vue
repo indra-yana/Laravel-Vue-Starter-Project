@@ -53,9 +53,6 @@
         </div>
     </div> -->
     <div class="row mx-auto">
-        <h2 class="mb-4 fst-italic text-white">
-            Recent Post
-        </h2>
         <div class="col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
             <Spinner :processing='isProcessing'/>
