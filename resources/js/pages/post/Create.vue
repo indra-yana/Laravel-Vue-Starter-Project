@@ -21,10 +21,7 @@
                 </div>
             </div>
             <div class="bd-callout bd-callout-warning">
-                <h3 id="making-popovers-work-for-keyboard-and-assistive-technology-users">Making popovers work for keyboard and assistive technology users</h3>
-                <p>To allow keyboard users to activate your popovers, you should only add them to HTML elements that are traditionally keyboard-focusable and interactive (such as links or form controls). Although arbitrary HTML elements (such as <code>&lt;span&gt;</code>s) can be made focusable by adding the <code>tabindex="0"</code> attribute, this will add potentially annoying and confusing tab stops on non-interactive elements for keyboard users, and most assistive technologies currently do not announce the popover’s content in this situation. Additionally, do not rely solely on <code>hover</code> as the trigger for your popovers, as this will make them impossible to trigger for keyboard users.</p>
-                <p>While you can insert rich, structured HTML in popovers with the <code>html</code> option, we strongly recommend that you avoid adding an excessive amount of content. The way popovers currently work is that, once displayed, their content is tied to the trigger element with the <code>aria-describedby</code> attribute. As a result, the entirety of the popover’s content will be announced to assistive technology users as one long, uninterrupted stream.</p>
-                <p>Additionally, while it is possible to also include interactive controls (such as form elements or links) in your popover (by adding these elements to the <code>allowList</code> of allowed attributes and tags), be aware that currently the popover does not manage keyboard focus order. When a keyboard user opens a popover, focus remains on the triggering element, and as the popover usually does not immediately follow the trigger in the document’s structure, there is no guarantee that moving forward/pressing <kbd>TAB</kbd> will move a keyboard user into the popover itself. In short, simply adding interactive controls to a popover is likely to make these controls unreachable/unusable for keyboard users and users of assistive technologies, or at the very least make for an illogical overall focus order. In these cases, consider using a modal dialog instead.</p>
+                <div id="content-editor"></div>
             </div>
         </div>
         <div class="col-lg-3 order-lg-2 order-1 p-0 ps-lg-3">
@@ -32,9 +29,13 @@
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
                     <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-sm btn-success w-100 w-50-md shadow-sm">Save</button>
-                        <button type="button" class="btn btn-sm btn-secondary w-100 w-50-md shadow-sm">Preview</button>
-                        <router-link :to="{ name: 'post' }" class="btn btn-link w-100 ">Back</router-link>
+                        <button type="button" class="btn btn-success w-100 w-50-md shadow-sm" @click="save()">Save</button>
+                        <div class="d-flex justify-content-start gap-2 mt-2">
+                            <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
+                            <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" title="Refresh" @click="refresh()"><i class="fas fa-sync"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary shadow-sm" title="Preview" @click="preview()"><i class="fas fa-eye"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" title="Clear Content" @click="clear()"><i class="fas fa-times-circle"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,23 +44,32 @@
 </template>
 
 <script>
-    import { splitLongText } from '../../src/plugin/helper.js';
-    import Pagination from 'laravel-vue-pagination';
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
-    import { myPostState } from '../.././src/store/myPostState.js';
-    import $ from 'jquery';
+    import { postState } from '../.././src/store/postState.js';
 
-    import 'datatables.net-bs5';
-    import 'datatables.net-responsive-bs5';
-    import 'datatables.net-buttons-bs5';
-    import 'datatables.net-colreorder-bs5';
+    // Editor JS
+    import EditorJS from "@editorjs/editorjs";
+    import Header from '@editorjs/header';
+    import List from '@editorjs/list';
+    import CodeTool from '@editorjs/code';
+    import Paragraph from '@editorjs/paragraph';
+    import Embed from '@editorjs/embed';
+    import Table from '@editorjs/table';
+    import Checklist from '@editorjs/checklist';
+    import Marker from '@editorjs/marker';
+    import Warning from '@editorjs/warning';
+    import RawTool from '@editorjs/raw';
+    import Quote from '@editorjs/quote';
+    import InlineCode from '@editorjs/inline-code';
+    import Delimiter from '@editorjs/delimiter';
+    import SimpleImage from '@editorjs/simple-image';
+    import LinkTool from '@editorjs/link';
 
     export default {
         components: {
-            Pagination,
-            Spinner
+            Spinner,
         },
         data() {
             return {
@@ -70,8 +80,198 @@
                     title: '',
                     body: '',
                     thumbnail: null,
-                    previewThumbnail: '/images/sample-img1.jpg',
+                    previewThumbnail: '/images/sample-img3.jpg',
                 },
+                editor: null,
+                editorConfig: {
+                    holder: "content-editor",
+                    placeholder: 'Write your post here...',
+                    tools:{
+                        header: {
+                            class: Header,
+                            config: {
+                                placeholder: 'Enter a header',
+                                levels: [2, 3, 4],
+                                defaultLevel: 3,
+                            }
+                        },
+                        list: {
+                            class: List,
+                            inlineToolbar: true,
+                        },
+                        code: {
+                            class: CodeTool
+                        },
+                        paragraph: {
+                            class: Paragraph,
+                        },
+                        embed: {
+                            class: Embed,
+                            config: {
+                            services: {
+                                    youtube: true,
+                                    coub: true,
+                                    imgur: true
+                                }
+                            }
+                        },
+                        table: {
+                            class: Table,
+                            inlineToolbar: true,
+                            config: {
+                                rows: 2,
+                                cols: 3,
+                            },
+                        },
+                        checklist: {
+                            class: Checklist,
+                        },
+                        Marker: {
+                            class: Marker,
+                            shortcut: 'CMD+SHIFT+M',
+                        },
+                        warning: {
+                            class: Warning,
+                            inlineToolbar: true,
+                            shortcut: 'CMD+SHIFT+W',
+                            config: {
+                                titlePlaceholder: 'Title',
+                                messagePlaceholder: 'Message',
+                            },
+                        },
+                        raw: RawTool,
+                        quote: {
+                            class: Quote,
+                            inlineToolbar: true,
+                            shortcut: 'CMD+SHIFT+O',
+                            config: {
+                                quotePlaceholder: 'Enter a quote',
+                                captionPlaceholder: 'Quote\'s author',
+                            },
+                        },
+                        inlineCode: {
+                            class: InlineCode,
+                            shortcut: 'CMD+SHIFT+M',
+                        },
+                        delimiter: Delimiter,
+                        image: SimpleImage,
+                        linkTool: {
+                            class: LinkTool,
+                            config: {
+                                endpoint: "",
+                            }
+                        },
+                    },
+                    onReady: () => {
+                        // console.log('Editor\'s content changed!');
+                    },
+                    onChange: (args) => {
+                        // console.log('Editor\'s content changed!');
+                    },
+                },
+                editorData: {
+                    "time": 1591362820044,
+                    "blocks": [
+                        {
+                            "type" : "header",
+                            "data" : {
+                                "text" : "Editor.js",
+                                "level" : 2
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
+                            }
+                        },
+                        {
+                            "type" : "header",
+                            "data" : {
+                                "text" : "Key features",
+                                "level" : 3
+                            }
+                        },
+                        {
+                            "type" : "list",
+                            "data" : {
+                                "style" : "unordered",
+                                "items" : [
+                                    "It is a block-styled editor",
+                                    "It returns clean data output in JSON",
+                                    "Designed to be extendable and pluggable with a simple API"
+                                ]
+                            }
+                        },
+                        {
+                            "type" : "header",
+                            "data" : {
+                                "text" : "What does it mean «block-styled editor»",
+                                "level" : 3
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark class=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "There are dozens of <a href=\"https://github.com/editor-js\">ready-to-use Blocks</a> and the <a href=\"https://editorjs.io/creating-a-block-tool\">simple API</a> for creation any Block you need. For example, you can implement Blocks for Tweets, Instagram posts, surveys and polls, CTA-buttons and even games."
+                            }
+                        },
+                        {
+                            "type" : "header",
+                            "data" : {
+                                "text" : "What does it mean clean data output",
+                                "level" : 3
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "Classic WYSIWYG-editors produce raw HTML-markup with both content data and content appearance. On the contrary, Editor.js outputs JSON object with data of each Block. You can see an example below"
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "Given data can be used as you want: render with HTML for <code class=\"inline-code\">Web clients</code>, render natively for <code class=\"inline-code\">mobile apps</code>, create markup for <code class=\"inline-code\">Facebook Instant Articles</code> or <code class=\"inline-code\">Google AMP</code>, generate an <code class=\"inline-code\">audio version</code> and so on."
+                            }
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "Clean data is useful to sanitize, validate and process on the backend."
+                            }
+                        },
+                        {
+                            "type" : "delimiter",
+                            "data" : {}
+                        },
+                        {
+                            "type" : "paragraph",
+                            "data" : {
+                                "text" : "We have been working on this project more than three years. Several large media projects help us to test and debug the Editor, to make it's core more stable. At the same time we significantly improved the API. Now, it can be used to create any plugin for any task. Hope you enjoy. 😏"
+                            }
+                        },
+                        {
+                            "type" : "image",
+                            "data" : {
+                                "file" : {
+                                    "url" : "https://codex.so/public/app/img/external/codex2x.png"
+                                },
+                                "caption" : "",
+                                "withBorder" : false,
+                                "stretched" : false,
+                                "withBackground" : false
+                            }
+                        },
+                    ],
+                    "version" : "2.18.0"
+                }
             }
         },
         async created() {
@@ -82,15 +282,26 @@
                     '#': this.routeName,
                 } 
             });
+
+            this.initEditor();
         },
         mounted() {
         },
+        watch: {
+            editor: function(val, oldVal) {
+                val.isReady.then(() => {
+                    this.refresh();
+                    // console.log('Editor.js is ready to work!');
+                }).catch((reason) => {
+                    console.log(`Editor.js initialization failed because of ${reason}`)
+                });
+            }
+        },
         computed: {
             ...mapState(authState, ['auth']),
-            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
+            ...mapState(postState, ['setTempEditorData', 'getTempEditorData']),
         },
         methods: {
-            splitLongText,
             handleInput(inputName, event = null) {
                 switch (inputName) {
                     case 'title':
@@ -108,16 +319,54 @@
                         break;
                 }
             },
+            initEditor() {
+                this.editor = new EditorJS(this.editorConfig);
+            },
+            renderEditorData(data) {
+                if (data != null) { 
+                    this.editor.blocks.render(data); 
+                }
+            },
+            save() {
+                this.editor.save().then(blocks => {
+                    this.setTempEditorData(blocks);
+                });
+            },
+            preview() {
+                // TODO
+            },
+            clear() {
+                this.editor.blocks.clear();
+                this.setTempEditorData(null);
+            },
+            refresh() {
+                this.renderEditorData(this.getTempEditorData);
+            }
         },
     }
 </script>
 
-<style>
-    @import '/vendor/datatable/DataTables-1.11.4/css/dataTables.bootstrap5.min.css';
-    @import '/vendor/datatable/ext/Responsive-2.2.9/css/responsive.bootstrap5.min.css';
-</style>
+<style >
+    .ce-toolbar__actions {
+        right: 110%;
+    }
 
-<style scoped>
+    .ce-block__content {
+        max-width: 85%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .ce-toolbar__actions {
+            right: -5px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        .ce-toolbar__actions {
+            right: auto;
+        }
+    }
+
     .bd-callout {
         padding: 1.25rem;
         margin-top: 1.25rem;

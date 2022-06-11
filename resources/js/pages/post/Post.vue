@@ -39,7 +39,7 @@
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
-    import { myPostState } from '../.././src/store/myPostState.js';
+    import { postState } from '../.././src/store/postState.js';
     import $ from 'jquery';
 
     import 'datatables.net-bs5';
@@ -72,7 +72,7 @@
         },
         computed: {
             ...mapState(authState, ['auth']),
-            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
+            ...mapState(postState, ['posts', 'meta', 'setPosts', 'setMeta']),
         },
         methods: {
             splitLongText,
@@ -82,7 +82,8 @@
                     processing: true,
                     responsive: true,
                     serverSide: true,
-                    destroy: true,
+                    destroy: false,
+                    autoWidth: false,
                     ajax: {
                         url: '/api/v1/post/dt-table.json',
                         type: 'GET',

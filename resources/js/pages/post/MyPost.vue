@@ -142,7 +142,7 @@
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
-    import { myPostState } from '../.././src/store/myPostState.js';
+    import { postState } from '../.././src/store/postState.js';
     import { socialLinkState } from '../.././src/store/socialLinkState.js';
     import $ from 'jquery';
 
@@ -175,7 +175,7 @@
         },
         computed: {
             ...mapState(authState, ['auth']),
-            ...mapState(myPostState, ['posts', 'meta', 'setPosts', 'setMeta']),
+            ...mapState(postState, ['posts', 'meta', 'setPosts', 'setMeta']),
             ...mapState(socialLinkState, ['socialLinks', 'setSocialLinks']),
             hasSocialLink() {
                 if (this.socialLinks) {

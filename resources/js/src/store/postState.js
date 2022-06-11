@@ -1,13 +1,17 @@
 import { defineStore } from 'pinia';
 
-const myPostState = defineStore('myPostState', {
+const postState = defineStore('postState', {
     state: () => ({
         posts: null,
         meta: null,
+        tempEditorData: null,
     }),
     getters: {
         getPosts() {
             return this.posts;
+        },
+        getTempEditorData() {
+            return this.tempEditorData;
         },
     },
     actions:{
@@ -17,7 +21,10 @@ const myPostState = defineStore('myPostState', {
         setMeta(meta) {
             this.meta = meta;
         },
+        setTempEditorData(data) {
+            this.tempEditorData = data;
+        },
     },
 });
 
-export { myPostState };
+export { postState };
