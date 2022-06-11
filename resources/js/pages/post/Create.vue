@@ -7,7 +7,7 @@
             <div class="card text-white rounded">
                 <div class="position-relative" style="width:100%; height:260px;">
                     <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
-                    <div class="position-absolute top-0 end-0 p-2">
+                    <div class="position-absolute top-0 end-0 p-3">
                         <div class="input-group mb-3">
                             <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
                         </div>
@@ -282,10 +282,9 @@
                     '#': this.routeName,
                 } 
             });
-
-            this.initEditor();
         },
         mounted() {
+            this.initEditor();
         },
         watch: {
             editor: function(val, oldVal) {
