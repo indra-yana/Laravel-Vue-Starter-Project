@@ -119,7 +119,7 @@ class PostService implements IBaseService {
 
         $model = $this->model->create([
             'title' => ucwords($data['title']),
-            'body' => $data['body'],
+            'body' => json_decode($data['body']),
             'status' => $data['status'],
             'is_pinned' => $data['is_pinned'],
             'user_id' => $data['user_id'],
@@ -136,7 +136,7 @@ class PostService implements IBaseService {
             $model->save();
         }
 
-        return $this->formatResult($model);
+        return new JsonResource($model);
     }
 
     /**

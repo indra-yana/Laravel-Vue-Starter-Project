@@ -9,7 +9,12 @@
                     <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
                     <div class="position-absolute top-0 end-0 p-3">
                         <div class="input-group mb-3">
-                            <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
+                            <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
+                            <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
+                                <ul class="mb-0 ps-3">
+                                    <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
@@ -34,7 +39,8 @@
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
                     <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-success w-100 w-50-md shadow-sm" @click="save()">Save</button>
+                        <!-- <button type="button" class="btn btn-success w-100 w-50-md shadow-sm" @click="save()" :disabled="isProcessing">Save</button> -->
+                        <SaveButton :class="['w-100', 'w-50-md', 'shadow-sm']" :text="`${'Save'}`" :processing="isProcessing" @click="save()"/>
                         <div class="d-flex justify-content-start gap-2 mt-2">
                             <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
                             <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" title="Refresh" @click="refresh()"><i class="fas fa-sync"></i></button>
@@ -347,11 +353,11 @@
                 this.editor.save().then(blocks => {
                     if (!blocks.blocks.length) return;
                     
-                    this.form.body = blocks;
+                    this.form.body = JSON.stringify(blocks);
                     this.setTempEditorData(blocks);
 
-                    // TODO: do ajax call
-                    console.log(this.form);
+                    // API Call
+                    this.create();
                 });
             },
             preview() {
@@ -363,6 +369,31 @@
             },
             refresh() {
                 this.renderEditorData(this.getTempEditorData);
+            },
+            async create() {
+                this.isProcessing = true;
+                this.validation = {};
+
+                const options = { headers: {'Content-Type': 'multipart/form-data' }};
+                const formData = new FormData();
+
+                for (const item in this.form) {
+                    formData.append(item, this.form[item]);
+                }
+
+                await this.$axios.post('/api/v1/post/create', formData, options)
+                    .then(({ data }) => {
+                        const { message } = data;
+                        
+                        this.$event.emit('flash-message', { message, type: "success" });
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors = {} } = data;
+
+                        this.validation = errors;
+                        this.$event.emit('flash-message', { message, type: "error" });
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
             }
         },
     }

@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title', 255);
-            $table->text('body')->nullable();
+            $table->json('body')->nullable();
             $table->string('thumbnail', 191)->nullable();
             $table->tinyInteger('status')->default(0);          // 0 = draft
             $table->tinyInteger('is_pinned')->default(0);       // 0 = false

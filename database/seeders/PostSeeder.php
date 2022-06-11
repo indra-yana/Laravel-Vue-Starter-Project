@@ -30,7 +30,7 @@ class PostSeeder extends Seeder
                 for ($j=0; $j < Constant::SEEDER_LIMIT; $j++) {
                     Post::create([
                         'title' => $faker->sentence(5, true),
-                        'body' => $faker->sentence(50, true),
+                        // 'body' => $faker->sentence(50, true),
                         // 'thumbnail' => 'sample-img-1.jpg',
                         'status' => $faker->numberBetween(0, 1),
                         'is_pinned' => $faker->numberBetween(0, 1),

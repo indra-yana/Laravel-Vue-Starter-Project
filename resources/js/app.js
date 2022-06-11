@@ -12,6 +12,7 @@ import mitt from 'mitt';
 // Global Components
 import SubmitButton from "./components/SubmitButton.vue";
 import ResetButton from "./components/ResetButton.vue";
+import SaveButton from "./components/SaveButton.vue";
 
 const app = createApp(AppTemplate);
 const emitter = mitt();
@@ -21,6 +22,7 @@ pinia.use(piniaPluginPersistedstate);
 
 // Registering Global Component
 app.component("SubmitButton", SubmitButton)
+    .component("SaveButton", SaveButton)
     .component("ResetButton", ResetButton);
 
 // Registering App Plugin

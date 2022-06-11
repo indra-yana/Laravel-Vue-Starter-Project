@@ -19,6 +19,13 @@ class Post extends Model
     protected $table = 'posts';
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
+    protected $guarded = [];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -27,6 +34,7 @@ class Post extends Model
         'created_at' => 'datetime', 
         'updated_at' => 'datetime',
         'is_pinned' => 'bool',
+        'body' => 'json',
     ];
 
     /**

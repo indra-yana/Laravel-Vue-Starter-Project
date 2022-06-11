@@ -62,8 +62,8 @@
                     <h2 class="blog-post-title">{{ post.title }}</h2>
                     <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
                     <p>
-                        {{ splitLongText(post.body, 191) }}
-                        <a href="#" class="">Continue reading</a>
+                        {{ splitLongText(getPostBody(post.body), 191) }}
+                        {{ post.body ? '<a href="#" class="">Continue reading</a>' : '' }}
                     </p>
                     <hr>
                 </article>
@@ -196,6 +196,9 @@
                 const qParams = new URLSearchParams(url.search);
 
                 return qParams.get('page');
+            },
+            getPostBody(body) {
+                return body ?? 'N/A'; 
             },
             async getPosts(page = 1) {
                 this.isProcessing = true;
