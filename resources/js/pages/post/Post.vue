@@ -110,7 +110,7 @@
                         },
                         {
                             data: 'formated_created_at',
-                            name: 'formated_created_at',
+                            name: 'created_at',
                             searchable: false,
                             width: '15%',
                             className: 'text-center',
@@ -118,9 +118,10 @@
                         },
                         {
                             // data: 'formated_created_at',
-                            name: 'formated_created_atactions',
+                            name: 'actions',
                             width: '10%',
                             searchable: false,
+                            orderable: false,
                             className: 'text-center',
                             defaultContent: 'N/A'
                         },
