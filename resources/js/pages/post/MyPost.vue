@@ -61,9 +61,7 @@
                 <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
                     <h2 class="blog-post-title">{{ post.title }}</h2>
                     <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
-                    <p>
-                        {{ splitLongText(getPostBody(post.body), 191) }}
-                        {{ post.body ? '<a href="#" class="">Continue reading</a>' : '' }}
+                    <p v-html="getPostBody(post.formated_body)">
                     </p>
                     <hr>
                 </article>
@@ -198,7 +196,8 @@
                 return qParams.get('page');
             },
             getPostBody(body) {
-                return body ?? 'N/A'; 
+                // body = `${this.splitLongText(body, 191)} <a href="#" class="">Continue reading</a>`;
+                return body ? `${body} <a href="#" class="">Continue reading...</a>` : 'N/A';
             },
             async getPosts(page = 1) {
                 this.isProcessing = true;
@@ -211,15 +210,13 @@
                         this.setMeta(meta);
 
                         return data;
-                    })
-                    .catch(({ response: { data } }) => {
+                    }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
-                    })
-                    .finally(() => {
+                    }).finally(() => {
                         this.isProcessing = false;
                     });
             },
@@ -233,15 +230,13 @@
                         this.setSocialLinks(socialLinks);
 
                         return data;
-                    })
-                    .catch(({ response: { data } }) => {
+                    }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.$event.emit('flash-message', { message, type: "error" });
 
                         return false;
-                    })
-                    .finally(() => {
+                    }).finally(() => {
                         this.isProcessing = false;
                     });
             },

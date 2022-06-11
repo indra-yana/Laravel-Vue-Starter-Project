@@ -102,7 +102,7 @@
                             defaultContent: 'N/A',
                         },
                         {
-                            data: 'body',
+                            data: 'formated_body',
                             name: 'body',
                             width: '20%',
                             className: 'text-left',

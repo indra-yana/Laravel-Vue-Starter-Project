@@ -104,7 +104,7 @@ class PostService implements IBaseService {
     {
         $model = $this->model->query()->where('user_id', $data['user_id']);
 
-        return datatables()->of($model)->toJson();
+        return datatables()->of($model)->rawColumns(['formated_body'])->toJson();
     }
 
     /**
