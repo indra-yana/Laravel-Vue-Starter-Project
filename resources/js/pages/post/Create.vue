@@ -14,7 +14,12 @@
                     </div>
                     <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
                         <div class="form-group p-3">
-                            <input type="text" name="title" class="form-control mb-2" placeholder="Post title..." autofocus required >
+                            <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
+                            <div v-if="validation.title" class="invalid-feedback mt-1" >
+                                <ul class="mb-0 ps-3">
+                                    <li v-for="(error, index) in validation.title">{{ error }}</li>
+                                </ul>
+                            </div>
                             <p class="card-text m-0"><i class="far fa-calendar-alt"></i> Thursday, 02-06-2022</p>
                         </div>
                     </div>
@@ -34,7 +39,7 @@
                             <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
                             <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" title="Refresh" @click="refresh()"><i class="fas fa-sync"></i></button>
                             <button type="button" class="btn btn-sm btn-outline-secondary shadow-sm" title="Preview" @click="preview()"><i class="fas fa-eye"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" title="Clear Content" @click="clear()"><i class="fas fa-times-circle"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" title="Clear Post Body" @click="clear()"><i class="fas fa-times-circle"></i></button>
                         </div>
                     </div>
                 </div>
@@ -78,8 +83,10 @@
                 routeName: this.$route.meta.title,
                 form: {
                     title: '',
-                    body: '',
+                    body: {},
                     thumbnail: null,
+                    status: 0,
+                    is_pinned: 0,
                     previewThumbnail: '/images/sample-img3.jpg',
                 },
                 editor: null,
@@ -282,6 +289,10 @@
                     '#': this.routeName,
                 } 
             });
+
+            if (this.getCreateForm) {
+                this.form = this.getCreateForm;
+            }
         },
         mounted() {
             this.initEditor();
@@ -294,11 +305,17 @@
                 }).catch((reason) => {
                     console.log(`Editor.js initialization failed because of ${reason}`)
                 });
+            },
+            form: {
+                handler(val, oldVal) {
+                    this.setCreateForm(val);
+                },
+                deep: true
             }
         },
         computed: {
             ...mapState(authState, ['auth']),
-            ...mapState(postState, ['setTempEditorData', 'getTempEditorData']),
+            ...mapState(postState, ['getCreateForm', 'setCreateForm', 'setTempEditorData', 'getTempEditorData']),
         },
         methods: {
             handleInput(inputName, event = null) {
@@ -328,7 +345,13 @@
             },
             save() {
                 this.editor.save().then(blocks => {
+                    if (!blocks.blocks.length) return;
+                    
+                    this.form.body = blocks;
                     this.setTempEditorData(blocks);
+
+                    // TODO: do ajax call
+                    console.log(this.form);
                 });
             },
             preview() {
