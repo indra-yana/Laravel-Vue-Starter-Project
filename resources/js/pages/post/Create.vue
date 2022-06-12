@@ -1,6 +1,6 @@
 <template>
     <div class="row mx-auto">
-        <div class="col-lg-9 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
+        <div class="col-xl-9 col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
             <Spinner :processing='isProcessing'/>
 
@@ -34,12 +34,44 @@
                 <div id="content-editor"></div>
             </div>
         </div>
-        <div class="col-lg-3 order-lg-2 order-1 p-0 ps-lg-3">
+        <div class="col-xl-3 col-lg-4 order-lg-2 order-1 p-0 ps-lg-3">
             <div class="position-sticky" style="top: 4rem;">
                 <div class="p-4 mb-3 bg-primary-soft rounded">
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
+                    <label class="form-label fw-bold">Save as <span class="text-danger">*</span></label>
+                    <div class="input-group mb-3">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="status" id="status-draft" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="0" checked>
+                            <label class="form-check-label" for="status-draft">Draft</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="status" id="status-publish" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="1">
+                            <label class="form-check-label" for="status-publish">Publish</label>
+                        </div>
+                        <!-- Trick to display invalid-feedback -->
+                        <input type="radio" :class="{'is-invalid': validation.status}" hidden>
+                        <div v-if="validation.status" class="invalid-feedback mt-1" >
+                            <ul class="mb-0 ps-3">
+                                <li v-for="(error, index) in validation.status">{{ error }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" name="is_pinned" id="is_pinned" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.is_pinned" value="1">
+                            </div>
+                            <label class="form-check-label fw-bold" for="is_pinned"> Pinned</label>
+                        </div>
+                        <!-- Trick to display invalid-feedback -->
+                        <input type="checkbox" :class="{'is-invalid': validation.status}" hidden>
+                        <div v-if="validation.is_pinned" class="invalid-feedback mt-1" >
+                            <ul class="mb-0 ps-3">
+                                <li v-for="(error, index) in validation.is_pinned">{{ error }}</li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="d-grid gap-2">
-                        <!-- <button type="button" class="btn btn-success w-100 w-50-md shadow-sm" @click="save()" :disabled="isProcessing">Save</button> -->
                         <SaveButton :class="['w-100', 'w-50-md', 'shadow-sm']" :text="`${'Save'}`" :processing="isProcessing" @click="save()"/>
                         <div class="d-flex justify-content-start gap-2 mt-2">
                             <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
