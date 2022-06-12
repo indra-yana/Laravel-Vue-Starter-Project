@@ -53,7 +53,7 @@
         </div>
     </div> -->
     <div class="row mx-auto">
-        <div class="col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
+        <div class="col-lg-8 pt-3 ps-2 pe-2 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
             <Spinner :processing='isProcessing'/>
 
@@ -62,13 +62,30 @@
                     <h5>No data available</h5>
                 </div>
                 <div v-else>
-                    <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
-                        <h2 class="blog-post-title">{{ post.title }}</h2>
+                    <!-- <article class="blog-post" v-for="(post, index) in posts" :key="post.id"> -->
+                        <!-- <h2 class="blog-post-title">{{ post.title }}</h2>
                         <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
                         <p v-html="getPostBody(post.formated_body)">
                         </p>
-                        <hr>
-                    </article>
+                        <hr> -->
+                    <!-- </article> -->
+                    <div class="row mb-2 mx-auto">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mt-3" v-for="(post, index) in posts" :key="post.id">
+                            <div class="card card-hover shadow-sm" style="min-height: 270px;">
+                                <img class="img-fluid border-bottom rounded-top" :src="post.thumbnail || '/images/sample-img3.jpg'" alt="post-thumbnail" style="width:100%; height:145px; object-fit: cover;">
+                                <div class="card-body">
+                                <p class="card-text fw-bold text-elipsis">{{ splitLongText(post.title, 100) }}</p>
+                                <div class="d-flex justify-content-between align-items-center position-absolute bottom-0 start-50 translate-middle-x w-100 p-2">
+                                    <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">{{ post.formated_created_at }}</small>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <nav aria-label="Page navigation example ">
                         <!-- <ul class="pagination justify-content-lg-end justify-content-center">
                             <template v-for="(link, index) in meta.links">
@@ -96,8 +113,10 @@
                 <div class="p-4 bg-primary-soft rounded">
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">About</h4>
                     <div class="d-flex mb-4">
-                        <div class="flex-shrink-0">
+                        <div class="flex-shrink-0 ">
                             <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="62" height="62" class="rounded-circle border border-1 border-secondary shadow-sm">
+                            <br>
+                            <button type="button" class="btn btn-sm btn-link mt-1 w-100">Follow</button>
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <p class="">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
@@ -352,5 +371,20 @@
     }
     .blog-footer p:last-child {
         margin-bottom: 0;
+    }
+
+    .text-elipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+                line-clamp: 2; 
+        -webkit-box-orient: vertical;
+    }
+
+    .card-hover:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+        cursor: pointer; 
     }
 </style>
