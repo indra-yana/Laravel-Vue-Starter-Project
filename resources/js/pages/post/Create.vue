@@ -71,7 +71,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="d-grid gap-2">
+                    <div class="d-grid gap-2 mt-5">
                         <SaveButton :class="['w-100', 'w-50-md', 'shadow-sm']" :text="`${'Save'}`" :processing="isProcessing" @click="save()"/>
                         <div class="d-flex justify-content-start gap-2 mt-2">
                             <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
