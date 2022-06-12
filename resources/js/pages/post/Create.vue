@@ -59,12 +59,12 @@
                     <div class="form-group mb-3">
                         <div class="d-flex justify-content-between">
                             <div class="form-check form-switch">
-                                <input type="checkbox" name="is_pinned" id="is_pinned" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.is_pinned" value="1">
+                                <input type="checkbox" name="is_pinned" id="is_pinned" class="form-check-input" :class="{'is-invalid': validation.is_pinned}" v-model="form.is_pinned" true-value="1" false-value="0">
                             </div>
                             <label class="form-check-label fw-bold" for="is_pinned"> Pinned</label>
                         </div>
                         <!-- Trick to display invalid-feedback -->
-                        <input type="checkbox" :class="{'is-invalid': validation.status}" hidden>
+                        <input type="checkbox" :class="{'is-invalid': validation.is_pinned}" hidden>
                         <div v-if="validation.is_pinned" class="invalid-feedback mt-1" >
                             <ul class="mb-0 ps-3">
                                 <li v-for="(error, index) in validation.is_pinned">{{ error }}</li>

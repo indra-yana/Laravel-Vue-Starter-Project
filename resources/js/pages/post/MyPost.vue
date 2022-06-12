@@ -58,31 +58,36 @@
             <Spinner :processing='isProcessing'/>
 
             <div v-if="!isProcessing">
-                <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
-                    <h2 class="blog-post-title">{{ post.title }}</h2>
-                    <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
-                    <p v-html="getPostBody(post.formated_body)">
-                    </p>
-                    <hr>
-                </article>
-                <nav aria-label="Page navigation example ">
-                    <!-- <ul class="pagination justify-content-lg-end justify-content-center">
-                        <template v-for="(link, index) in meta.links">
-                            <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
-                                <span class="page-link" v-html="link.label" v-if="link.active"></span>
-                                <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
-                            </li>
-                        </template>
-                    </ul> -->
-                    <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
-                        <template #prev-nav>
-                            <span>Prev</span>
-                        </template>
-                        <template #next-nav>
-                            <span>Next</span>
-                        </template>
-                    </Pagination>
-                </nav>
+                <div v-if="!posts.length" class="text-center">
+                    <h5>No data available</h5>
+                </div>
+                <div v-else>
+                    <article class="blog-post" v-for="(post, index) in posts" :key="post.id">
+                        <h2 class="blog-post-title">{{ post.title }}</h2>
+                        <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
+                        <p v-html="getPostBody(post.formated_body)">
+                        </p>
+                        <hr>
+                    </article>
+                    <nav aria-label="Page navigation example ">
+                        <!-- <ul class="pagination justify-content-lg-end justify-content-center">
+                            <template v-for="(link, index) in meta.links">
+                                <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
+                                    <span class="page-link" v-html="link.label" v-if="link.active"></span>
+                                    <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
+                                </li>
+                            </template>
+                        </ul> -->
+                        <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
+                            <template #prev-nav>
+                                <span>Prev</span>
+                            </template>
+                            <template #next-nav>
+                                <span>Next</span>
+                            </template>
+                        </Pagination>
+                    </nav>
+                </div>
             </div>
         </div>
 
