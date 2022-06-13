@@ -9,8 +9,9 @@
                     <thead class="">
                         <tr>
                             <th scope="col" class="text-center">Title</th>
-                            <th scope="col" class="text-center">Body</th>
-                            <th scope="col" class="text-center">Created At</th>
+                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center">Pinned</th>
+                            <th scope="col" class="text-center">Last Updated</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -69,6 +70,17 @@
         },
         mounted() {
             this.buildDataTable();
+            let _this = this;
+
+            $(document).on('click', '.delete', function(){
+                let id = $(this).data('id');
+                _this.delete(id);
+            });
+
+            $(document).on('click', '.edit', function(){
+                let id = $(this).data('id');
+                _this.edit(id);
+            });
         },
         computed: {
             ...mapState(authState, ['auth']),
@@ -76,6 +88,14 @@
         },
         methods: {
             splitLongText,
+            async delete(id) {
+                // TODO
+                console.log('delete', id);
+            },
+            async edit(id) {
+                // TODO
+                console.log('edit', id);
+            },
             buildDataTable() {
                 this.dataTable = $('#dtPost').DataTable({
                     stateSave: true,
@@ -97,37 +117,58 @@
                         {
                             data: 'title',
                             name: 'title',
-                            width: '15%',
+                            width: '20%',
                             className: 'text-left',
                             defaultContent: 'N/A',
                         },
                         {
-                            data: 'formated_body',
-                            name: 'body',
-                            width: '20%',
-                            className: 'text-left',
-                            defaultContent: 'N/A'
+                            data: 'formated_status',
+                            name: 'status',
+                            width: '5%',
+                            className: 'text-center',
+                            defaultContent: 'N/A',
+                            render: function ( data, type, row, meta ) {
+                                return `<span class="badge ${row.status ? 'bg-success' : 'bg-secondary'}">${row.formated_status}</span>`;
+                            }
                         },
                         {
-                            data: 'formated_created_at',
-                            name: 'created_at',
+                            data: 'is_pinned',
+                            name: 'is_pinned',
+                            width: '5%',
+                            className: 'text-center',
+                            defaultContent: 'N/A',
+                            render: function ( data, type, row, meta ) {
+                                return row.is_pinned ? `<i class="fas fa-thumbtack text-danger"></i>` : '';
+                            }
+                        },
+                        {
+                            data: 'formated_updated_at',
+                            name: 'updated_at',
                             searchable: false,
-                            width: '15%',
+                            width: '10%',
                             className: 'text-center',
                             defaultContent: 'N/A'
                         },
                         {
                             // data: 'formated_created_at',
                             name: 'actions',
-                            width: '10%',
+                            width: '5%',
                             searchable: false,
                             orderable: false,
                             className: 'text-center',
-                            defaultContent: 'N/A'
+                            defaultContent: 'N/A',
+                            render: function ( data, type, row, meta ) {
+                                let actions = [
+                                    `<button type="button" class="btn btn-sm btn-outline-primary shadow-sm edit" data-id="${row.id}" title="Edit"><i class="fas fa-edit"></i></button>`,
+                                    `<button type="button" class="btn btn-sm btn-outline-danger shadow-sm delete" data-id="${row.id}" title="Delete"><i class="fas fa-trash"></i></button>`,
+                                ];
+
+                                return actions.join('&nbsp;&nbsp;');
+                            }
                         },
                     ]
                 });
-            }
+            },
         },
     }
 </script>
