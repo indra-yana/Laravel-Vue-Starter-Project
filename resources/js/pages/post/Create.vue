@@ -440,6 +440,18 @@
         max-width: 85%;
     }
 
+    @media screen and (max-width: 1366px) {
+        .ce-toolbar__actions {
+            right: -5px;
+        }
+    }
+
+    @media screen and (max-width: 1280px) {
+        .ce-toolbar__actions {
+            right: -5px;
+        }
+    }
+
     @media screen and (max-width: 1024px) {
         .ce-toolbar__actions {
             right: -5px;
