@@ -104,6 +104,9 @@
                     serverSide: true,
                     destroy: false,
                     autoWidth: false,
+                    language: {
+                        processing: '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i>&nbsp;&nbsp;Processing...',
+                    },
                     ajax: {
                         url: '/api/v1/post/dt-table.json',
                         type: 'GET',
