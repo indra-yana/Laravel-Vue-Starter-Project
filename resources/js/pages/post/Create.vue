@@ -399,6 +399,10 @@
                 this.editor.blocks.clear();
                 this.setTempEditorData(null);
             },
+            resetForm() {
+                this.clear();
+                this.setCreateForm(null);
+            },
             refresh() {
                 this.renderEditorData(this.getTempEditorData);
             },
@@ -417,7 +421,9 @@
                     .then(({ data }) => {
                         const { message } = data;
                         
+                        this.resetForm();
                         this.$event.emit('flash-message', { message, type: "success" });
+                        this.$router.push({name: 'post'});
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
