@@ -1,88 +1,90 @@
 <template>
     <div class="row mx-auto">
-        <div class="col-xl-9 col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
-            
-            <Spinner :processing='isProcessing'/>
+        <form @submit.prevent="save()" class="row p-0 m-0" autocomplete="off">
+            <div class="col-xl-9 col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
+                
+                <Spinner :processing="isProcessing"/>
 
-            <div class="card text-white rounded">
-                <div class="position-relative" style="width:100%; height:260px;">
-                    <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
-                    <div class="position-absolute top-0 end-0 p-3">
+                <div class="card text-white rounded">
+                    <div class="position-relative" style="width:100%; height:260px;">
+                        <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <div class="input-group mb-3">
+                                <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*" >
+                                <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
+                                    <ul class="mb-0 ps-3">
+                                        <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
+                            <div class="form-group p-3">
+                                <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
+                                <div v-if="validation.title" class="invalid-feedback mt-1" >
+                                    <ul class="mb-0 ps-3">
+                                        <li v-for="(error, index) in validation.title">{{ error }}</li>
+                                    </ul>
+                                </div>
+                                <p class="card-text m-0"><i class="far fa-calendar-alt"></i> Thursday, 02-06-2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bd-callout bd-callout-warning">
+                    <div id="content-editor"></div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 order-lg-2 order-1 p-0 ps-lg-3">
+                <div class="position-sticky" style="top: 4rem;">
+                    <div class="p-4 mb-3 bg-primary-soft rounded">
+                        <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
+                        <label class="form-label fw-bold">Save as <span class="text-danger">*</span></label>
                         <div class="input-group mb-3">
-                            <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
-                            <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="status" id="status-draft" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="0" checked>
+                                <label class="form-check-label" for="status-draft">Draft</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="status" id="status-publish" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="1">
+                                <label class="form-check-label" for="status-publish">Publish</label>
+                            </div>
+                            <!-- Trick to display invalid-feedback -->
+                            <input type="radio" :class="{'is-invalid': validation.status}" hidden>
+                            <div v-if="validation.status" class="invalid-feedback mt-1" >
                                 <ul class="mb-0 ps-3">
-                                    <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
+                                    <li v-for="(error, index) in validation.status">{{ error }}</li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
-                        <div class="form-group p-3">
-                            <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
-                            <div v-if="validation.title" class="invalid-feedback mt-1" >
+                        <div class="form-group mb-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" name="is_pinned" id="is_pinned" class="form-check-input" :class="{'is-invalid': validation.is_pinned}" v-model="form.is_pinned" true-value="1" false-value="0">
+                                </div>
+                                <label class="form-check-label fw-bold" for="is_pinned"> Pinned</label>
+                            </div>
+                            <!-- Trick to display invalid-feedback -->
+                            <input type="checkbox" :class="{'is-invalid': validation.is_pinned}" hidden>
+                            <div v-if="validation.is_pinned" class="invalid-feedback mt-1" >
                                 <ul class="mb-0 ps-3">
-                                    <li v-for="(error, index) in validation.title">{{ error }}</li>
+                                    <li v-for="(error, index) in validation.is_pinned">{{ error }}</li>
                                 </ul>
                             </div>
-                            <p class="card-text m-0"><i class="far fa-calendar-alt"></i> Thursday, 02-06-2022</p>
+                        </div>
+                        <div class="d-grid gap-2 mt-5">
+                            <SaveButton :type="'submit'" :class="['w-100', 'w-50-md', 'shadow-sm']" :text="`${'Save'}`" :processing="isProcessing" />
+                            <div class="d-flex justify-content-start gap-2 mt-2">
+                                <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
+                                <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" title="Refresh" @click="refresh()"><i class="fas fa-sync"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary shadow-sm" title="Preview" @click="preview()"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" title="Clear Post Body" @click="clear()"><i class="fas fa-times-circle"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bd-callout bd-callout-warning">
-                <div id="content-editor"></div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 order-lg-2 order-1 p-0 ps-lg-3">
-            <div class="position-sticky" style="top: 4rem;">
-                <div class="p-4 mb-3 bg-primary-soft rounded">
-                    <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">Quick Actions</h4>
-                    <label class="form-label fw-bold">Save as <span class="text-danger">*</span></label>
-                    <div class="input-group mb-3">
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="status" id="status-draft" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="0" checked>
-                            <label class="form-check-label" for="status-draft">Draft</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="status" id="status-publish" class="form-check-input" :class="{'is-invalid': validation.status}" v-model="form.status" value="1">
-                            <label class="form-check-label" for="status-publish">Publish</label>
-                        </div>
-                        <!-- Trick to display invalid-feedback -->
-                        <input type="radio" :class="{'is-invalid': validation.status}" hidden>
-                        <div v-if="validation.status" class="invalid-feedback mt-1" >
-                            <ul class="mb-0 ps-3">
-                                <li v-for="(error, index) in validation.status">{{ error }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <div class="d-flex justify-content-between">
-                            <div class="form-check form-switch">
-                                <input type="checkbox" name="is_pinned" id="is_pinned" class="form-check-input" :class="{'is-invalid': validation.is_pinned}" v-model="form.is_pinned" true-value="1" false-value="0">
-                            </div>
-                            <label class="form-check-label fw-bold" for="is_pinned"> Pinned</label>
-                        </div>
-                        <!-- Trick to display invalid-feedback -->
-                        <input type="checkbox" :class="{'is-invalid': validation.is_pinned}" hidden>
-                        <div v-if="validation.is_pinned" class="invalid-feedback mt-1" >
-                            <ul class="mb-0 ps-3">
-                                <li v-for="(error, index) in validation.is_pinned">{{ error }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2 mt-5">
-                        <SaveButton :class="['w-100', 'w-50-md', 'shadow-sm']" :text="`${'Save'}`" :processing="isProcessing" @click="save()"/>
-                        <div class="d-flex justify-content-start gap-2 mt-2">
-                            <router-link :to="{ name: 'post' }" class="btn btn-sm btn-link  "><i class="fas fa-angle-left"></i> Back</router-link>
-                            <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" title="Refresh" @click="refresh()"><i class="fas fa-sync"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary shadow-sm" title="Preview" @click="preview()"><i class="fas fa-eye"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" title="Clear Post Body" @click="clear()"><i class="fas fa-times-circle"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
 </template>
 
@@ -91,6 +93,7 @@
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
+    import { Toast, DeleteConfirm } from '../../src/plugin/alert.js';
 
     // Editor JS
     import EditorJS from "@editorjs/editorjs";
@@ -136,8 +139,8 @@
                             class: Header,
                             config: {
                                 placeholder: 'Enter a header',
-                                levels: [2, 3, 4],
-                                defaultLevel: 3,
+                                levels: [1, 2, 3, 4, 5],
+                                defaultLevel: 2,
                             }
                         },
                         list: {
@@ -383,12 +386,17 @@
             },
             save() {
                 this.editor.save().then(blocks => {
-                    if (!blocks.blocks.length) return;
+                    if (!blocks.blocks.length) {
+                        Toast.fire({ 
+                            icon: 'warning', 
+                            title: 'The post body is empty.' 
+                        });
+
+                        return false;
+                    };
                     
                     this.form.body = JSON.stringify(blocks);
                     this.setTempEditorData(blocks);
-
-                    // API Call
                     this.create();
                 });
             },
@@ -419,16 +427,26 @@
 
                 await this.$axios.post('/api/v1/post/create', formData, options)
                     .then(({ data }) => {
-                        const { message } = data;
+                        const { message = 'Success!' } = data;
                         
                         this.resetForm();
                         this.$event.emit('flash-message', { message, type: "success" });
                         this.$router.push({name: 'post'});
+
+                        Toast.fire({ 
+                            icon: 'success', 
+                            title: message 
+                        });
                     }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                        const { message = 'Error!', errors = {} } = data;
 
                         this.validation = errors;
                         this.$event.emit('flash-message', { message, type: "error" });
+                        
+                        Toast.fire({ 
+                            icon: 'error', 
+                            title: message 
+                        });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -438,6 +456,8 @@
 </script>
 
 <style >
+    @import '@sweetalert2/theme-wordpress-admin/wordpress-admin.min.css';
+
     .ce-toolbar__actions {
         right: 110%;
     }

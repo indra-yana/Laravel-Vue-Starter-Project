@@ -110,9 +110,9 @@
                         this.$event.emit('flash-message', { message, type: "success" });
                         this.dataTable.ajax.reload();
 
-                        Toast.fire({
-                            icon: 'success',
-                            title: message
+                        Toast.fire({ 
+                            icon: 'success', 
+                            title: message 
                         });
                     }).catch(({ response: { data } }) => {
                         const { message = 'Error!', errors = {} } = data;
@@ -120,15 +120,13 @@
                         this.validation = errors;
                         this.$event.emit('flash-message', { message, type: "error" });
 
-                        Toast.fire({
-                            icon: 'success',
-                            title: message
+                        Toast.fire({ 
+                            icon: 'error', 
+                            title: message 
                         });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
-
-                
             },
             async edit(id) {
                 // TODO
