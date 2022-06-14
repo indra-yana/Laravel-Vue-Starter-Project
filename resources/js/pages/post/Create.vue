@@ -10,7 +10,7 @@
                         <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
                         <div class="position-absolute top-0 end-0 p-3">
                             <div class="input-group mb-3">
-                                <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*" >
+                                <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*" required>
                                 <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
                                     <ul class="mb-0 ps-3">
                                         <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
