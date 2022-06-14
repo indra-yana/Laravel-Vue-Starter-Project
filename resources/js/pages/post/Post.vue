@@ -180,3 +180,13 @@
     @import '/vendor/datatable/DataTables-1.11.4/css/dataTables.bootstrap5.min.css';
     @import '/vendor/datatable/ext/Responsive-2.2.9/css/responsive.bootstrap5.min.css';
 </style>
+
+<style>
+    .dataTables_processing {
+        position:absolute;
+        top:50%;
+        left:50%;
+        right:50%;
+        transform: translate(-50%,-50%);
+    }
+</style>
