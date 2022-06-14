@@ -36,12 +36,13 @@
 
 <script>
     import { splitLongText } from '../../src/plugin/helper.js';
-    import Pagination from 'laravel-vue-pagination';
+    import { Toast, DeleteConfirm } from '../../src/plugin/alert.js';
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
     import $ from 'jquery';
+    import Swal from 'sweetalert2';
 
     import 'datatables.net-bs5';
     import 'datatables.net-responsive-bs5';
@@ -50,7 +51,6 @@
 
     export default {
         components: {
-            Pagination,
             Spinner
         },
         data() {
@@ -74,7 +74,15 @@
 
             $(document).on('click', '.delete', function(){
                 let id = $(this).data('id');
-                _this.delete(id);
+
+                DeleteConfirm.fire({
+                    title: 'Confirm to Delete',
+                    html: 'Are you sure you want delete this data?'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        _this.delete(id);
+                    }
+                });
             });
 
             $(document).on('click', '.edit', function(){
@@ -91,6 +99,10 @@
             async delete(id) {
                 // TODO
                 console.log('delete', id);
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Data deleted successfully!'
+                });
             },
             async edit(id) {
                 // TODO
@@ -179,6 +191,7 @@
 <style>
     @import '/vendor/datatable/DataTables-1.11.4/css/dataTables.bootstrap5.min.css';
     @import '/vendor/datatable/ext/Responsive-2.2.9/css/responsive.bootstrap5.min.css';
+    @import '@sweetalert2/theme-wordpress-admin/wordpress-admin.min.css';
 </style>
 
 <style>
