@@ -4,7 +4,7 @@
             
             <Spinner :processing='isProcessing'/>
 
-            <div class="table-responsive p-2" v-once>
+            <div class="table-responsive p-2" v-show="!isProcessing" >
                 <table class="table table-striped pb-3 pt-3" id="dtPost">
                     <thead class="">
                         <tr>
@@ -97,12 +97,38 @@
         methods: {
             splitLongText,
             async delete(id) {
-                // TODO
-                console.log('delete', id);
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Data deleted successfully!'
-                });
+                this.isProcessing = true;
+
+                const formData = new FormData();
+                formData.append('_method', 'DELETE');
+                formData.append('id', id);
+
+                await this.$axios.post('/api/v1/post/delete', formData)
+                    .then(({ data }) => {
+                        const { message = 'Success!' } = data;
+                        
+                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.dataTable.ajax.reload();
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: message
+                        });
+                    }).catch(({ response: { data } }) => {
+                        const { message = 'Error!', errors = {} } = data;
+
+                        this.validation = errors;
+                        this.$event.emit('flash-message', { message, type: "error" });
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: message
+                        });
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
+
+                
             },
             async edit(id) {
                 // TODO
