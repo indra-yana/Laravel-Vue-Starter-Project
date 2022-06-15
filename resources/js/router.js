@@ -27,6 +27,7 @@ import SocialLink from "./pages/account/SocialLink.vue";
 import MyPost from "./pages/post/MyPost.vue";
 import Post from "./pages/post/Post.vue";
 import PostCreate from "./pages/post/Create.vue";
+import PostUpdate from "./pages/post/Update.vue";
 
 // Outter Page
 import Landing from "./pages/landing/Landing.vue";
@@ -232,7 +233,7 @@ const routes = [
             {
                 name: 'post.update',
                 path: 'update/:id',
-                component: Post,
+                component: PostUpdate,
                 meta:{
                     requiresAuth: true,
                     title: `Update Post`

@@ -21,7 +21,7 @@ class PostValidator {
             'user_id' => 'string|required|uuid|exists:users,id',
             'title' => 'string|required|max:255',
             'body' => 'string|nullable',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2000',
+            'thumbnail' => 'required|image|mimes:jpg,jpeg,png|max:2000',
             'status' => 'nullable|numeric|in:0,1',
             'is_pinned' => 'nullable|numeric|in:0,1',
         ])->validate();
@@ -39,11 +39,10 @@ class PostValidator {
             'id' => 'required|string|uuid|exists:posts,id',
             'title' => 'string|required|max:255',
             'body' => 'string|nullable',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2000',
+            'thumbnail' => @$data['thumbnail'] ? 'required|image|mimes:jpg,jpeg,png|max:2000' : 'nullable',
             'status' => 'numeric|nullable|in:0,1',
             'is_pinned' => 'numeric|nullable|in:0,1',
         ])->validate();
-        
     }
 
     /**

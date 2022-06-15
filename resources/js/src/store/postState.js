@@ -6,6 +6,7 @@ const postState = defineStore('postState', {
         meta: null,
         tempEditorData: null,
         createForm: null,
+        updateForm: null,
     }),
     getters: {
         getPosts() {
@@ -16,6 +17,9 @@ const postState = defineStore('postState', {
         },
         getCreateForm() {
             return this.createForm;
+        },
+        getUpdateForm() {
+            return this.updateForm;
         },
     },
     actions:{
@@ -30,6 +34,9 @@ const postState = defineStore('postState', {
         },
         setCreateForm(form) {
             this.createForm = form;
+        },
+        setUpdateForm(form) {
+            this.updateForm = form;
         },
     },
 });

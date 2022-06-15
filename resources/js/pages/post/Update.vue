@@ -5,34 +5,36 @@
                 
                 <Spinner :processing="isProcessing"/>
 
-                <div class="card text-white rounded">
-                    <div class="position-relative" style="width:100%; height:260px;">
-                        <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
-                        <div class="position-absolute top-0 end-0 p-3">
-                            <div class="input-group mb-3">
-                                <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*" required>
-                                <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
-                                    <ul class="mb-0 ps-3">
-                                        <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
-                                    </ul>
+                <div  v-show="!isProcessing">
+                    <div class="card text-white rounded">
+                        <div class="position-relative" style="width:100%; height:260px;">
+                            <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
+                            <div class="position-absolute top-0 end-0 p-3">
+                                <div class="input-group mb-3">
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
+                                    <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
+                                        <ul class="mb-0 ps-3">
+                                            <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
-                            <div class="form-group p-3">
-                                <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
-                                <div v-if="validation.title" class="invalid-feedback mt-1" >
-                                    <ul class="mb-0 ps-3">
-                                        <li v-for="(error, index) in validation.title">{{ error }}</li>
-                                    </ul>
+                            <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
+                                <div class="form-group p-3">
+                                    <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
+                                    <div v-if="validation.title" class="invalid-feedback mt-1" >
+                                        <ul class="mb-0 ps-3">
+                                            <li v-for="(error, index) in validation.title">{{ error }}</li>
+                                        </ul>
+                                    </div>
+                                    <p class="card-text m-0"><i class="far fa-calendar-alt"></i> {{ form.formated_updated_at }}</p>
                                 </div>
-                                <p class="card-text m-0"><i class="far fa-calendar-alt"></i> Thursday, 02-06-2022</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="bd-callout bd-callout-warning">
-                    <div id="content-editor"></div>
+                    <div class="bd-callout bd-callout-warning">
+                        <div id="content-editor"></div>
+                    </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4 order-lg-2 order-1 p-0 ps-lg-3">
@@ -123,11 +125,13 @@
                 validation: {},
                 routeName: this.$route.meta.title,
                 form: {
+                    id: this.$route.params.id,
                     title: '',
                     body: {},
                     thumbnail: null,
                     status: 0,
                     is_pinned: 0,
+                    formated_updated_at: null,
                     previewThumbnail: '/images/sample-img3.jpg',
                 },
                 editor: null,
@@ -217,109 +221,6 @@
                         // console.log('Editor\'s content changed!');
                     },
                 },
-                editorData: {
-                    "time": 1591362820044,
-                    "blocks": [
-                        {
-                            "type" : "header",
-                            "data" : {
-                                "text" : "Editor.js",
-                                "level" : 2
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
-                            }
-                        },
-                        {
-                            "type" : "header",
-                            "data" : {
-                                "text" : "Key features",
-                                "level" : 3
-                            }
-                        },
-                        {
-                            "type" : "list",
-                            "data" : {
-                                "style" : "unordered",
-                                "items" : [
-                                    "It is a block-styled editor",
-                                    "It returns clean data output in JSON",
-                                    "Designed to be extendable and pluggable with a simple API"
-                                ]
-                            }
-                        },
-                        {
-                            "type" : "header",
-                            "data" : {
-                                "text" : "What does it mean «block-styled editor»",
-                                "level" : 3
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark class=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "There are dozens of <a href=\"https://github.com/editor-js\">ready-to-use Blocks</a> and the <a href=\"https://editorjs.io/creating-a-block-tool\">simple API</a> for creation any Block you need. For example, you can implement Blocks for Tweets, Instagram posts, surveys and polls, CTA-buttons and even games."
-                            }
-                        },
-                        {
-                            "type" : "header",
-                            "data" : {
-                                "text" : "What does it mean clean data output",
-                                "level" : 3
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "Classic WYSIWYG-editors produce raw HTML-markup with both content data and content appearance. On the contrary, Editor.js outputs JSON object with data of each Block. You can see an example below"
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "Given data can be used as you want: render with HTML for <code class=\"inline-code\">Web clients</code>, render natively for <code class=\"inline-code\">mobile apps</code>, create markup for <code class=\"inline-code\">Facebook Instant Articles</code> or <code class=\"inline-code\">Google AMP</code>, generate an <code class=\"inline-code\">audio version</code> and so on."
-                            }
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "Clean data is useful to sanitize, validate and process on the backend."
-                            }
-                        },
-                        {
-                            "type" : "delimiter",
-                            "data" : {}
-                        },
-                        {
-                            "type" : "paragraph",
-                            "data" : {
-                                "text" : "We have been working on this project more than three years. Several large media projects help us to test and debug the Editor, to make it's core more stable. At the same time we significantly improved the API. Now, it can be used to create any plugin for any task. Hope you enjoy. 😏"
-                            }
-                        },
-                        {
-                            "type" : "image",
-                            "data" : {
-                                "file" : {
-                                    "url" : "https://codex.so/public/app/img/external/codex2x.png"
-                                },
-                                "caption" : "",
-                                "withBorder" : false,
-                                "stretched" : false,
-                                "withBackground" : false
-                            }
-                        },
-                    ],
-                    "version" : "2.18.0"
-                }
             }
         },
         async created() {
@@ -331,9 +232,12 @@
                 } 
             });
 
-            if (this.getCreateForm) {
-                this.form = this.getCreateForm;
+            if (this.getUpdateForm) {
+                this.form = this.getUpdateForm;
+            } else {
+                this.getPost();
             }
+
         },
         mounted() {
             this.initEditor();
@@ -349,14 +253,14 @@
             },
             form: {
                 handler(val, oldVal) {
-                    this.setCreateForm(val);
+                    this.setUpdateForm(val);
                 },
                 deep: true
             }
         },
         computed: {
             ...mapState(authState, ['auth']),
-            ...mapState(postState, ['getCreateForm', 'setCreateForm', 'setTempEditorData', 'getTempEditorData']),
+            ...mapState(postState, ['getUpdateForm', 'setUpdateForm', 'setTempEditorData', 'getTempEditorData']),
         },
         methods: {
             handleInput(inputName, event = null) {
@@ -397,7 +301,7 @@
                     
                     this.form.body = JSON.stringify(blocks);
                     this.setTempEditorData(blocks);
-                    this.create();
+                    this.update();
                 });
             },
             preview() {
@@ -409,17 +313,18 @@
             },
             resetForm() {
                 this.clear();
-                this.setCreateForm(null);
+                this.setUpdateForm(null);
             },
             refresh() {
                 this.renderEditorData(this.getTempEditorData);
             },
-            async create() {
+            async update() {
                 this.isProcessing = true;
                 this.validation = {};
 
                 const options = { headers: {'Content-Type': 'multipart/form-data' }};
                 const formData = new FormData();
+                formData.append('_method', 'PUT');
 
                 for (const item in this.form) {
                     if (this.form[item] != null) {
@@ -427,7 +332,7 @@
                     }
                 }
 
-                await this.$axios.post('/api/v1/post/create', formData, options)
+                await this.$axios.post('/api/v1/post/update', formData, options)
                     .then(({ data }) => {
                         const { message = 'Success!' } = data;
                         
@@ -442,7 +347,38 @@
                     }).finally(() => {
                         this.isProcessing = false;
                     });
-            }
+            },
+            async getPost() {
+                this.isProcessing = true;
+
+                await this.$axios.get(`/api/v1/post/${this.form.id}/show`)
+                    .then(({ data }) => {
+                        const { id, title, body, status, is_pinned, formated_updated_at, thumbnail: previewThumbnail } = data.data;
+                        this.form = {
+                            id,
+                            title,
+                            body,
+                            status,
+                            is_pinned,
+                            thumbnail: null,
+                            previewThumbnail,
+                            formated_updated_at,
+                        };
+
+                        this.setTempEditorData(body);
+                        this.refresh();
+
+                        return data;
+                    }).catch(({ response: { data } }) => {
+                        const { message, errors = {} } = data;
+
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
+
+                        return false;
+                    }).finally(() => {
+                        this.isProcessing = false;
+                    });
+            },
         },
     }
 </script>

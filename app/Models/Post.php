@@ -34,7 +34,6 @@ class Post extends Model
     protected $casts = [
         'created_at' => 'datetime', 
         'updated_at' => 'datetime',
-        'is_pinned' => 'bool',
         'body' => 'json',
     ];
 

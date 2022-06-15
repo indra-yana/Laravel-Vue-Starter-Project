@@ -149,16 +149,14 @@ class PostService implements IBaseService {
     {
         $this->validator->validateUpdate($data);
 
-        $model = $this->model->where(['id' => $data['id'], 'user_id' => $data['user_id']])
-                            ->update([
-                                'title' => ucwords($data['title']),
-                                'body' => $data['body'],
-                                'status' => $data['status'],
-                                'is_pinned' => $data['is_pinned'],
-                            ]);
+        $model = $this->model->where(['user_id' => $data['user_id']])->find($data['id']);
+        $model->title = ucwords($data['title']);
+        $model->body = json_decode($data['body']);
+        $model->status = $data['status'];
+        $model->is_pinned = $data['is_pinned'];
+        $model->save();
 
         if (@$data['thumbnail']) {
-            // $model = $this->show($data['id']);   // Uncomment this if needed
             $config = [
                 "prefix" => "post",
                 "path" => UploadPath::post($model->id),
@@ -173,7 +171,7 @@ class PostService implements IBaseService {
             $model->save();
         }
 
-        return $this->formatResult($model);
+        return new JsonResource($model);
     }
 
     /**

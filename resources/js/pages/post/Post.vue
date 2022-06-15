@@ -86,7 +86,7 @@
 
             $(document).on('click', '.edit', function(){
                 let id = $(this).data('id');
-                _this.edit(id);
+                _this.$router.push({ name: 'post.update',  params: { id }});
             });
         },
         computed: {
@@ -116,10 +116,6 @@
                     }).finally(() => {
                         this.isProcessing = false;
                     });
-            },
-            async edit(id) {
-                // TODO
-                console.log('edit', id);
             },
             buildDataTable() {
                 this.dataTable = $('#dtPost').DataTable({
