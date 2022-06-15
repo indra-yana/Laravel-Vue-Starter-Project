@@ -93,7 +93,7 @@
                     .catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
 
                         return false;
                     })
@@ -113,12 +113,12 @@
                         this.updateFormValue(socialLinks);
                         this.setSocialLinks(socialLinks);
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
                     }).catch(({ response: { data } }) => {
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });

@@ -12,7 +12,7 @@ const Toast = Swal.mixin({
     }
 });
 
-const DeleteConfirm = Swal.mixin({
+const ToastDelete = Swal.mixin({
     icon: "warning",
     showCancelButton: true,
     showConfirmButton: true,
@@ -27,5 +27,5 @@ const DeleteConfirm = Swal.mixin({
 
 export {
     Toast,
-    DeleteConfirm
+    ToastDelete
 };

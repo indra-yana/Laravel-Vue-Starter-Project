@@ -70,7 +70,7 @@
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
 
                         if (hasVerifiedEmail) {
                             this.hasVerifiedEmail(email_verified_at);
@@ -85,7 +85,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -99,7 +99,7 @@
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
 
                         if (hasVerifiedEmail) {
                             this.hasVerifiedEmail(email_verified_at);
@@ -114,7 +114,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -128,7 +128,7 @@
                         const { message } = data;
                         const { hasVerifiedEmail, email_verified_at = null } = data.data;
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
 
                         if (hasVerifiedEmail) {
                             this.hasVerifiedEmail(email_verified_at);
@@ -143,7 +143,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });

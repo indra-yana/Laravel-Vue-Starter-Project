@@ -7,6 +7,8 @@
 </template>
 
 <script>
+    import { Toast } from '.././src/plugin/alert.js';
+
     export default {
         data() {
             return {
@@ -28,16 +30,28 @@
                     type: "error",
                     message: message,
                 };
+
+                Toast.fire({ 
+                    icon: 'error', 
+                    title: message 
+                });
             });
 
             // // Display flash message from any page
             this.$event.on('flash-message', (e) => {
-                let { type = "alert-info", message } = e;
+                let { type = "alert-info", message, withToast = false } = e;
                 this.alert = {
                     show: true,
                     type,
                     message,
                 };
+
+                if (withToast) {
+                    Toast.fire({ 
+                        icon: type, 
+                        title: message 
+                    });
+                }
             });
         },
         methods: {
@@ -83,3 +97,7 @@
         },
     }
 </script>
+
+<style>
+    @import '@sweetalert2/theme-wordpress-admin/wordpress-admin.min.css';
+</style>

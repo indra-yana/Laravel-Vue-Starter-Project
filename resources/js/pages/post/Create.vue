@@ -93,7 +93,7 @@
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
-    import { Toast, DeleteConfirm } from '../../src/plugin/alert.js';
+    import { Toast } from '../../src/plugin/alert.js';
 
     // Editor JS
     import EditorJS from "@editorjs/editorjs";
@@ -430,23 +430,13 @@
                         const { message = 'Success!' } = data;
                         
                         this.resetForm();
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
                         this.$router.push({name: 'post'});
-
-                        Toast.fire({ 
-                            icon: 'success', 
-                            title: message 
-                        });
                     }).catch(({ response: { data } }) => {
                         const { message = 'Error!', errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
-                        
-                        Toast.fire({ 
-                            icon: 'error', 
-                            title: message 
-                        });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -456,8 +446,6 @@
 </script>
 
 <style >
-    @import '@sweetalert2/theme-wordpress-admin/wordpress-admin.min.css';
-
     .ce-toolbar__actions {
         right: 110%;
     }

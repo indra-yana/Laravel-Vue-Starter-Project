@@ -102,7 +102,7 @@
                         const { message } = data;
                         const { user } = data.data;
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
                         this.loggedIn(user);
                         setTimeout(() => {
                             this.$event.emit('flash-message', { message: "Redirecting...", type: "info" });
@@ -114,7 +114,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });

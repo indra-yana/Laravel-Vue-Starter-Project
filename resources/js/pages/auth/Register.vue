@@ -137,7 +137,7 @@
                         const { message } = data;
                         const { user } = data.data;
 
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
                         // this.resetFormData();
                         this.loggedIn(user);
                         setTimeout(() => {
@@ -150,7 +150,7 @@
                         const { message, errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         // this.setFormData(this.form);
                         this.isProcessing = false;

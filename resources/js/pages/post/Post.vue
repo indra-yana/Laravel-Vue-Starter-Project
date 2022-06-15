@@ -36,13 +36,12 @@
 
 <script>
     import { splitLongText } from '../../src/plugin/helper.js';
-    import { Toast, DeleteConfirm } from '../../src/plugin/alert.js';
+    import { ToastDelete } from '../../src/plugin/alert.js';
     import Spinner from '../../components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
     import $ from 'jquery';
-    import Swal from 'sweetalert2';
 
     import 'datatables.net-bs5';
     import 'datatables.net-responsive-bs5';
@@ -75,7 +74,7 @@
             $(document).on('click', '.delete', function(){
                 let id = $(this).data('id');
 
-                DeleteConfirm.fire({
+                ToastDelete.fire({
                     title: 'Confirm to Delete',
                     html: 'Are you sure you want delete this data?'
                 }).then((result) => {
@@ -107,23 +106,13 @@
                     .then(({ data }) => {
                         const { message = 'Success!' } = data;
                         
-                        this.$event.emit('flash-message', { message, type: "success" });
+                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
                         this.dataTable.ajax.reload();
-
-                        Toast.fire({ 
-                            icon: 'success', 
-                            title: message 
-                        });
                     }).catch(({ response: { data } }) => {
                         const { message = 'Error!', errors = {} } = data;
 
                         this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error" });
-
-                        Toast.fire({ 
-                            icon: 'error', 
-                            title: message 
-                        });
+                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
                     }).finally(() => {
                         this.isProcessing = false;
                     });
@@ -215,7 +204,6 @@
 <style>
     @import '/vendor/datatable/DataTables-1.11.4/css/dataTables.bootstrap5.min.css';
     @import '/vendor/datatable/ext/Responsive-2.2.9/css/responsive.bootstrap5.min.css';
-    @import '@sweetalert2/theme-wordpress-admin/wordpress-admin.min.css';
 </style>
 
 <style>
