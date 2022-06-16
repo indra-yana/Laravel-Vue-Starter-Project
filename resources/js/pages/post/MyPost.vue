@@ -77,7 +77,7 @@
                                 <p class="card-text fw-bold text-elipsis">{{ splitLongText(post.title, 100) }}</p>
                                 <div class="d-flex justify-content-between align-items-center position-absolute bottom-0 start-50 translate-middle-x w-100 p-3">
                                     <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <router-link :to="{ name: 'post.detail', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">View</router-link>
                                     <router-link :to="{ name: 'post.update', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">Edit</router-link>
                                     </div>
                                     <small class="text-muted">{{ post.formated_created_at }}</small>
