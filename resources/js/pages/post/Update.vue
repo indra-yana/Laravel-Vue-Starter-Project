@@ -233,11 +233,14 @@
             });
 
             if (this.getUpdateForm) {
-                this.form = this.getUpdateForm;
+                if (this.form.id != this.getUpdateForm.id) {
+                    this.getPost();
+                } else {
+                    this.form = this.getUpdateForm;
+                }
             } else {
                 this.getPost();
             }
-
         },
         mounted() {
             this.initEditor();
@@ -361,20 +364,19 @@
                             status,
                             is_pinned,
                             thumbnail: null,
-                            previewThumbnail,
+                            previewThumbnail: previewThumbnail ?? this.form.previewThumbnail,
                             formated_updated_at,
                         };
 
                         this.setTempEditorData(body);
-                        this.refresh();
 
                         return data;
                     }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                        const { message = 'Error!', errors = {} } = data;
 
                         this.$event.emit('flash-message', { message, type: "error", withToast: true });
 
-                        return false;
+                        return data;
                     }).finally(() => {
                         this.isProcessing = false;
                     });
