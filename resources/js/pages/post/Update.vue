@@ -96,6 +96,7 @@
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
     import { Toast } from '../../src/plugin/alert.js';
+    import { editorJSConfig } from '../../src/plugin/editorJSConfig.js';
 
     // Editor JS
     import EditorJS from "@editorjs/editorjs";
@@ -284,7 +285,7 @@
                 }
             },
             initEditor() {
-                this.editor = new EditorJS(this.editorConfig);
+                this.editor = new EditorJS(editorJSConfig);
             },
             renderEditorData(data) {
                 if (data != null) { 
