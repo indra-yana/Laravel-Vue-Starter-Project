@@ -25,7 +25,7 @@ class UploadService implements IBaseService {
     
     public function createFileName($prefix = "", $file) 
     {
-        return strtolower(preg_replace('/[\W_]+/', '', $prefix) .'-' .date('Ymd-His') .'-' .Str::random(16) .'.' .$file->getClientOriginalExtension());
+        return strtolower(preg_replace('/[\W_]+/', '', $prefix) .'-' .date('Ymd-His') .'-' .Str::uuid() .'.' .$file->getClientOriginalExtension());
     }
 
     public function getCleanName($filename)
