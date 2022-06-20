@@ -40,7 +40,7 @@ class UtilityController extends Controller
     public function uploadByFile(Request $request)
     {
         try {
-            return EditorJSUploader::uploadByFile($request->all());
+            return SendResponse::success(EditorJSUploader::uploadByFile($request->all()), __('message.retrieve_success'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th);
         }
@@ -55,7 +55,7 @@ class UtilityController extends Controller
     public function uploadByUrl(Request $request)
     {
         try {
-            return EditorJSUploader::uploadByUrl($request->all());
+            return SendResponse::success(EditorJSUploader::uploadByUrl($request->all()), __('message.retrieve_success'));
         } catch (\Throwable $th) {
             return SendResponse::error([], $th->getMessage(), '', $th);
         }

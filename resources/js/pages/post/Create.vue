@@ -94,6 +94,7 @@
     import { authState } from '../.././src/store/authState.js';
     import { postState } from '../.././src/store/postState.js';
     import { Toast } from '../../src/plugin/alert.js';
+    import { editorJSConfig } from '../../src/plugin/editorJSConfig.js';
 
     // Editor JS
     import EditorJS from "@editorjs/editorjs";
@@ -111,6 +112,7 @@
     import InlineCode from '@editorjs/inline-code';
     import Delimiter from '@editorjs/delimiter';
     import SimpleImage from '@editorjs/simple-image';
+    import ImageTool from '@editorjs/image';
     import LinkTool from '@editorjs/link';
 
     export default {
@@ -202,12 +204,75 @@
                             shortcut: 'CMD+SHIFT+M',
                         },
                         delimiter: Delimiter,
-                        image: SimpleImage,
                         linkTool: {
                             class: LinkTool,
                             config: {
                                 endpoint: "",
                             }
+                        },
+                        // image: SimpleImage,
+                        image: {
+                            class: ImageTool,
+                            config: {
+                                /**
+                                 * Custom uploader
+                                 */
+                                uploader: {
+                                    /**
+                                     * Upload file to the server and return an uploaded image data
+                                     * @param {File} file - file selected from the device or pasted by drag-n-drop
+                                     * @return {Promise.<{success, file: {url}}>}
+                                     */
+                                    async uploadByFile(file) {
+                                        const options = { headers: {'Content-Type': 'multipart/form-data' }};
+                                        const formData = new FormData();
+                                        formData.append('image', file);
+
+                                        let result = await axios.post(`/api/v1/utils/editorjs/upload/byfile`, formData, options)
+                                                .then(({ data }) => {
+                                                    const { message = 'Success!' } = data;
+                                                    
+                                                    return data;
+                                                }).catch(({ response: { data } }) => {
+                                                    const { message = 'Error!', errors = {} } = data;
+
+                                                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                                                    return data;
+                                                }).finally(() => {
+
+                                                });
+
+                                        return result;
+                                    },
+                                    /**
+                                     * Send URL-string to the server. Backend should load image by this URL and return an uploaded image data
+                                     * @param {string} url - pasted image URL
+                                     * @return {Promise.<{success, file: {url}}>}
+                                     */
+                                    async uploadByUrl(url) {
+                                        const options = { headers: {'Content-Type': 'multipart/form-data' }};
+                                        const formData = new FormData();
+                                        formData.append('url', url);
+
+                                        let result = await axios.post(`/api/v1/utils/editorjs/upload/byurl`, formData, options)
+                                                .then(({ data }) => {
+                                                    const { message = 'Success!' } = data;
+
+                                                    return data;
+                                                }).catch(({ response: { data } }) => {
+                                                    const { message = 'Error!', errors = {} } = data;
+
+                                                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+
+                                                    return data;
+                                                }).finally(() => {
+
+                                                });
+
+                                        return result;
+                                    },
+                                }
+                            },
                         },
                     },
                     onReady: () => {
@@ -377,7 +442,7 @@
                 }
             },
             initEditor() {
-                this.editor = new EditorJS(this.editorConfig);
+                this.editor = new EditorJS(editorJSConfig);
             },
             renderEditorData(data) {
                 if (data != null) { 

@@ -24,14 +24,14 @@ class EditorJSUploader
             $file->move(public_path("uploads/temp"), $fileName);
         }
 
-        return response()->json([
+        return [
             'success' => 1,
             'message' => 'Upload success!',
             'file' => [
                 'url' => url("uploads/temp/$fileName"),
                 'fileName' => $fileName,
             ],
-        ]);
+        ];
     }
 
     /**
@@ -57,12 +57,12 @@ class EditorJSUploader
         //     ]);
         // }
 
-        return  response()->json([
+        return [
             'success' => 1,
             'message' => 'Upload success!',
             'file' => [
                 'url' => $imageUrl,
             ],
-        ]);
+        ];
     }
 }
