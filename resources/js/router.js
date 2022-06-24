@@ -14,6 +14,7 @@ import Confirm from "./pages/auth/password/Confirm.vue";
 // Base Component
 import AuthTemplate from "./layouts/AuthTemplate.vue";
 import DashboardTemplate from "./layouts/DashboardTemplate.vue";
+import NotFound from "./pages/error/NotFound.vue";
 
 // Dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
@@ -34,6 +35,19 @@ import PostDetail from "./pages/post/Detail.vue";
 import Landing from "./pages/landing/Landing.vue";
 
 const routes = [
+    /*
+    * Notfound Routes
+    */
+    { 
+        path: '/:pathMatch(.*)*', 
+        name: 'notfound', 
+        component: NotFound, 
+        meta:{
+            requiresAuth: false,
+            title: `404 Not Found`
+        }
+    },
+
     /*
     * Auth Routes
     */
