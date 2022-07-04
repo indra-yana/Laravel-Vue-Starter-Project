@@ -96,6 +96,7 @@
     import { Toast } from '../../src/plugin/alert.js';
     import { editorJSConfig } from '../../src/plugin/editorJSConfig.js';
     import EditorJS from "@editorjs/editorjs";
+    import PostService from '../../src/services/PostService.js';
 
     export default {
         components: {
@@ -115,6 +116,7 @@
                     previewThumbnail: '/images/sample-img3.jpg',
                 },
                 editor: null,
+                postService: new PostService(),
             }
         },
         async created() {
@@ -213,7 +215,6 @@
                 this.isProcessing = true;
                 this.validation = {};
 
-                const options = { headers: {'Content-Type': 'multipart/form-data' }};
                 const formData = new FormData();
 
                 for (const item in this.form) {
@@ -222,21 +223,23 @@
                     }
                 }
 
-                await this.$axios.post('/api/v1/post/create', formData, options)
-                    .then(({ data }) => {
-                        const { message = 'Success!' } = data;
-                        
-                        this.resetForm();
-                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
-                        this.$router.push({name: 'post'});
-                    }).catch(({ response: { data } }) => {
-                        const { message = 'Error!', errors = {} } = data;
+                const result = await this.postService.create(formData);
+                const { success, failure } = result;
 
-                        this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                if (success) {
+                    const { message = 'Success!' } = success;
+                    this.resetForm();
+                    this.$event.emit('flash-message', { message, type: "success", withToast: true });
+                    this.$router.push({name: 'post'});
+                }
+
+                if (failure) {
+                    const { message = 'Error!', errors = {} } = failure;
+                    this.validation = errors;
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });                    
+                }
+
+                this.isProcessing = false;
             }
         },
     }
