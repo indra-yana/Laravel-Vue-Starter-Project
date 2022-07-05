@@ -1,6 +1,6 @@
 import axios from 'axios';
-import router from '../.././router.js';
-import { authState } from '../.././src/store/authState.js';
+import router from '@src/router/router.js';
+import { authState } from '@src/store/authState.js';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';

@@ -1,4 +1,4 @@
-import axios from "../plugin/axios";
+import axios from "@src/plugin/axios";
 
 class AuthService {
 

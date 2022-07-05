@@ -1,38 +1,38 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 // Data Store
-import { authState } from './src/store/authState.js';
+import { authState } from '@src/store/authState.js';
 
 // Auth
-import Login from "./pages/auth/Login.vue";
-import Register from "./pages/auth/Register.vue";
-import Verify from "./pages/auth/Verify.vue";
-import Email from "./pages/auth/password/Email.vue";
-import Reset from "./pages/auth/password/Reset.vue";
-import Confirm from "./pages/auth/password/Confirm.vue";
+import Login from "@pages/auth/Login.vue";
+import Register from "@pages/auth/Register.vue";
+import Verify from "@pages/auth/Verify.vue";
+import Email from "@pages/auth/password/Email.vue";
+import Reset from "@pages/auth/password/Reset.vue";
+import Confirm from "@pages/auth/password/Confirm.vue";
 
 // Base Component
-import AuthTemplate from "./layouts/AuthTemplate.vue";
-import DashboardTemplate from "./layouts/DashboardTemplate.vue";
-import NotFound from "./pages/error/NotFound.vue";
+import AuthTemplate from "@layouts/AuthTemplate.vue";
+import DashboardTemplate from "@layouts/DashboardTemplate.vue";
+import NotFound from "@pages/error/NotFound.vue";
 
 // Dashboard
-import Dashboard from "./pages/dashboard/Dashboard.vue";
+import Dashboard from "@pages/dashboard/Dashboard.vue";
 
 // Manage Account
-import Profile from "./pages/account/Profile.vue";
-import ChangePassword from "./pages/account/ChangePassword.vue";
-import SocialLink from "./pages/account/SocialLink.vue";
+import Profile from "@pages/account/Profile.vue";
+import ChangePassword from "@pages/account/ChangePassword.vue";
+import SocialLink from "@pages/account/SocialLink.vue";
 
 // Manage Post
-import MyPost from "./pages/post/MyPost.vue";
-import Post from "./pages/post/Post.vue";
-import PostCreate from "./pages/post/Create.vue";
-import PostUpdate from "./pages/post/Update.vue";
-import PostDetail from "./pages/post/Detail.vue";
+import MyPost from "@pages/post/MyPost.vue";
+import Post from "@pages/post/Post.vue";
+import PostCreate from "@pages/post/Create.vue";
+import PostUpdate from "@pages/post/Update.vue";
+import PostDetail from "@pages/post/Detail.vue";
 
 // Outter Page
-import Landing from "./pages/landing/Landing.vue";
+import Landing from "@pages/landing/Landing.vue";
 
 const routes = [
     /*

@@ -1,18 +1,18 @@
 import { createApp } from 'vue'
 
-import "./src/plugin/bootstrap";
-import AppTemplate from "./layouts/AppTemplate.vue";
-import router from './router';
+import "@src/plugin/bootstrap";
+import AppTemplate from "@layouts/AppTemplate.vue";
+import router from '@src/router/router';
 import { createPinia } from 'pinia';
-import persitedState from './src/plugin/persistedState';
+import persitedState from '@src/plugin/persistedState';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import axios from './src/plugin/axios.js';
+import axios from '@src/plugin/axios.js';
 import mitt from 'mitt';
 
 // Global Components
-import SubmitButton from "./components/SubmitButton.vue";
-import ResetButton from "./components/ResetButton.vue";
-import SaveButton from "./components/SaveButton.vue";
+import SubmitButton from "@components/SubmitButton.vue";
+import ResetButton from "@components/ResetButton.vue";
+import SaveButton from "@components/SaveButton.vue";
 
 const app = createApp(AppTemplate);
 const emitter = mitt();
