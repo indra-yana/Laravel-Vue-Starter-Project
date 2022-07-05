@@ -42,24 +42,10 @@
     import { authState } from '@src/store/authState.js';
     import { postState } from '@src/store/postState.js';
     import { Toast } from '@src/plugin/alert.js';
+    import { editorJSConfig } from '@src/plugin/editorJSConfig.js';
 
     // Editor JS
     import EditorJS from "@editorjs/editorjs";
-    import Header from '@editorjs/header';
-    import List from '@editorjs/list';
-    import CodeTool from '@editorjs/code';
-    import Paragraph from '@editorjs/paragraph';
-    import Embed from '@editorjs/embed';
-    import Table from '@editorjs/table';
-    import Checklist from '@editorjs/checklist';
-    import Marker from '@editorjs/marker';
-    import Warning from '@editorjs/warning';
-    import RawTool from '@editorjs/raw';
-    import Quote from '@editorjs/quote';
-    import InlineCode from '@editorjs/inline-code';
-    import Delimiter from '@editorjs/delimiter';
-    import SimpleImage from '@editorjs/simple-image';
-    import LinkTool from '@editorjs/link';
 
     export default {
         components: {
@@ -80,93 +66,6 @@
                     previewThumbnail: '/images/sample-img3.jpg',
                 },
                 editor: null,
-                editorConfig: {
-                    holder: "content-editor",
-                    placeholder: 'No content',
-                    readOnly: true,
-                    tools:{
-                        header: {
-                            class: Header,
-                            config: {
-                                placeholder: 'Enter a header',
-                                levels: [1, 2, 3, 4, 5],
-                                defaultLevel: 2,
-                            }
-                        },
-                        list: {
-                            class: List,
-                            inlineToolbar: true,
-                        },
-                        code: {
-                            class: CodeTool
-                        },
-                        paragraph: {
-                            class: Paragraph,
-                        },
-                        embed: {
-                            class: Embed,
-                            config: {
-                            services: {
-                                    youtube: true,
-                                    coub: true,
-                                    imgur: true
-                                }
-                            }
-                        },
-                        table: {
-                            class: Table,
-                            inlineToolbar: true,
-                            config: {
-                                rows: 2,
-                                cols: 3,
-                            },
-                        },
-                        checklist: {
-                            class: Checklist,
-                        },
-                        Marker: {
-                            class: Marker,
-                            shortcut: 'CMD+SHIFT+M',
-                        },
-                        warning: {
-                            class: Warning,
-                            inlineToolbar: true,
-                            shortcut: 'CMD+SHIFT+W',
-                            config: {
-                                titlePlaceholder: 'Title',
-                                messagePlaceholder: 'Message',
-                            },
-                        },
-                        raw: RawTool,
-                        quote: {
-                            class: Quote,
-                            inlineToolbar: true,
-                            shortcut: 'CMD+SHIFT+O',
-                            config: {
-                                quotePlaceholder: 'Enter a quote',
-                                captionPlaceholder: 'Quote\'s author',
-                            },
-                        },
-                        inlineCode: {
-                            class: InlineCode,
-                            shortcut: 'CMD+SHIFT+M',
-                        },
-                        delimiter: Delimiter,
-                        image: SimpleImage,
-                        linkTool: {
-                            class: LinkTool,
-                            config: {
-                                endpoint: "",
-                            }
-                        },
-                    },
-                    onReady: () => {
-                        // console.log('Editor\'s content changed!');
-                    },
-                    onChange: (args) => {
-                        // console.log('Editor\'s content changed!');
-                    },
-                },
             }
         },
         async created() {
@@ -191,7 +90,7 @@
         },
         methods: {
             initEditor() {
-                this.editor = new EditorJS(this.editorConfig);
+                this.editor = new EditorJS({ readOnly: true, ...editorJSConfig });
             },
             renderEditorData(data) {
                 if (data != null) { 
