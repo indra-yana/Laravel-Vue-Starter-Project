@@ -1,84 +1,140 @@
 <template>
-    <div class="d-flex justify-content-center mb-4 mt-2 loader-overlay" v-if="processing">
-        <div class="loader"></div>
-        <span class="text" v-html="text"></span>
+     <div class="page-loader" style="" v-if="processing">
+        <div class="loader">
+            <span class="dot dot_1"></span>
+            <span class="dot dot_2"></span>
+            <span class="dot dot_3"></span>
+            <span class="dot dot_4"></span>
+            <span class="text mt-4 pt-3" v-html="text"></span>
+        </div>
     </div>
 </template>
 
 <script>
+    import { loaderState } from '@src/store/loaderState.js';
+
     export default {
-        props: {
-            processing: {
-                type: Boolean, 
-                required: true
-            },
-            text: {
-                type: String, 
-                required: false, 
-                default: "Processing..."
-            },
+        data() {
+            return {
+                processing: false,
+                text: 'Processing...',
+            }
+        },
+        created() {
+            // Watch the loaderState from loaderState data store
+            loaderState().$subscribe((mutation, state) => {
+                this.processing = state.processing;
+            });
         },
     }
 </script>
 
-<style lang="scss">
-    .loader-overlay {
-        position: fixed;
-        width: 100%;
+<style>
+    .page-loader{ 
+        background: #1e1e1e85 none repeat scroll 0 0;
         height: 100%;
-        top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 999;
-        cursor: pointer;
-        span.text {
-            display: inline-block;
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            color: #fff;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9998;
+    }
+    .loader {
+        height: 8px;
+        margin: 0 auto;
+        position: relative;
+        text-align: center;
+        top: 50%;
+        width: 44px;
+    }
+    .dot {
+        background: #e7e7e7 none repeat scroll 0 0;
+        border-radius: 50%;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        position: absolute;
+    }
+    .dot_1 {
+        animation: 1.5s linear 0s normal none infinite running animateDot1;
+        background: #f26f29 none repeat scroll 0 0;
+        left: 12px;
+    }
+    .dot_2 {
+        animation: 1.5s linear 0.5s normal none infinite running animateDot2;
+        left: 24px;
+    }
+    .dot_3 {
+        animation: 1.5s linear 0s normal none infinite running animateDot3;
+        left: 12px;
+    }
+    .dot_4 {
+        animation: 1.5s linear 0.5s normal none infinite running animateDot4;
+        left: 24px;
+    }
+    span.text {
+        display: inline-block;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: #e7e7e7;
+        font-size: 16pt;
+    }
+    @keyframes animateDot1 {
+        0% {
+            transform: rotate(0deg) translateX(-12px);
         }
-        .loader {
-            animation: loader-animate 1.5s linear infinite;
-            clip: rect(0, 80px, 80px, 40px);
-            height: 80px;
-            width: 80px;
-            position: absolute;
-            left: calc(50% - 40px);
-            top: calc(50% - 40px);
-            &:after {
-                animation: loader-animate-after 1.5s ease-in-out infinite;
-                clip: rect(0, 80px, 80px, 40px);
-                content: '';
-                border-radius: 50%;
-                height: 80px;
-                width: 80px;
-                position: absolute;
-            }
+        25% {
+            transform: rotate(180deg) translateX(-12px);
         }
-        @keyframes loader-animate {
-            0% {
-                transform: rotate(0deg)
-            }
-            100% {
-                transform: rotate(220deg)
-            }
+        75% {
+            transform: rotate(180deg) translateX(-12px);
         }
-        @keyframes loader-animate-after {
-            0% {
-                box-shadow: inset #fff 0 0 0 17px;
-                transform: rotate(-140deg);
-            }
-            50% {
-                box-shadow: inset #fff 0 0 0 2px;
-            }
-            100% {
-                box-shadow: inset #fff 0 0 0 17px;
-                transform: rotate(140deg);
-            }
+        100% {
+            transform: rotate(360deg) translateX(-12px);
+        }
+    }
+    @keyframes animateDot2 {
+        0% {
+            transform: rotate(0deg) translateX(-12px);
+        }
+        25% {
+            transform: rotate(-180deg) translateX(-12px);
+        }
+        75% {
+            transform: rotate(-180deg) translateX(-12px);
+        }
+        100% {
+            transform: rotate(-360deg) translateX(-12px);
+        }
+    }
+    @keyframes animateDot3 {
+        0% {
+            transform: rotate(0deg) translateX(12px);
+        }
+        25% {
+            transform: rotate(180deg) translateX(12px);
+        }
+        75% {
+            transform: rotate(180deg) translateX(12px);
+        }
+        100% {
+            transform: rotate(360deg) translateX(12px);
+        }
+    }
+    @keyframes animateDot4 {
+        0% {
+            transform: rotate(0deg) translateX(12px);
+        }
+        25% {
+            transform: rotate(-180deg) translateX(12px);
+        }
+        75% {
+            transform: rotate(-180deg) translateX(12px);
+        }
+        100% {
+            transform: rotate(-360deg) translateX(12px);
         }
     }
 </style>

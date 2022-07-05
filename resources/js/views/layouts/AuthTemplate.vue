@@ -1,6 +1,8 @@
 <template>
     <div class="d-flex flex-column min-vh-100">
 
+        <Loader/>
+
         <MainNavigation/>
 
         <div class="container mt-5 mb-5 pt-5">
@@ -23,13 +25,15 @@
     import MainNavigation from '@layouts/MainNavigation.vue'
     import Footer from '@layouts/Footer.vue';
     import Alert from '@components/Alert.vue';
+    import Loader from "@components/Loader.vue";
     import { authState } from '@src/store/authState.js';
   
     export default {
         components: {
             MainNavigation,
             Footer,
-            Alert
+            Alert,
+            Loader,
         },
         data() {
             return {

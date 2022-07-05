@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column min-vh-100">
 
-        <!-- <Loader :processing="true"/> -->
+        <Loader/>
         
         <DashboardNavigation/>
 

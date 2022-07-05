@@ -1,15 +1,32 @@
 import axios from 'axios';
 import router from '@src/router/router.js';
 import { authState } from '@src/store/authState.js';
+import { loaderState } from '@src/store/loaderState.js';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
-axios.interceptors.request.use((request) => { NProgress.start(); return request; }, (error) => {
+axios.interceptors.request.use((request) => { 
+    // Show the loader
+    NProgress.start();
+    loaderState().setProcessing(true);
+
+    return request; 
+}, (error) => {
+    // Close the loader
+    NProgress.done();
+    loaderState().setProcessing(false);
+
     return Promise.reject(error);
 });
 
-axios.interceptors.response.use((response) => { NProgress.done(); return response; }, (error) => {
+axios.interceptors.response.use((response) => { 
+    // Close the loader
+    NProgress.done();
+    loaderState().setProcessing(false);
+
+    return response; 
+}, (error) => {
     // Do something with response error before they thrown to catch block.
     if (error) {
         const originalRequest = error.config;
@@ -31,6 +48,10 @@ axios.interceptors.response.use((response) => { NProgress.done(); return respons
             }
         }
     }
+
+    // Close the loader
+    NProgress.done();
+    loaderState().setProcessing(false);
 
     return Promise.reject(error);
 });
