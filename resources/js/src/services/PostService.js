@@ -4,20 +4,20 @@ class PostService {
 
     constructor() { }
 
-    async create(data) {
+    async create(payloads) {
         let success, failure = null;
 
-        await axios.post(`/api/v1/post/create`, data, { headers: { 'Content-Type': 'multipart/form-data' }})
+        await axios.post(`/api/v1/post/create`, payloads, { headers: { 'Content-Type': 'multipart/form-data' }})
                     .then(({ data }) => success = data)
                     .catch(({ response: { data } }) => failure = data);
 
         return { success, failure }
     }
 
-    async update(data) {
+    async update(payloads) {
         let success, failure = null;
 
-        await axios.post(`/api/v1/post/update`, data, { headers: {'Content-Type': 'multipart/form-data' }})
+        await axios.post(`/api/v1/post/update`, payloads, { headers: {'Content-Type': 'multipart/form-data' }})
                     .then(({ data }) => success = data)
                     .catch(({ response: { data } }) => failure = data);
 
@@ -38,6 +38,16 @@ class PostService {
         let success, failure = null;
 
         await axios.get(`/api/v1/post?page=${page}`)
+                    .then(({ data }) => success = data)
+                    .catch(({ response: { data } }) => failure = data);
+        
+        return { success, failure }
+    }
+
+    async delete(payloads) {
+        let success, failure = null;
+
+        await axios.post(`/api/v1/post/delete`, payloads)
                     .then(({ data }) => success = data)
                     .catch(({ response: { data } }) => failure = data);
         
