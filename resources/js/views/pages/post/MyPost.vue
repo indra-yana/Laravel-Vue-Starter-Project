@@ -55,56 +55,54 @@
     <div class="row mx-auto">
         <div class="col-lg-8 pt-3 ps-2 pe-2 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
-            <Spinner :processing='isProcessing'/>
+            <!-- <Spinner :processing='isProcessing'/> -->
 
-            <div v-if="!isProcessing">
-                <div v-if="!posts.length" class="text-center">
-                    <h5>No data available</h5>
-                </div>
-                <div v-else>
-                    <!-- <article class="blog-post" v-for="(post, index) in posts" :key="post.id"> -->
-                        <!-- <h2 class="blog-post-title">{{ post.title }}</h2>
-                        <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
-                        <p v-html="getPostBody(post.formated_body)">
-                        </p>
-                        <hr> -->
-                    <!-- </article> -->
-                    <div class="row mb-2 mx-auto">
-                        <div class="col-lg-6 col-md-6 col-sm-12 mt-3" v-for="(post, index) in posts" :key="post.id">
-                            <div class="card card-hover shadow-sm" style="min-height: 270px;">
-                                <img class="img-fluid border-bottom rounded-top" :src="post.thumbnail || '/images/sample-img3.jpg'" alt="post-thumbnail" style="width:100%; height:145px; object-fit: cover;">
-                                <div class="card-body">
-                                <p class="card-text fw-bold text-elipsis">{{ splitLongText(post.title, 100) }}</p>
-                                <div class="d-flex justify-content-between align-items-center position-absolute bottom-0 start-50 translate-middle-x w-100 p-3">
-                                    <div class="btn-group">
-                                    <router-link :to="{ name: 'post.detail', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">View</router-link>
-                                    <router-link :to="{ name: 'post.update', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">Edit</router-link>
-                                    </div>
-                                    <small class="text-muted">{{ post.formated_created_at }}</small>
+            <div v-if="!posts" class="text-center">
+                <h5>No data available</h5>
+            </div>
+            <div class="mt-3 mb-4" v-else>
+                <!-- <article class="blog-post" v-for="(post, index) in posts" :key="post.id"> -->
+                    <!-- <h2 class="blog-post-title">{{ post.title }}</h2>
+                    <p class="blog-post-meta"><i class="far fa-calendar-alt"></i> {{ post.formated_created_at }} by <i class="fas fa-user"></i> <a href="#">{{ post.user.name }}</a></p>
+                    <p v-html="getPostBody(post.formated_body)">
+                    </p>
+                    <hr> -->
+                <!-- </article> -->
+                <div class="row mb-2 mx-auto">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3" v-for="(post, index) in posts" :key="post.id">
+                        <div class="card card-hover shadow-sm" style="min-height: 270px;">
+                            <img class="img-fluid border-bottom rounded-top" :src="post.thumbnail || '/images/sample-img3.jpg'" alt="post-thumbnail" style="width:100%; height:145px; object-fit: cover;">
+                            <div class="card-body">
+                            <p class="card-text fw-bold text-elipsis">{{ splitLongText(post.title, 100) }}</p>
+                            <div class="d-flex justify-content-between align-items-center position-absolute bottom-0 start-50 translate-middle-x w-100 p-3">
+                                <div class="btn-group">
+                                <router-link :to="{ name: 'post.detail', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">View</router-link>
+                                <router-link :to="{ name: 'post.update', params: { id: post.id }}" class="btn btn-sm btn-outline-secondary">Edit</router-link>
                                 </div>
-                                </div>
+                                <small class="text-muted">{{ post.formated_created_at }}</small>
+                            </div>
                             </div>
                         </div>
                     </div>
-                    <nav aria-label="Page navigation example ">
-                        <!-- <ul class="pagination justify-content-lg-end justify-content-center">
-                            <template v-for="(link, index) in meta.links">
-                                <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
-                                    <span class="page-link" v-html="link.label" v-if="link.active"></span>
-                                    <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
-                                </li>
-                            </template>
-                        </ul> -->
-                        <Pagination class="justify-content-lg-end justify-content-center table-responsive" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
-                            <template #prev-nav>
-                                <span>Prev</span>
-                            </template>
-                            <template #next-nav>
-                                <span>Next</span>
-                            </template>
-                        </Pagination>
-                    </nav>
                 </div>
+                <nav aria-label="Page navigation example ">
+                    <!-- <ul class="pagination justify-content-lg-end justify-content-center">
+                        <template v-for="(link, index) in meta.links">
+                            <li class="page-item" :class="{ 'disabled': !link.url, 'active': link.active }" :aria-current="link.active ? 'page' : ''">
+                                <span class="page-link" v-html="link.label" v-if="link.active"></span>
+                                <a class="page-link" href="#" @click.prevent="getPosts(changePage(link.url))" :aria-disabled="!link.active" v-html="link.label" v-else></a>
+                            </li>
+                        </template>
+                    </ul> -->
+                    <Pagination class="justify-content-lg-end justify-content-center table-responsive mt-5" :show-disabled="true" :data="meta" :limit="2" @pagination-change-page="getPosts">
+                        <template #prev-nav>
+                            <span>Prev</span>
+                        </template>
+                        <template #next-nav>
+                            <span>Next</span>
+                        </template>
+                    </Pagination>
+                </nav>
             </div>
         </div>
 

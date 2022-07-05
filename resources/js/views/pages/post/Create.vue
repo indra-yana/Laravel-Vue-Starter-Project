@@ -3,7 +3,7 @@
         <form @submit.prevent="save()" class="row p-0 m-0" autocomplete="off">
             <div class="col-xl-9 col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
                 
-                <Spinner :processing="isProcessing"/>
+                <!-- <Spinner :processing="isProcessing"/> -->
 
                 <div class="card text-white rounded">
                     <div class="position-relative" style="width:100%; height:260px;">

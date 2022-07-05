@@ -7,7 +7,7 @@
                 </div>
                 <div class="card-body bg-primary-soft">
 
-                    <Spinner :processing='isProcessing'/>
+                    <!-- <Spinner :processing='isProcessing'/> -->
 
                     <form @submit.prevent="update()" autocomplete="off">
                         <div class="form-group row mb-3">

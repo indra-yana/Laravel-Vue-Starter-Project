@@ -2,9 +2,9 @@
     <div class="row mx-auto">
         <div class="col-lg-9 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
             
-            <Spinner :processing='isProcessing'/>
+            <!-- <Spinner :processing='isProcessing'/> -->
 
-            <div class="table-responsive p-2" v-show="!isProcessing" >
+            <div class="table-responsive p-2" v-once>
                 <table class="table table-striped pb-3 pt-3" id="dtPost">
                     <thead class="">
                         <tr>
@@ -37,10 +37,10 @@
 <script>
     import { splitLongText } from '@src/plugin/helper.js';
     import { ToastDelete } from '@src/plugin/alert.js';
-    import Spinner from '@components/Spinner.vue';
     import { mapState } from 'pinia';
     import { authState } from '@src/store/authState.js';
     import { postState } from '@src/store/postState.js';
+    import Spinner from '@components/Spinner.vue';
     import $ from 'jquery';
 
     import 'datatables.net-bs5';

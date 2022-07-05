@@ -3,38 +3,36 @@
         <form @submit.prevent="save()" class="row p-0 m-0" autocomplete="off">
             <div class="col-xl-9 col-lg-8 p-4 mb-3 bg-light rounded order-lg-1 order-2 p-0">
                 
-                <Spinner :processing="isProcessing"/>
+                <!-- <Spinner :processing="isProcessing"/> -->
 
-                <div  v-show="!isProcessing">
-                    <div class="card text-white rounded">
-                        <div class="position-relative" style="width:100%; height:260px;">
-                            <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
-                            <div class="position-absolute top-0 end-0 p-3">
-                                <div class="input-group mb-3">
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
-                                    <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
-                                        <ul class="mb-0 ps-3">
-                                            <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
-                                <div class="form-group p-3">
-                                    <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
-                                    <div v-if="validation.title" class="invalid-feedback mt-1" >
-                                        <ul class="mb-0 ps-3">
-                                            <li v-for="(error, index) in validation.title">{{ error }}</li>
-                                        </ul>
-                                    </div>
-                                    <p class="card-text m-0"><i class="far fa-calendar-alt"></i> {{ form.formated_updated_at }}</p>
+                <div class="card text-white rounded">
+                    <div class="position-relative" style="width:100%; height:260px;">
+                        <img :src="form.previewThumbnail" style="width: 100%; height: 100%; object-fit: cover;" alt="Thumbnail">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <div class="input-group mb-3">
+                                <input type="file" name="thumbnail" id="thumbnail" class="form-control form-control-sm" :class="{'is-invalid': validation.thumbnail}" @change="handleInput('thumbnail', $event)" ref="file" accept="image/*">
+                                <div v-if="validation.thumbnail" class="invalid-feedback mt-1" >
+                                    <ul class="mb-0 ps-3">
+                                        <li v-for="(error, index) in validation.thumbnail">{{ error }}</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+                        <div class="p-0 bg-post-title position-absolute bottom-0 start-50 translate-middle-x w-100 rounded-3">
+                            <div class="form-group p-3">
+                                <input type="text" name="title" class="form-control mb-2" :class="{'is-invalid': validation.title}" placeholder="Post title..." v-model="form.title" autofocus required >
+                                <div v-if="validation.title" class="invalid-feedback mt-1" >
+                                    <ul class="mb-0 ps-3">
+                                        <li v-for="(error, index) in validation.title">{{ error }}</li>
+                                    </ul>
+                                </div>
+                                <p class="card-text m-0"><i class="far fa-calendar-alt"></i> {{ form.formated_updated_at }}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bd-callout bd-callout-warning">
-                        <div id="content-editor"></div>
-                    </div>
+                </div>
+                <div class="bd-callout bd-callout-warning">
+                    <div id="content-editor"></div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4 order-lg-2 order-1 p-0 ps-lg-3">
