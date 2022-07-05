@@ -5,7 +5,11 @@ import { authState } from '@src/store/authState.js';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
-axios.interceptors.response.use((response) => { return response }, (error) => {
+axios.interceptors.request.use((request) => { NProgress.start(); return request; }, (error) => {
+    return Promise.reject(error);
+});
+
+axios.interceptors.response.use((response) => { NProgress.done(); return response; }, (error) => {
     // Do something with response error before they thrown to catch block.
     if (error) {
         const originalRequest = error.config;

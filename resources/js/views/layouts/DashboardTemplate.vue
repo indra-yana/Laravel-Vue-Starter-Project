@@ -1,5 +1,7 @@
 <template>
     <div class="d-flex flex-column min-vh-100">
+
+        <!-- <Loader :processing="true"/> -->
         
         <DashboardNavigation/>
 
@@ -29,6 +31,7 @@
 <script>
     import DashboardNavigation  from "@layouts/DashboardNavigation.vue";
     import Breadcrumb from "@components/Breadcrumb.vue";
+    import Loader from "@components/Loader.vue";
     import Footer from "@layouts/Footer.vue";
     import Alert from "@components/Alert.vue";
     import { authState } from '@src/store/authState.js';
@@ -38,7 +41,8 @@
             DashboardNavigation,
             Breadcrumb,
             Footer,
-            Alert
+            Alert,
+            Loader,
         },
         data() {
             return {
