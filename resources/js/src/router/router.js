@@ -285,7 +285,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // Show progress page loader
-    NProgress.start();
+    // NProgress.start();
 
     document.title = `${to.meta.title}`;
     const store = authState();
@@ -315,7 +315,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
     // Hide progress page loader
-    NProgress.done();
+    // NProgress.done();
 });
 
 export default router;
