@@ -25,7 +25,6 @@
     import MainNavigation from '@layouts/MainNavigation.vue'
     import Footer from '@layouts/Footer.vue';
     import Alert from '@components/Alert.vue';
-    import Loader from "@components/Loader.vue";
     import { authState } from '@src/store/authState.js';
   
     export default {
@@ -33,7 +32,6 @@
             MainNavigation,
             Footer,
             Alert,
-            Loader,
         },
         data() {
             return {

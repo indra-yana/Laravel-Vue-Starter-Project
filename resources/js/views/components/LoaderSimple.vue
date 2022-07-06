@@ -1,5 +1,5 @@
 <template>
-     <div class="page-loader" style="" v-if="processing">
+     <div class="page-loader" v-if="processing">
         <div class="loader">
             <span class="dot dot_1"></span>
             <span class="dot dot_2"></span>

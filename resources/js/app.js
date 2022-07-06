@@ -13,6 +13,7 @@ import mitt from 'mitt';
 import SubmitButton from "@components/SubmitButton.vue";
 import ResetButton from "@components/ResetButton.vue";
 import SaveButton from "@components/SaveButton.vue";
+import Loader from "@components/LoaderSpinner.vue";
 
 const app = createApp(AppTemplate);
 const emitter = mitt();
@@ -23,7 +24,8 @@ pinia.use(piniaPluginPersistedstate);
 // Registering Global Component
 app.component("SubmitButton", SubmitButton)
     .component("SaveButton", SaveButton)
-    .component("ResetButton", ResetButton);
+    .component("ResetButton", ResetButton)
+    .component("Loader", Loader);
 
 // Registering App Plugin
 app.config.globalProperties.$event = emitter;

@@ -31,7 +31,6 @@
 <script>
     import DashboardNavigation  from "@layouts/DashboardNavigation.vue";
     import Breadcrumb from "@components/Breadcrumb.vue";
-    import Loader from "@components/Loader.vue";
     import Footer from "@layouts/Footer.vue";
     import Alert from "@components/Alert.vue";
     import { authState } from '@src/store/authState.js';
@@ -42,7 +41,6 @@
             Breadcrumb,
             Footer,
             Alert,
-            Loader,
         },
         data() {
             return {

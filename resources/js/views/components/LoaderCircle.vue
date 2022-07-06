@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    import { loaderState } from '@src/store/loaderState.js';
+    
     export default {
         data() {
             return {
