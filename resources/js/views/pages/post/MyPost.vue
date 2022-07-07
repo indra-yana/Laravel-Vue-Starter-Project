@@ -165,6 +165,8 @@
     import { postState } from '@src/store/postState.js';
     import { socialLinkState } from '@src/store/socialLinkState.js';
     import $ from 'jquery';
+    import PostService from '@src/services/PostService.js';
+    import SocialLinkService from '@src/services/SocialLinkService.js';
 
     export default {
         components: {
@@ -175,6 +177,8 @@
             return {
                 isProcessing: false,
                 routeName: this.$route.meta.title,
+                postService: new PostService(),
+                socialLinkService: new SocialLinkService(),
             }
         },
         async created() {
@@ -224,43 +228,43 @@
             async getPosts(page = 1) {
                 this.isProcessing = true;
 
-                await this.$axios.get(`/api/v1/post?page=${page}`)
-                    .then(({ data }) => {
-                        const { posts, meta } = data.data
+                const result = await this.postService.posts(page);
+                const { success, failure } = result;
 
-                        this.setPosts(posts);
-                        this.setMeta(meta);
+                if (success) {
+                    const { posts, meta } = success.data
 
-                        return data;
-                    }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                    this.setPosts(posts);
+                    this.setMeta(meta);
+                }
+                
+                if (failure) {
+                    const { message, errors = {} } = failure;
 
-                        this.$event.emit('flash-message', { message, type: "error" });
+                    this.$event.emit('flash-message', { message, type: "error" });
+                }
 
-                        return false;
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                this.isProcessing = false;
             },
             async getSocialink() {
                 this.isProcessing = true;
 
-                await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
-                    .then(({ data }) => {
-                        const { social_links: socialLinks } = data.data;
+                const result = await this.socialLinkService.show(this.auth.user.id);
+                const { success, failure } = result;
 
-                        this.setSocialLinks(socialLinks);
+                if (success) {
+                    const { social_links: socialLinks } = success.data;
 
-                        return data;
-                    }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                    this.setSocialLinks(socialLinks);
+                }
+                    
+                if (failure) {
+                    const { message, errors = {} } = failure;
 
-                        this.$event.emit('flash-message', { message, type: "error" });
+                    this.$event.emit('flash-message', { message, type: "error" });
+                }
 
-                        return false;
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                this.isProcessing = false;
             },
         },
     }

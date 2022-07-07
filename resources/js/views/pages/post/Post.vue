@@ -42,6 +42,7 @@
     import { postState } from '@src/store/postState.js';
     import Spinner from '@components/Spinner.vue';
     import $ from 'jquery';
+    import PostService from '@src/services/PostService.js';
 
     import 'datatables.net-bs5';
     import 'datatables.net-responsive-bs5';
@@ -57,6 +58,7 @@
                 isProcessing: false,
                 routeName: this.$route.meta.title,
                 dataTable: null,
+                postService: new PostService(),
             }
         },
         async created() {
@@ -102,20 +104,24 @@
                 formData.append('_method', 'DELETE');
                 formData.append('id', id);
 
-                await this.$axios.post('/api/v1/post/delete', formData)
-                    .then(({ data }) => {
-                        const { message = 'Success!' } = data;
-                        
-                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
-                        this.dataTable.ajax.reload();
-                    }).catch(({ response: { data } }) => {
-                        const { message = 'Error!', errors = {} } = data;
+                const result = await this.postService.delete(formData);
+                const { success, failure } = result;
 
-                        this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                if (success) {
+                    const { message = 'Success!' } = success;
+                    
+                    this.$event.emit('flash-message', { message, type: "success", withToast: true });
+                    this.dataTable.ajax.reload();
+                }
+                    
+                if (failure) {
+                    const { message = 'Error!', errors = {} } = failure;
+
+                    this.validation = errors;
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
+
+                this.isProcessing = false;
             },
             buildDataTable() {
                 this.dataTable = $('#dtPost').DataTable({

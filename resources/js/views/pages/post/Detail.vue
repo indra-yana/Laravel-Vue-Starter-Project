@@ -43,9 +43,8 @@
     import { postState } from '@src/store/postState.js';
     import { Toast } from '@src/plugin/alert.js';
     import { editorJSConfig } from '@src/plugin/editorJSConfig.js';
-
-    // Editor JS
     import EditorJS from "@editorjs/editorjs";
+    import PostService from '@src/services/PostService.js';
 
     export default {
         components: {
@@ -66,6 +65,7 @@
                     previewThumbnail: '/images/sample-img3.jpg',
                 },
                 editor: null,
+                postService: new PostService(),
             }
         },
         async created() {
@@ -103,32 +103,32 @@
             async getPost() {
                 this.isProcessing = true;
 
-                await this.$axios.get(`/api/v1/post/${this.form.id}/show`)
-                    .then(({ data }) => {
-                        const { id, title, body, status, is_pinned, formated_updated_at, thumbnail: previewThumbnail } = data.data;
-                        this.form = {
-                            id,
-                            title,
-                            body,
-                            status,
-                            is_pinned,
-                            thumbnail: null,
-                            previewThumbnail: previewThumbnail ?? this.form.previewThumbnail,
-                            formated_updated_at,
-                        };
+                const result = await this.postService.show(this.form.id);
+                const { success, failure } = result;
 
-                        this.setTempEditorData(body);
+                if (success) {
+                    const { id, title, body, status, is_pinned, formated_updated_at, thumbnail: previewThumbnail } = success.data;
+                    this.form = {
+                        id,
+                        title,
+                        body,
+                        status,
+                        is_pinned,
+                        thumbnail: null,
+                        previewThumbnail: previewThumbnail ?? this.form.previewThumbnail,
+                        formated_updated_at,
+                    };
 
-                        return data;
-                    }).catch(({ response: { data } }) => {
-                        const { message = 'Error!', errors = {} } = data;
+                    this.setTempEditorData(body);
+                }
+                    
+                if (failure) {
+                    const { message = 'Error!', errors = {} } = failure;
 
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
 
-                        return data;
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                this.isProcessing = false;
             },
         },
     }
