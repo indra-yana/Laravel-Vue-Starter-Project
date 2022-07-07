@@ -40,6 +40,7 @@
     import { mapState } from 'pinia';
     import { authState } from '@src/store/authState.js';
     import { socialLinkState } from '@src/store/socialLinkState.js';
+    import SocialLinkService from '@src/services/SocialLinkService.js';
 
     export default {
         components: { NavAccount, Spinner },
@@ -53,6 +54,7 @@
                 form: {
                     social_links: {},
                 },
+                socialLinkService: new SocialLinkService(),
             };
         },
         created() {
@@ -81,47 +83,49 @@
             async getSocialink() {
                 this.isProcessing = true;
 
-                await this.$axios.get(`/api/v1/social-link/${this.auth.user.id}`)
-                    .then(({ data }) => {
-                        const { social_links: socialLinks } = data.data;
+                const result = await this.socialLinkService.show(this.auth.user.id);
+                const { success, failure } = result;
 
-                        this.updateFormValue(socialLinks);
-                        this.setSocialLinks(socialLinks);
+                if (success) {
+                    const { social_links: socialLinks } = success.data;
 
-                        return data;
-                    })
-                    .catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                    this.updateFormValue(socialLinks);
+                    this.setSocialLinks(socialLinks);
+                }
+                    
+                if (failure) {
+                    const { message, errors = {} } = failure;
 
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
 
-                        return false;
-                    })
-                    .finally(() => {
-                        this.isProcessing = false;
-                    });
+                this.isProcessing = false;
             },
             async updateSocialLink() {
                 this.isProcessing = true;
                 this.validation = {};
 
-                await this.$axios.post('/api/v1/social-link/create', this.form)
-                    .then(({ data }) => {
-                        const { message } = data;
-                        const { social_links: socialLinks } = data.data;
+                const result = await this.socialLinkService.create(this.form);
+                const { success, failure } = result;
 
-                        this.updateFormValue(socialLinks);
-                        this.setSocialLinks(socialLinks);
+                if (success) {
+                    const { message } = success;
+                    const { social_links: socialLinks } = success.data;
 
-                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
-                    }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                    this.updateFormValue(socialLinks);
+                    this.setSocialLinks(socialLinks);
 
-                        this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                    this.$event.emit('flash-message', { message, type: "success", withToast: true });
+                }
+                    
+                if (failure) {
+                    const { message, errors = {} } = failure;
+
+                    this.validation = errors;
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
+
+                this.isProcessing = false;
             },  
             resetForm() {
                 this.isProcessing = false;

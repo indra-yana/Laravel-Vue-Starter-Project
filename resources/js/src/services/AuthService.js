@@ -84,6 +84,40 @@ class AuthService {
         return { success, failure }
     }
 
+    async changePassword(payloads) {
+        let success, failure = null;
+
+        await axios.put(`/api/v1/user/password/change`, payloads)
+                    .then(({ data }) => success = data)
+                    .catch(({ response: { data } }) => failure = data);
+        
+        return { success, failure }
+    }
+
+    async user() {
+        let success, failure = null;
+
+        await axios.get(`/api/v1/user`)
+                    .then(({ data }) => success = data)
+                    .catch(({ response: { data } }) => failure = data);
+        
+        return { success, failure }
+    }
+
+    async update(payloads, callback = null) {
+        let success, failure = null;
+
+        await axios.post(`/api/v1/user/update`, payloads, { headers: {'Content-Type': 'multipart/form-data' }})
+                    .then(({ data }) => success = data)
+                    .catch(({ response: { data } }) => failure = data);
+
+        if (callback) {
+            return callback(success, failure); 
+        }
+
+        return { success, failure }
+    }
+
 }
 
 export default AuthService;

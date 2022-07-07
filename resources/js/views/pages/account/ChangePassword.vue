@@ -51,6 +51,7 @@
 
 <script>
     import NavAccount from '@components/NavAccount.vue';
+    import AuthService from '@src/services/AuthService.js';
     
     export default {
         components: { NavAccount },
@@ -63,7 +64,8 @@
                     current_password: '',
                     password: "",
                     password_confirmation: "",
-                }
+                },
+                authService: new AuthService(),
             };
         },
         created() {
@@ -80,20 +82,24 @@
                 this.isProcessing = true;
                 this.validation = {};
 
-                await this.$axios.put('/api/v1/user/password/change', this.form)
-                    .then(({ data }) => {
-                        const { message } = data;
+                const result = await this.authService.changePassword(this.form);
+                const { success, failure } = result;
 
-                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
-                        this.resetForm();
-                    }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                if (success) {
+                    const { message } = success;
 
-                        this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                    this.$event.emit('flash-message', { message, type: "success", withToast: true });
+                    this.resetForm();
+                }
+                
+                if (failure) {
+                    const { message, errors = {} } = failure;
+
+                    this.validation = errors;
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
+
+                this.isProcessing = false;
             },
             resetForm() {
                 this.isProcessing = false;

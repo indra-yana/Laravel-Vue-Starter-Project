@@ -83,6 +83,7 @@
     import Spinner from '@components/Spinner.vue';
     import { mapState } from 'pinia'
     import { authState } from '@src/store/authState.js';
+    import AuthService from '@src/services/AuthService.js';
 
     export default {
         components: { NavAccount, Spinner },
@@ -101,6 +102,7 @@
                     avatar: "",
                     previewAvatar: "/images/user.png",
                 },
+                authService: new AuthService(),
             }
         },
         created() {
@@ -125,29 +127,26 @@
             async getUser() {
                 this.isProcessing = true;
 
-                await this.$axios.get("/api/v1/user")
-                    .then(({ data }) => {
-                        const user = data.data;
-                        this.updateFormValue(user);
+                const result = await this.authService.user(this.form);
+                const { success, failure } = result;
 
-                        return data;
-                    })
-                    .catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                if (success) {
+                    const user = success.data;
+                    this.updateFormValue(user);
+                }
+                    
+                if (failure) {
+                    const { message, errors = {} } = failure;
 
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
 
-                        return false;
-                    })
-                    .finally(() => {
-                        this.isProcessing = false;
-                    });
+                this.isProcessing = false;
             },
             async update() {
                 this.isProcessing = true;
                 this.validation = {};
 
-                const options = { headers: {'Content-Type': 'multipart/form-data' }};
                 const formData = new FormData();
                 formData.append('_method', 'PUT');
 
@@ -155,24 +154,28 @@
                     formData.append(item, this.form[item]);
                 }
 
-                await this.$axios.post('/api/v1/user/update', formData, options)
-                    .then(({ data }) => {
-                        const { message } = data;
-                        const user = data.data;
+                const result = await this.authService.update(formData);
+                const { success, failure } = result;
 
-                        this.resetForm();
-                        this.updateFormValue(user)
-                        this.loggedIn(user);
+                if (success) {
+                    const { message } = success;
+                    const user = success.data;
 
-                        this.$event.emit('flash-message', { message, type: "success", withToast: true });
-                    }).catch(({ response: { data } }) => {
-                        const { message, errors = {} } = data;
+                    this.resetForm();
+                    this.updateFormValue(user);
+                    this.loggedIn(user);
 
-                        this.validation = errors;
-                        this.$event.emit('flash-message', { message, type: "error", withToast: true });
-                    }).finally(() => {
-                        this.isProcessing = false;
-                    });
+                    this.$event.emit('flash-message', { message, type: "success", withToast: true });
+                }
+
+                if (failure) {
+                    const { message, errors = {} } = failure;
+
+                    this.validation = errors;
+                    this.$event.emit('flash-message', { message, type: "error", withToast: true });
+                }
+
+                this.isProcessing = false;
             },
             resetForm() {
                 this.isProcessing = false;
