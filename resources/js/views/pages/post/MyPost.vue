@@ -112,7 +112,7 @@
                     <h4 class="fst-italic mb-4 text-center border-2 border-bottom pb-1">About</h4>
                     <div class="d-flex mb-4">
                         <div class="flex-shrink-0 ">
-                            <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="62" height="62" class="rounded-circle border border-1 border-secondary shadow-sm">
+                            <img :src="user().avatar || '/images/user.png'" alt="avatar" width="62" height="62" class="rounded-circle border border-1 border-secondary shadow-sm">
                             <br>
                             <button type="button" class="btn btn-sm btn-link mt-1 w-100">Follow</button>
                         </div>
@@ -265,6 +265,9 @@
                 }
 
                 this.isProcessing = false;
+            },
+            user() {
+                return this.auth.user ?? {};
             },
         },
     }

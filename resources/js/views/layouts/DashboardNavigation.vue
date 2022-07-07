@@ -36,11 +36,11 @@
                     <!-- Authentication Links -->
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle p-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="32" height="32" class="rounded-circle border border-1 border-secondary">
+                            <img :src="user().avatar || '/images/user.png'" alt="avatar" width="32" height="32" class="rounded-circle border border-1 border-secondary">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">{{ auth.user.name }}</a></li>
-                            <li><a class="dropdown-item" href="#">{{ auth.user.email }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ user().name }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ user().email }}</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" style="cursor: pointer;" @click="doLogout">Logout</a></li>
@@ -56,11 +56,12 @@
 <script>
     import { mapState } from 'pinia'
     import { authState } from '@src/store/authState.js';
+    import AuthService from '@src/services/AuthService.js';
 
     export default {
         data() {
             return {
-                
+                authService: new AuthService(),
             };
         },
         computed: { 
@@ -77,32 +78,24 @@
             },
         },
         methods: {
-            async doLogout() {
-                await this.$axios.post('/logout', { })
-                    .then(({ data }) => {
-                        this.logout();
-                        this.$router.push({name: 'login'});
-                    }).catch(({ response: { data } }) => {
-                        console.log(data);
-                    }).finally(() => {
-                        
-                    });
+            user() {
+                return this.auth.user ?? {};
             },
-            async getUser() {
-                // Example test api
-                await this.$axios.get("/api/user")
-                        .then(response => {
-                            const { data } = response;
-                            console.log(data);
+            async doLogout() {
+                const result = await this.authService.logout({});
+                const { success, failure } = result;
 
-                            return data;
-                        })
-                        .catch(response => {
-                            const { data } = response;
+                if (success) {
+                    this.logout();
+                    this.$router.push({name: 'login'});
+                }
 
-                            return data;
-                        });
-            }
+                if (failure) {
+                    const { message, errors = {} } = failure;
+
+                    console.log(message, errors);
+                }
+            },
         }
     };
 </script>

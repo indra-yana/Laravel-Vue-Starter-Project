@@ -24,6 +24,16 @@ class AuthService {
         return { success, failure }
     }
 
+    async logout(payloads) {
+        let success, failure = null;
+
+        await axios.post(`/logout`, payloads)
+                    .then(({ data }) => success = data)
+                    .catch(({ response: { data } }) => failure = data);
+
+        return { success, failure }
+    }
+
     async register(payloads) {
         let success, failure = null;
 

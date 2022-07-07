@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import SecureLS from "secure-ls";
+import { postState } from '@src/store/postState.js';
+import { socialLinkState } from '@src/store/socialLinkState.js';
 
 const ls = new SecureLS({ isCompression: false });
 const authState = defineStore('authState', {
@@ -33,6 +35,11 @@ const authState = defineStore('authState', {
 
             this.session.active = true;
             this.session.message = "Session is currently active";
+
+            // Reset all state to start new session 
+            // after successfully loggedIn
+            postState().$reset();
+            socialLinkState().$reset();
         },
         logout() {
             this.$reset();
