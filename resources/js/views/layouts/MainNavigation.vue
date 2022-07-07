@@ -35,11 +35,11 @@
                     <router-link :to="{ name: 'dashboard'}" class="nav-item nav-link" active-class="active" exact>Dashboard</router-link>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle p-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            <img :src="auth.user.avatar || '/images/user.png'" alt="avatar" width="32" height="32" class="rounded-circle border border-1 border-secondary">
+                            <img :src="user().avatar || '/images/user.png'" alt="avatar" width="32" height="32" class="rounded-circle border border-1 border-secondary">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">{{ auth.user.name }}</a></li>
-                            <li><a class="dropdown-item" href="#">{{ auth.user.email }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ user().name }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ user().email }}</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" style="cursor: pointer;" @click="doLogout">Logout</a></li>
@@ -55,11 +55,13 @@
 <script>
     import { mapState } from 'pinia'
     import { authState } from '@src/store/authState.js';
+    import AuthService from '@src/services/AuthService.js';
     
     export default {
         data() {
             return {
                 currentRoute: this.$route.name,
+                authService: new AuthService(),
             };
         },
         created() {
@@ -69,17 +71,24 @@
             ...mapState(authState, ['isLoggedIn', 'logout', 'auth'])
         },
         methods: {
+            user() {
+                return this.auth.user ?? {};
+            },
             async doLogout() {
-                await this.$axios.post('/logout', { })
-                    .then(({ data }) => {
-                        this.logout();
-                        this.$router.push({name: 'login'});
-                    }).catch(({ response: { data } }) => {
-                        console.log(data);
-                    }).finally(() => {
-                        
-                    });
-            }
+                const result = await this.authService.logout({});
+                const { success, failure } = result;
+
+                if (success) {
+                    this.logout();
+                    this.$router.push({name: 'login'});
+                }
+
+                if (failure) {
+                    const { message, errors = {} } = failure;
+
+                    console.log(message, errors);
+                }
+            },
         }
     };
 </script>
